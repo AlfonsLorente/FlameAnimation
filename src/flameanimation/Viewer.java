@@ -6,6 +6,15 @@
 package flameanimation;
 
 import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -15,6 +24,22 @@ public class Viewer extends Canvas{
     //VARIABLES
     private int rate;
     private Flame flame;
+    private Dimension screenSize;
+
+    //CONSTRUCTOR
+    public Viewer(){
+        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        //double width = screenSize.getWidth();
+        //double height = screenSize.getHeight();
+        //this.setBackground (Color.BLACK);    
+        this.setSize(screenSize);
+        //flame = new Flame(500, 500, BufferedImage.TYPE_INT_ARGB);
+        try {
+            flame = new Flame(ImageIO.read(new File("IMG/fuegoProvisional.jpg")));
+        } catch (IOException ex) {
+            ex.getMessage();
+        }
+    }
 
     //GETTERS AND SETTERS
     public int getRate() {
@@ -25,14 +50,6 @@ public class Viewer extends Canvas{
         this.rate = rate;
     }
 
-    public Flame getFlame() {
-        return flame;
-    }
-
-    public void setFlame(Flame flame) {
-        this.flame = flame;
-    }
-    
     
     
 }

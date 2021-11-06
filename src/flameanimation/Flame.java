@@ -7,6 +7,7 @@ package flameanimation;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 /**
  *
@@ -16,16 +17,26 @@ public class Flame extends BufferedImage {
     //VARIABLES
     private int width;
     private int height;
-    
+    private File file = new File("IMG/fuegoProvisional.jpg");
     //CONSTRUCTOR
     public Flame(int width, int height, int imageType) {
         super(width, height, imageType);
+        this.width = width;
+        this.height = height;
+    }
+    
+    public Flame(BufferedImage img){
+        super(img.getWidth(),img.getHeight(),img.getType());
+        setData(img.getData());
     }
     
     
     //PUBLIC METHODS
     public void flameEvolve(){
         
+    }
+    public void paint(Graphics g){
+        g.drawImage(this, width, height, null);
     }
     
     public void setPalette(){
@@ -49,9 +60,7 @@ public class Flame extends BufferedImage {
         
     }
     
-    private void paint(Graphics g){
-        
-    }
+
     
     private void temperatureEvolve(){
         
