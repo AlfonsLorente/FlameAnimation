@@ -6,6 +6,7 @@
 package flameanimation;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 
 /**
@@ -13,6 +14,11 @@ import java.awt.Color;
  * @author alfon
  */
 public class FlamePalette {
+    
+    //VARIABLES
+    private ArrayList<TargetColor> tartgetColorList;
+    private ArrayList<Color> colorList;
+    
     //PUBLIC METHODS
     public void addTargetColor(TargetColor targetColor){
         

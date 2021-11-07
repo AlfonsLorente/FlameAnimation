@@ -5,10 +5,14 @@
  */
 package flameanimation;
 
+import java.awt.Color;
+
 /**
  *
  * @author alfon
  */
 public class TargetColor {
+    //VARIABLES
+    private Color color;
     
 }

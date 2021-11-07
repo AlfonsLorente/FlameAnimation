@@ -33,12 +33,8 @@ public class Viewer extends Canvas{
         //double height = screenSize.getHeight();
         //this.setBackground (Color.BLACK);    
         this.setSize(screenSize);
-        //flame = new Flame(500, 500, BufferedImage.TYPE_INT_ARGB);
-        try {
-            flame = new Flame(ImageIO.read(new File("IMG/fuegoProvisional.jpg")));
-        } catch (IOException ex) {
-            ex.getMessage();
-        }
+        new Flame(700, 500, BufferedImage.TYPE_INT_ARGB);
+        
     }
 
     //GETTERS AND SETTERS

@@ -8,6 +8,8 @@ package flameanimation;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -17,12 +19,14 @@ public class Flame extends BufferedImage {
     //VARIABLES
     private int width;
     private int height;
-    private File file = new File("IMG/fuegoProvisional.jpg");
+    private File file = new File("IMG/out.jpg");
     //CONSTRUCTOR
     public Flame(int width, int height, int imageType) {
         super(width, height, imageType);
         this.width = width;
         this.height = height;
+        this.doSomething();
+
     }
     
     public Flame(BufferedImage img){
@@ -34,6 +38,30 @@ public class Flame extends BufferedImage {
     //PUBLIC METHODS
     public void flameEvolve(){
         
+    }
+    
+    public void doSomething(){
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                int a = (int)(Math.random()*256); //generating
+                int r = (int)(Math.random()*256); //values
+                int g = (int)(Math.random()*256); //less than
+                int b = (int)(Math.random()*256); //256
+                int p = (a<<24) | (r<<16) | (g<<8) | b; //pixel
+                this.setRGB(x, y, p);
+           }
+        }
+        // write image
+        try
+        {
+            ImageIO.write(this, "jpg", file);
+        }
+        catch(IOException e)
+        {
+            System.out.println("Error: " + e);
+        }
     }
     public void paint(Graphics g){
         g.drawImage(this, width, height, null);
