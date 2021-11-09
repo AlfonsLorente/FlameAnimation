@@ -19,7 +19,7 @@ public class Flame extends BufferedImage {
     //VARIABLES
     private int width;
     private int height;
-    private File file = new File("IMG/out.jpg");
+    private File file = new File("c:/img/imgout.jpg");
     //CONSTRUCTOR
     public Flame(int width, int height, int imageType) {
         super(width, height, imageType);
@@ -31,7 +31,7 @@ public class Flame extends BufferedImage {
     
     public Flame(BufferedImage img){
         super(img.getWidth(),img.getHeight(),img.getType());
-        setData(img.getData());
+        //setData(img.getData());
     }
     
     

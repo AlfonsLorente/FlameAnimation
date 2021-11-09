@@ -5,6 +5,9 @@
  */
 package flameanimation;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
@@ -24,7 +27,11 @@ public class MyFlame extends JFrame {
     
     //CONSTRUCTOR
     public MyFlame(){
-        viewer = new Viewer();
+        try {
+            viewer = new Viewer();
+        } catch (IOException ex) {
+            Logger.getLogger(MyFlame.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.setTitle("Flame");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);

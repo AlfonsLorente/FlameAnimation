@@ -8,6 +8,7 @@ package flameanimation;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -27,16 +28,18 @@ public class Viewer extends Canvas{
     private Dimension screenSize;
 
     //CONSTRUCTOR
-    public Viewer(){
+    public Viewer() throws IOException{
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         //double width = screenSize.getWidth();
         //double height = screenSize.getHeight();
         //this.setBackground (Color.BLACK);    
         this.setSize(screenSize);
-        new Flame(700, 500, BufferedImage.TYPE_INT_ARGB);
-        
+        //new Flame(700, 500, BufferedImage.TYPE_INT_ARGB);
+        flame = new Flame(ImageIO.read(new File("IMG/donut.png")));
     }
 
+    
+    
     //GETTERS AND SETTERS
     public int getRate() {
         return rate;
