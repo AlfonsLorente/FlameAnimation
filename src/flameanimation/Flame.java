@@ -9,18 +9,28 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 /**
  *
  * @author alfon
  */
-public class Flame extends BufferedImage {
+public class Flame extends BufferedImage implements Runnable {
     //VARIABLES
     private int width;
     private int height;
-    private File file = new File("c:/img/imgout.jpg");
-    //CONSTRUCTOR
+    private Thread thread;
+    private FlamePalette firePalete;
+    private boolean endFlame;
+    private boolean pausedFlame;
+    private int sleep = 500;
+    private int[] pixelTemperature;
+    private int X;
+    private int Y;
+    
+//CONSTRUCTOR
     public Flame(int width, int height, int imageType) {
         super(width, height, imageType);
         this.width = width;
@@ -29,14 +39,16 @@ public class Flame extends BufferedImage {
 
     }
     
-    public Flame(BufferedImage img){
-        super(img.getWidth(),img.getHeight(),img.getType());
-        //setData(img.getData());
-    }
     
     
     //PUBLIC METHODS
     public void flameEvolve(){
+        //createSparks();
+        //createSparks();
+        //createCoolPoints();
+        
+        //temperatureEvolve()
+        //createFireImage();
         
     }
     
@@ -53,15 +65,7 @@ public class Flame extends BufferedImage {
                 this.setRGB(x, y, p);
            }
         }
-        // write image
-        try
-        {
-            ImageIO.write(this, "jpg", file);
-        }
-        catch(IOException e)
-        {
-            System.out.println("Error: " + e);
-        }
+        
     }
     public void paint(Graphics g){
         g.drawImage(this, width, height, null);
@@ -81,7 +85,8 @@ public class Flame extends BufferedImage {
     }
     
     private void createSparks(int colFrom, int colTo,int row,int percentage){
-        
+        //recorrer caselles de temperatura
+        //random que fica aleatoriament temperatura al maxim
     }
     
     private void createFlameIamge(){
@@ -92,6 +97,23 @@ public class Flame extends BufferedImage {
     
     private void temperatureEvolve(){
         
+    }
+
+    @Override
+    public void run() {
+        
+        while(!endFlame){
+            if(!pausedFlame){
+                flameEvolve();
+                
+            }
+            try {
+                Thread.sleep(sleep);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Flame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
     }
             
 }

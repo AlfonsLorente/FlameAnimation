@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -25,20 +26,32 @@ public class Viewer extends Canvas{
     //VARIABLES
     private int rate;
     private Flame flame;
+    private BufferedImage image;
     private Dimension screenSize;
 
     //CONSTRUCTOR
-    public Viewer() throws IOException{
+    public Viewer(){
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        //double width = screenSize.getWidth();
-        //double height = screenSize.getHeight();
-        //this.setBackground (Color.BLACK);    
-        this.setSize(screenSize);
-        //new Flame(700, 500, BufferedImage.TYPE_INT_ARGB);
-        flame = new Flame(ImageIO.read(new File("IMG/donut.png")));
+        //this.setSize(screenSize);
+        //new Flame(700, 500, BufferedImage.TYPE_INT_ARGB); 
+        try{
+            image = ImageIO.read(new File("IMG/FBM.png"));
+        }catch(IOException e){
+            e.getMessage();
+        }
+        flame = new Flame(50,50,BufferedImage.TYPE_INT_ARGB);
+        
+        
     }
 
     
+    @Override
+    public void paint(Graphics g){
+    super.paint(g);
+    g.drawImage(image, 0,0, null);
+    g.drawImage(flame,200,100,1000,550,null);
+    } 
+
     
     //GETTERS AND SETTERS
     public int getRate() {

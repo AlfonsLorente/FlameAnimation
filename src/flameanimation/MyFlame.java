@@ -22,22 +22,17 @@ public class MyFlame extends JFrame {
     
     //MAIN
     public static void main(String[] args) {
+        
         new MyFlame();
+        
     }
     
     //CONSTRUCTOR
     public MyFlame(){
-        try {
-            viewer = new Viewer();
-        } catch (IOException ex) {
-            Logger.getLogger(MyFlame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        this.setTitle("Flame");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.setResizable(true);        
-        this.setVisible(true); 
+        viewer = new Viewer();
+        setMyFlame();
         this.add(viewer);
+        this.setVisible(true);
         
     }
     
@@ -57,6 +52,13 @@ public class MyFlame extends JFrame {
     
     public void setViewerRate(int rate){
         
+    }
+
+    private void setMyFlame() {
+        this.setTitle("Flame");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setResizable(true);        
     }
     
     
