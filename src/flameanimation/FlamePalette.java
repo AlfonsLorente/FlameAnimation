@@ -31,7 +31,7 @@ public class FlamePalette {
     
     //PRIVATE METHODS
     private void createColors(){
-        
+            
     }
     
     private void interpolateColors(TargetColor targetFrom, TargetColor targetEnd){

@@ -27,19 +27,15 @@ public class Viewer extends Canvas{
     private int rate;
     private Flame flame;
     private BufferedImage image;
-    private Dimension screenSize;
 
     //CONSTRUCTOR
     public Viewer(){
-        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        //this.setSize(screenSize);
-        //new Flame(700, 500, BufferedImage.TYPE_INT_ARGB); 
         try{
             image = ImageIO.read(new File("IMG/FBM.png"));
         }catch(IOException e){
             e.getMessage();
         }
-        flame = new Flame(50,50,BufferedImage.TYPE_INT_ARGB);
+        flame = new Flame(800,600,BufferedImage.TYPE_INT_ARGB);
         
         
     }
@@ -47,9 +43,9 @@ public class Viewer extends Canvas{
     
     @Override
     public void paint(Graphics g){
-    super.paint(g);
-    g.drawImage(image, 0,0, null);
-    g.drawImage(flame,200,100,1000,550,null);
+        super.paint(g);
+        g.drawImage(image, 0,0, null);
+        g.drawImage(flame,200,100,1000,550,null);
     } 
 
     

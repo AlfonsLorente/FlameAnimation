@@ -5,10 +5,14 @@
  */
 package flameanimation;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  *
@@ -18,17 +22,27 @@ public class MyFlame extends JFrame {
     //VARIABLES
     private boolean isPaused;
     private boolean isStoped;
-    private Viewer viewer;
-    
+    private static Viewer viewer;
+    private static MyFlame myFlame;
+
     //MAIN
     public static void main(String[] args) {
         
-        new MyFlame();
+        myFlame = new MyFlame();
+        while(true){
+            viewer.repaint();
+            try {
+                Thread.sleep(600);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MyFlame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         
     }
     
     //CONSTRUCTOR
     public MyFlame(){
+        
         viewer = new Viewer();
         setMyFlame();
         this.add(viewer);
