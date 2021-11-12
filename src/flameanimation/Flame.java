@@ -5,6 +5,7 @@
  */
 package flameanimation;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -22,11 +23,10 @@ public class Flame extends BufferedImage implements Runnable {
     //VARIABLES
     private int width;
     private int height;
-    private Thread thread;
     private FlamePalette flamePalete;
     private boolean endFlame = false;
     private boolean pausedFlame = false;
-    private int rate = 10;
+    private int rate = 200;
     private int[][] pixels;
 
   
@@ -37,8 +37,8 @@ public class Flame extends BufferedImage implements Runnable {
         this.width = width;
         this.height = height;
         this.pixels = new int[width][height];
-        thread = new Thread(this);
-        thread.start();
+        //thread = new Thread(this);
+        //thread.start();
        
 
     }
@@ -48,7 +48,6 @@ public class Flame extends BufferedImage implements Runnable {
     //PUBLIC METHODS
     public void flameEvolve(){
         createSparks(0);
-        //createSparks();
         createCool(0);
         
         temperatureEvolve();
@@ -90,7 +89,7 @@ public class Flame extends BufferedImage implements Runnable {
         for (int x = colFrom; x < width; x++)
         {
             int varAux = (int) (Math.random()*100);
-            if(varAux > 60){
+            if(varAux > 88){
                 //Add random 255 pixels
                 pixels[x][height-1] = 0;
             }
@@ -103,7 +102,7 @@ public class Flame extends BufferedImage implements Runnable {
         for (int x = colFrom; x < width; x++)
         {
             int varAux = (int) (Math.random()*100);
-            if(varAux > 60){
+            if(varAux > 80){
                 //Add random 255 pixels
                 pixels[x][height-1] = 255;
             }
@@ -116,22 +115,23 @@ public class Flame extends BufferedImage implements Runnable {
         {
             for (int x = 0; x < width; x++)
             {
-                if(pixels[x][y] == 255){
-                    int a = 255; //generating
+                    int a; //generating
                     int r = 255; //values
-                    int g = 0; //less thanWW
+                    int g = pixels[x][y]; //less thanWW
                     int b = 0; //256
-                    int p = (a<<24) | (r<<16) | (g<<8) | b; //pixel
-                    this.setRGB(x, y, p);    
-                }
-                else if (pixels[x][y] == 0){
-                    int a = 0; //generating
-                    int r = 0; //values
-                    int g = 0; //less than
-                    int b = 0; //256
-                    int p = (a<<24) | (r<<16) | (g<<8) | b; //pixel
-                    this.setRGB(x, y, p);    
-                }
+                    int p;
+                    if(g == 0){
+                         a = 0; //generating
+                         p = (a<<24) | (r<<16) | (g<<8) | b; //pixel
+                        this.setRGB(x, y,p);    
+
+                    }else{
+                        a = 255; //generating
+                         p = (a<<24) | (r<<16) | (g<<8) | b;
+                        this.setRGB(x, y, p);    
+                    }
+                
+                
                 
            }
         }
@@ -141,14 +141,22 @@ public class Flame extends BufferedImage implements Runnable {
 
     
     private void temperatureEvolve(){
-        for (int y = 0; y < height-1; y++)
-        {
-            for (int x = 1; x < width-1; x++)
-            {
-                pixels[x][y] = pixels[x-1][y+1] + pixels[x][y+1] + pixels[x+1][y+1]; 
-           }
+        int num;
+        for (int y=height-2; y>=0; y--){
+            for (int x=1; x < width-1; x++){
+                num =(pixels[x][y+1] + pixels[x+1][y+1] + pixels[x-1][y+1])/3;
+                if(num != 0 && num < 225){
+                    num = num + ((int)(Math.random()*19) - (int)(Math.random()*20));
+                }
+                
+                if(num < 20) {
+                    num = 0;
+                }
+                pixels[x][y] = num;
+            }
+                
+
         }
-        
     }
     
     /*
@@ -172,7 +180,7 @@ public class Flame extends BufferedImage implements Runnable {
     @Override
     public void run() {
         
-        while(!endFlame){
+        while(true){
             if(!pausedFlame){
                 flameEvolve();
                 

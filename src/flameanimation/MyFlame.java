@@ -24,19 +24,13 @@ public class MyFlame extends JFrame {
     private boolean isStoped;
     private static Viewer viewer;
     private static MyFlame myFlame;
+    private Thread thread;
 
     //MAIN
     public static void main(String[] args) {
         
         myFlame = new MyFlame();
-        while(true){
-            viewer.repaint();
-            try {
-                Thread.sleep(600);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(MyFlame.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        
         
     }
     
@@ -46,6 +40,8 @@ public class MyFlame extends JFrame {
         viewer = new Viewer();
         setMyFlame();
         this.add(viewer);
+        thread = new Thread(viewer);
+        thread.start();
         this.setVisible(true);
         
     }
@@ -71,8 +67,9 @@ public class MyFlame extends JFrame {
     private void setMyFlame() {
         this.setTitle("Flame");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.setResizable(true);        
+        this.setBounds(70, 40, 1361, 722);
+        //this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setResizable(false);        
     }
     
     
