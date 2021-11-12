@@ -14,6 +14,10 @@ import java.awt.Color;
 public class TargetColor {
     //VARIABLES
     private Color color;
+    
+    public TargetColor(Color color){
+        this.color = color;
+    }
 
     public Color getColor() {
         return color;

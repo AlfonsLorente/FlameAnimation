@@ -31,7 +31,12 @@ public class FlamePalette {
     
     //PRIVATE METHODS
     private void createColors(){
-            
+        //Variables
+        TargetColor targetPrev;
+        TargetColor targetNew;
+        
+        //if(this.colorList)
+        
     }
     
     private void interpolateColors(TargetColor targetFrom, TargetColor targetEnd){

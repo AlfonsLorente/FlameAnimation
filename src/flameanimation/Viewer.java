@@ -35,7 +35,7 @@ public class Viewer extends Canvas{
         }catch(IOException e){
             e.getMessage();
         }
-        flame = new Flame(800,600,BufferedImage.TYPE_INT_ARGB);
+        flame = new Flame(600,500,BufferedImage.TYPE_INT_ARGB);
         
         
     }

@@ -23,13 +23,13 @@ public class Flame extends BufferedImage implements Runnable {
     private int width;
     private int height;
     private Thread thread;
-    private FlamePalette firePalete;
-    private boolean endFlame;
-    private boolean pausedFlame;
-    private int sleep = 500;
+    private FlamePalette flamePalete;
+    private boolean endFlame = false;
+    private boolean pausedFlame = false;
+    private int rate = 10;
     private int[][] pixels;
-    private int X;
-    private int Y;
+
+  
     
 //CONSTRUCTOR
     public Flame(int width, int height, int imageType) {
@@ -37,7 +37,9 @@ public class Flame extends BufferedImage implements Runnable {
         this.width = width;
         this.height = height;
         this.pixels = new int[width][height];
-        
+        thread = new Thread(this);
+        thread.start();
+       
 
     }
     
@@ -47,10 +49,11 @@ public class Flame extends BufferedImage implements Runnable {
     public void flameEvolve(){
         createSparks(0);
         //createSparks();
-        //createCoolPoints();
+        createCool(0);
         
-        //temperatureEvolve()
-        //createFireImage();
+        temperatureEvolve();
+        createFlameImage();
+
         
     }
     
@@ -78,38 +81,58 @@ public class Flame extends BufferedImage implements Runnable {
     }
     
     public void setRate(int rate){
-        
+        this.rate = rate;
     }
     
     //PRIVATE METHODS
-    private void createCool(int colFrom, int colTo,int row,int percentage){
+    private void createCool(int colFrom){
+        //go over the first pixel width row
+        for (int x = colFrom; x < width; x++)
+        {
+            int varAux = (int) (Math.random()*100);
+            if(varAux > 60){
+                //Add random 255 pixels
+                pixels[x][height-1] = 0;
+            }
+        }
         
     }
     
     private void createSparks(int colFrom){
-        //recorrer caselles de temperatura
+        //go over the first pixel width row
         for (int x = colFrom; x < width; x++)
         {
-            int varAux = (int) Math.random()*100;
+            int varAux = (int) (Math.random()*100);
             if(varAux > 60){
-                pixels[x][0] = 255;
+                //Add random 255 pixels
+                pixels[x][height-1] = 255;
             }
         }
 
-        //random que fica aleatoriament temperatura al maxim
     }
     
-    private void createFlameIamge(){
+    private void createFlameImage(){
          for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
-                int a = 255; //generating
-                int r = 0; //values
-                int g = 0; //less than
-                int b = 0; //256
-                int p = (a<<24) | (r<<16) | (g<<8) | b; //pixel
-                this.setRGB(x, y, p);
+                if(pixels[x][y] == 255){
+                    int a = 255; //generating
+                    int r = 255; //values
+                    int g = 0; //less thanWW
+                    int b = 0; //256
+                    int p = (a<<24) | (r<<16) | (g<<8) | b; //pixel
+                    this.setRGB(x, y, p);    
+                }
+                else if (pixels[x][y] == 0){
+                    int a = 0; //generating
+                    int r = 0; //values
+                    int g = 0; //less than
+                    int b = 0; //256
+                    int p = (a<<24) | (r<<16) | (g<<8) | b; //pixel
+                    this.setRGB(x, y, p);    
+                }
+                
            }
         }
     }
@@ -118,6 +141,13 @@ public class Flame extends BufferedImage implements Runnable {
 
     
     private void temperatureEvolve(){
+        for (int y = 0; y < height-1; y++)
+        {
+            for (int x = 1; x < width-1; x++)
+            {
+                pixels[x][y] = pixels[x-1][y+1] + pixels[x][y+1] + pixels[x+1][y+1]; 
+           }
+        }
         
     }
     
@@ -148,7 +178,7 @@ public class Flame extends BufferedImage implements Runnable {
                 
             }
             try {
-                Thread.sleep(sleep);
+                Thread.sleep(rate);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Flame.class.getName()).log(Level.SEVERE, null, ex);
             }
