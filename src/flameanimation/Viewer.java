@@ -38,15 +38,15 @@ public class Viewer extends Canvas implements Runnable{
     public Viewer(){
 
         try{
-            image = ImageIO.read(new File("IMG/FBM.png"));
+            image = ImageIO.read(new File("IMG/hoguera.jpeg"));
         }catch(IOException e){
             e.getMessage();
         }
 
-        flame = new Flame(600,500,BufferedImage.TYPE_INT_ARGB);
+        flame = new Flame(500,850,BufferedImage.TYPE_INT_ARGB);
         thread = new Thread(flame);
         thread.start();
-        flame2 = new Flame(600,500,BufferedImage.TYPE_INT_ARGB);
+        flame2 = new Flame(500,850,BufferedImage.TYPE_INT_ARGB);
         thread = new Thread(flame2);
         thread.start();
 
@@ -64,8 +64,9 @@ public class Viewer extends Canvas implements Runnable{
         }else{
             graphics = bs.getDrawGraphics();
             g.drawImage(image, 0,0, null);
-            g.drawImage(flame,200,0,1000,600,null);
-            g.drawImage(flame2,200,0,1000,600,null);
+            
+            g.drawImage(flame,630,0,700,850,null);
+            g.drawImage(flame2,630,0,700,850,null);
             bs.show();
             g.dispose();
         }

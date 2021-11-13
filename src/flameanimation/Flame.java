@@ -139,7 +139,7 @@ public class Flame extends BufferedImage implements Runnable {
                         this.setRGB(x, y,p);    
 
                     }else{
-                        a = 210; //generating
+                    a = 200; //generating
                          p = (a<<24) | (r<<16) | (g<<8) | b;
                         this.setRGB(x, y, p);    
                     }
@@ -159,7 +159,7 @@ public class Flame extends BufferedImage implements Runnable {
             for (int x=1; x < width-1; x++){
                 num =(pixels[x][y+1] + pixels[x+1][y+1] + pixels[x-1][y+1])/3;
                 if(num != 0 && num < 230){
-                    num = num + ((int)(Math.random()*14.7) - (int)(Math.random()*15));
+                    num = num + ((int)(Math.random()*14.8) - (int)(Math.random()*15));
                 }
                 
                 if(num < 10) {

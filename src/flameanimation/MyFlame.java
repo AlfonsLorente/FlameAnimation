@@ -74,7 +74,7 @@ public class MyFlame extends JFrame {
         
         this.setTitle("Flame");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setBounds(70, 40, 1361, 722);
+        this.setBounds(70, 40, 1900, 1000);
         //this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setResizable(false);        
     }
