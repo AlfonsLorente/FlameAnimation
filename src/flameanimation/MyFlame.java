@@ -5,6 +5,8 @@
  */
 package flameanimation;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +27,9 @@ public class MyFlame extends JFrame {
     private static Viewer viewer;
     private static MyFlame myFlame;
     private Thread thread;
+    private GridBagLayout gbl;
+    private GridBagConstraints gbc;
+    private JPanel jPanel;
 
     //MAIN
     public static void main(String[] args) {
@@ -36,9 +41,10 @@ public class MyFlame extends JFrame {
     
     //CONSTRUCTOR
     public MyFlame(){
-        
+
         viewer = new Viewer();
         setMyFlame();
+        
         this.add(viewer);
         thread = new Thread(viewer);
         thread.start();
@@ -65,6 +71,7 @@ public class MyFlame extends JFrame {
     }
 
     private void setMyFlame() {
+        
         this.setTitle("Flame");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setBounds(70, 40, 1361, 722);

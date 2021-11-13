@@ -16,8 +16,17 @@ import java.util.ArrayList;
 public class FlamePalette {
     
     //VARIABLES
-    private ArrayList<TargetColor> tartgetColorList;
-    private ArrayList<Color> colorList;
+    private ArrayList<TargetColor> targetColorList;
+    private Color[] colorList;
+    private int depth;
+
+    public int getDepth() {
+        return depth;
+    }
+
+    public void setDepth(int depth) {
+        this.depth = depth;
+    }
     
     //PUBLIC METHODS
     public void addTargetColor(TargetColor targetColor){
@@ -34,8 +43,14 @@ public class FlamePalette {
         //Variables
         TargetColor targetPrev;
         TargetColor targetNew;
+        //Set depth
+        if(this.colorList == null){
+            this.colorList = new Color[depth];
+        }
         
-        //if(this.colorList)
+        //Sort the list of target colors
+        //for()
+        
         
     }
     

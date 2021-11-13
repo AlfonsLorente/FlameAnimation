@@ -25,12 +25,13 @@ import javax.swing.ImageIcon;
  */
 public class Viewer extends Canvas implements Runnable{
     //VARIABLES
-    private int rate = 100;
+    private int rate = 40;
     private Flame flame;
-    //private Flame flame2;
+    private Flame flame2;
     private BufferedImage image;
     private Thread thread;
     private Graphics graphics;
+    private BufferStrategy bs;
 
 
     //CONSTRUCTOR
@@ -41,12 +42,13 @@ public class Viewer extends Canvas implements Runnable{
         }catch(IOException e){
             e.getMessage();
         }
+
         flame = new Flame(600,500,BufferedImage.TYPE_INT_ARGB);
         thread = new Thread(flame);
         thread.start();
-        /*flame2 = new Flame(600,500,BufferedImage.TYPE_INT_ARGB);
+        flame2 = new Flame(600,500,BufferedImage.TYPE_INT_ARGB);
         thread = new Thread(flame2);
-        thread.start();*/
+        thread.start();
 
 
         
@@ -56,18 +58,19 @@ public class Viewer extends Canvas implements Runnable{
     
     @Override
     public void paint(Graphics g){
-        BufferStrategy bs = this.getBufferStrategy();
-        Graphics g = bs.getDrawGraphics();
+        bs = this.getBufferStrategy();
         if (bs==null){
-            return;
+            this.createBufferStrategy(2);
+        }else{
+            graphics = bs.getDrawGraphics();
+            g.drawImage(image, 0,0, null);
+            g.drawImage(flame,200,0,1000,600,null);
+            g.drawImage(flame2,200,0,1000,600,null);
+            bs.show();
+            g.dispose();
         }
-        if (g==null){
-            return;
-        }
-        g.drawImage(image, 0,0, null);
-        g.drawImage(flame,200,0,1000,600,null);
-        //g.drawImage(flame2,200,0,1000,600,null);
-
+        
+        
         
     } 
 
@@ -83,7 +86,6 @@ public class Viewer extends Canvas implements Runnable{
 
     @Override
     public void run() {
-       createBufferStrategy(2);  
         while(true){
             try {
                 Thread.sleep(rate);

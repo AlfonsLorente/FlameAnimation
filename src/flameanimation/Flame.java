@@ -26,7 +26,7 @@ public class Flame extends BufferedImage implements Runnable {
     private FlamePalette flamePalete;
     private boolean endFlame = false;
     private boolean pausedFlame = false;
-    private int rate = 200;
+    private int rate = 150;
     private int[][] pixels;
 
   
@@ -89,7 +89,7 @@ public class Flame extends BufferedImage implements Runnable {
         for (int x = colFrom; x < width; x++)
         {
             int varAux = (int) (Math.random()*100);
-            if(varAux > 88){
+            if(varAux > 85){
                 //Add random 255 pixels
                 pixels[x][height-1] = 0;
             }
@@ -102,9 +102,22 @@ public class Flame extends BufferedImage implements Runnable {
         for (int x = colFrom; x < width; x++)
         {
             int varAux = (int) (Math.random()*100);
-            if(varAux > 80){
+            if(x > width/3 && x < (width*2/3)){
+               if(varAux > 50){
                 //Add random 255 pixels
                 pixels[x][height-1] = 255;
+            } 
+            }else if (x > width/10 && x < (width*8/9)){
+                if(varAux > 75){
+                //Add random 255 pixels
+                pixels[x][height-1] = 255;
+                }
+            }else{
+                 if(varAux > 85){
+                //Add random 255 pixels
+                pixels[x][height-1] = 255;
+            }
+            
             }
         }
 
@@ -118,15 +131,15 @@ public class Flame extends BufferedImage implements Runnable {
                     int a; //generating
                     int r = 255; //values
                     int g = pixels[x][y]; //less thanWW
-                    int b = 0; //256
+                    int b = 30; //256
                     int p;
-                    if(g == 0){
+                    if(g < 20){
                          a = 0; //generating
                          p = (a<<24) | (r<<16) | (g<<8) | b; //pixel
                         this.setRGB(x, y,p);    
 
                     }else{
-                        a = 255; //generating
+                        a = 210; //generating
                          p = (a<<24) | (r<<16) | (g<<8) | b;
                         this.setRGB(x, y, p);    
                     }
@@ -145,11 +158,11 @@ public class Flame extends BufferedImage implements Runnable {
         for (int y=height-2; y>=0; y--){
             for (int x=1; x < width-1; x++){
                 num =(pixels[x][y+1] + pixels[x+1][y+1] + pixels[x-1][y+1])/3;
-                if(num != 0 && num < 225){
-                    num = num + ((int)(Math.random()*19) - (int)(Math.random()*20));
+                if(num != 0 && num < 230){
+                    num = num + ((int)(Math.random()*14.7) - (int)(Math.random()*15));
                 }
                 
-                if(num < 20) {
+                if(num < 10) {
                     num = 0;
                 }
                 pixels[x][y] = num;

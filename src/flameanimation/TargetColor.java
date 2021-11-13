@@ -13,7 +13,7 @@ import java.awt.Color;
  */
 public class TargetColor {
     //VARIABLES
-    private Color color;
+    private Color color; 
     
     public TargetColor(Color color){
         this.color = color;
