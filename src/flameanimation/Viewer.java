@@ -34,27 +34,22 @@ public class Viewer extends Canvas implements Runnable{
     private BufferStrategy bs;
 
 
-    //CONSTRUCTOR
+    //CONSTRUCTORS
+    //1 FLAME
     public Viewer(Flame flame){
-
         try{
             image = ImageIO.read(new File("IMG/hoguera.jpeg"));
         }catch(IOException e){
             e.getMessage();
         }
         this.flame1 = flame;
-        flame = new Flame(500,850,BufferedImage.TYPE_INT_ARGB);
         thread = new Thread(flame);
         thread.start();
         
-
-
-        
-        
     }
     
+    //2 FLAMES
     public Viewer(Flame flame1, Flame flame2){
-
         try{
             image = ImageIO.read(new File("IMG/hoguera.jpeg"));
         }catch(IOException e){
@@ -67,8 +62,6 @@ public class Viewer extends Canvas implements Runnable{
         thread = new Thread(flame2);
         thread.start();
 
-
-        
         
     }
     
@@ -82,15 +75,17 @@ public class Viewer extends Canvas implements Runnable{
     }
 
     
+    //PUBLICS METHODS:
+    //paint: Draw the flames and the background image
     @Override
     public void paint(Graphics g){
+        //The buffered strategy trys to prevent flickering
         bs = this.getBufferStrategy();
         if (bs==null){
             this.createBufferStrategy(2);
         }else{
             graphics = bs.getDrawGraphics();
             graphics.drawImage(image, 0,0, null);
-            
             graphics.drawImage(flame1,630,0,700,850,null);
             if(flame2 != null){
                 graphics.drawImage(flame2,630,0,700,850,null);
@@ -103,6 +98,7 @@ public class Viewer extends Canvas implements Runnable{
 
  
 
+    //run: Called by the thread, it runs the paint function
     @Override
     public void run() {
         while(true){
@@ -111,18 +107,9 @@ public class Viewer extends Canvas implements Runnable{
             } catch (InterruptedException ex) {
                 Logger.getLogger(Viewer.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-            if(graphics == null){
-                System.out.println("Error de graphics");
-            }
-            else{
-                paint(graphics);
-            }
+            paint(graphics);
         }
     }
 
-    
-
-    
     
 }

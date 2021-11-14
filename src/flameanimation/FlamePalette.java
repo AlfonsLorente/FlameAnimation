@@ -15,13 +15,22 @@ import java.util.ArrayList;
  */
 public class FlamePalette {
 
+    //VARIABLES
     private ArrayList<TargetColor> targetColorList = new ArrayList<TargetColor>();
     private int[] colorList;
 
+    //CONSTRUCOR
+    public FlamePalette(){
+        
+    }
+    
+    //PUBLIC METHODS
+    //addTargetColor: Adds a target color to a list
     public void addTargetColor(TargetColor targetColor) {
         this.targetColorList.add(targetColor);
     }
 
+    //getColor: returns the value of the actual color
     public int getColor(int num) {
         if (this.colorList == null){
             createColors();
@@ -29,15 +38,19 @@ public class FlamePalette {
         return colorList[num];
     }
 
+    //PRIVATE METHODS
+    //createColors: Create the colorList variable and setting up all the colors
     private void createColors() {
         this.colorList = new int[256];
-        for (int i = 0 ; i < (targetColorList.size() - 1) ; i++) {
+        for (int i = 0; i < (targetColorList.size() - 1); i++) {
+            //passes to interpolateColors the actual target color and the next one to come
             interpolateColors(targetColorList.get(i), targetColorList.get(i+1));
         } 
     }
-
+    
+    //interpolateColors: Create each temperature for each step of the target color, and so, setting up the colorList.
     private void interpolateColors(TargetColor targetFrom, TargetColor targetEnd) {
-
+        //Gets all the primari colors of each target color's color
         int[] fromColor = new int[]{
             targetFrom.getColor().getRed(), 
             targetFrom.getColor().getGreen(), 
@@ -51,13 +64,17 @@ public class FlamePalette {
             targetEnd.getColor().getAlpha()
         };
         
+        //Set the amount of steps needed for each color to achive the target
         double steps = targetFrom.getTemperature() - targetEnd.getTemperature(); 
-        double A = (endColor[3] - fromColor[3]) / steps;
         double R = (endColor[0] - fromColor[0]) / steps;
         double G = (endColor[1] - fromColor[1]) / steps;
         double B = (endColor[2] - fromColor[2]) / steps;
+        double A = (endColor[3] - fromColor[3]) / steps;
         int j = 0;
-        for (int i = targetFrom.getTemperature() ; i > targetEnd.getTemperature() ; i--) {
+        
+        //Loop the amount of steps
+        for (int i = targetFrom.getTemperature(); i > targetEnd.getTemperature(); i--) {
+            //Add the new color to the list
             this.colorList[i] = new Color(
                 (int)(fromColor[0] + (R*j)),
                 (int)(fromColor[1] + (G*j)), 

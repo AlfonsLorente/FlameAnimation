@@ -48,16 +48,19 @@ public class MyFlame extends JFrame {
         //Create viewer
         viewer = new Viewer(flame1, flame2);
         this.setViewerRate(viewerRate);
+        //Set the jframe
         setMyFlame();
-        
         this.add(viewer);
+        //Start the viewer thread
         thread = new Thread(viewer);
         thread.start();
+        //Set the jframe visible
         this.setVisible(true);
         
     }
     
-    //METHODS
+    //PUBLIC METHODS
+    //setFlamePalette: Prepare the palette
     public FlamePalette setFlamePalette(FlamePalette palette){
         palette = new FlamePalette();
         palette.addTargetColor(new TargetColor(255, Color.WHITE));
@@ -65,31 +68,34 @@ public class MyFlame extends JFrame {
         palette.addTargetColor(new TargetColor(170, Color.ORANGE));
         palette.addTargetColor(new TargetColor(120, Color.ORANGE.darker()));
         palette.addTargetColor(new TargetColor(90, Color.RED));
-        palette.addTargetColor(new TargetColor(0, Color.BLACK.brighter()));
+        palette.addTargetColor(new TargetColor(0, Color.RED.darker().darker().darker()));
         return palette;
 
     }
     
+    //setStop: Not implemented
     public void setStop(boolean s){
         
     }
 
-    
+    //setPause: Not implemented
     public void setPause(boolean p){
         
     }
     
+    //setViewerRate: Sets the framerate of the viewer
     public void setViewerRate(int rate){
         viewer.setRate(rate);
         
     }
 
+    //PRIVATE METHODS
+    //setMyFlame: Sets the jframe
     private void setMyFlame() {
         
         this.setTitle("Flame");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setBounds(0, 0, 1900, 1000);
-        //this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setResizable(false);        
     }
     

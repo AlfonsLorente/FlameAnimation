@@ -43,23 +43,7 @@ public class Flame extends BufferedImage implements Runnable {
 
     }
     
-    
-    
-    //PUBLIC METHODS
-    public void flameEvolve(){
-        createSparks(0);
-        createCool(0);
-        
-        temperatureEvolve();
-        createFlameImage();
-
-        
-    }
-    
-    public void paint(Graphics g){
-        g.drawImage(this, width, height, null);
-    }
-    
+    //GETTERS AND SETTERS
     public void setPalette(FlamePalette flamePalette){
         this.flamePalette = flamePalette;
         
@@ -69,102 +53,20 @@ public class Flame extends BufferedImage implements Runnable {
         this.rate = rate;
     }
     
-    //PRIVATE METHODS
-    private void createCool(int colFrom){
-        //go over the first pixel width row
-        for (int x = colFrom; x < width; x++)
-        {
-            int varAux = (int) (Math.random()*100);
-            if(varAux > 85){
-                //Add random 255 pixels
-                pixels[x][height-1] = 0;
-            }
-        }
+    
+    //PUBLIC METHODS
+    //flameEvolve: Controls the execution of the fire.
+    public void flameEvolve(){
+        createSparks(0);
+        createCool(0);
+        temperatureEvolve();
+        createFlameImage();
+
         
     }
+   
     
-    private void createSparks(int colFrom){
-        //go over the first pixel width row
-        for (int x = colFrom; x < width; x++)
-        {
-            int varAux = (int) (Math.random()*100);
-            if(x > width/3 && x < (width*2/3)){
-               if(varAux > 50){
-                //Add random 255 pixels
-                pixels[x][height-1] = 255;
-            } 
-            }else if (x > width/10 && x < (width*8/9)){
-                if(varAux > 75){
-                //Add random 255 pixels
-                pixels[x][height-1] = 255;
-                }
-            }else{
-                 if(varAux > 85){
-                //Add random 255 pixels
-                pixels[x][height-1] = 255;
-            }
-            
-            }
-        }
-
-    }
-    
-    private void createFlameImage(){
-         for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                int a; //generating
-                int r = 255; //values
-                int g = pixels[x][y]; //less thanWW
-                int b = 30; //256
-                int p;
-                /*if(g < 20){
-                    //a = 0; //generating
-                    //p = (a<<24) | (r<<16) | (g<<8) | b; //pixel
-                    //this.setRGB(x, y,p);    
-                    int color = flamePalette.getColor(pixels[x][y]);
-                    
-                    this.setRGB(x, y, color);
-
-                }else{
-                    //a = 200; //generating
-                    //p = (a<<24) | (r<<16) | (g<<8) | b;
-                    //this.setRGB(x, y, p);    
-                    int color = flamePalette.getColor(pixels[x][y]);
-                    this.setRGB(x, y, color);
-                } */
-                int color = flamePalette.getColor(pixels[x][y]);
-                    this.setRGB(x, y, color);
-                
-                
-            }
-        }
-    }
-    
-    
-
-    
-    private void temperatureEvolve(){
-        int num;
-        for (int y=height-2; y>=0; y--){
-            for (int x=1; x < width-1; x++){
-                num =(pixels[x][y+1] + pixels[x+1][y+1] + pixels[x-1][y+1])/3;
-                if(num != 0 && num < 230){
-                    num = num + ((int)(Math.random()*14.8) - (int)(Math.random()*15));
-                }
-                
-                if(num < 15) {
-                    num = 0;
-                }
-                pixels[x][y] = num;
-            }
-                
-
-        }
-    }    
-    
-
+    //run: Called by the thread, it runs the flameEvolve function
     @Override
     public void run() {
         
@@ -181,6 +83,85 @@ public class Flame extends BufferedImage implements Runnable {
             
         }
     }
+    
+    
+    
+    
+    
+    //PRIVATE METHODS
+    //createCool: Creates cold points to prevent the fire to overburn
+    private void createCool(int colFrom){
+        //go over the first pixel width row
+        for (int x = colFrom; x < width; x++)
+        {
+            int varAux = (int) (Math.random()*100);
+            if(varAux > 85){
+                //Add random 255 pixels
+                pixels[x][height-1] = 0;
+            }
+        }
+        
+    }
+    
+    //createSparks: Creates 255 points to start the fire
+    private void createSparks(int colFrom){
+        //go over the first pixel width row
+        for (int x = colFrom; x < width; x++)
+        {
+            int rand = (int) (Math.random()*100);
+            //This creates more sparks at the center of the fire than at the outsides
+            if(x > width/3 && x < (width*2/3)){
+               if(rand > 50){
+                    //Add random 255 pixels
+                    pixels[x][height-1] = 255;
+            } 
+            }else if (x > width/10 && x < (width*8/9)){
+                if(rand > 75){
+                    pixels[x][height-1] = 255;
+                }
+            }else{
+                 if(rand > 85){
+                    pixels[x][height-1] = 255;
+                }
+            }
+        }
+    }
+    
+    //createFlameImage: Loops around all the flame image and sets the pixels to its color with the flame palette
+    private void createFlameImage(){
+         for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                int color = flamePalette.getColor(pixels[x][y]);
+                this.setRGB(x, y, color);
+
+            }
+        }
+    }
+    
+    
+
+    //temperatureEvolve: This evolves the fire looking for the bottom pixels temperature and setting a new one for the top one.
+    private void temperatureEvolve(){
+        int num;
+        for (int y=height-2; y>=0; y--){
+            for (int x=1; x < width-1; x++){
+                //Formula to calcule the top pixel (or bottom pixel, depends on which way you look at)
+                num =(pixels[x][y+1] + pixels[x+1][y+1] + pixels[x-1][y+1])/3;
+                if(num != 0 && num < 230){
+                    //Setting random values to give some live/reality to the flame
+                    num = num + ((int)(Math.random()*14.8) - (int)(Math.random()*15));
+                }
+                //Avoids posibles errors created with the random before done
+                if(num < 15) {
+                    num = 0;
+                }
+                pixels[x][y] = num;
+            }
+
+        }
+    }    
             
 }
 
