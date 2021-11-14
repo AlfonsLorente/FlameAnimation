@@ -5,14 +5,10 @@
  */
 package flameanimation;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -27,9 +23,10 @@ public class MyFlame extends JFrame {
     private static Viewer viewer;
     private static MyFlame myFlame;
     private Thread thread;
-    private GridBagLayout gbl;
-    private GridBagConstraints gbc;
-    private JPanel jPanel;
+    private int viewerRate = 40;
+    private FlamePalette flamePalette;
+    private Flame flame1;
+    private Flame flame2;
 
     //MAIN
     public static void main(String[] args) {
@@ -41,8 +38,16 @@ public class MyFlame extends JFrame {
     
     //CONSTRUCTOR
     public MyFlame(){
-
-        viewer = new Viewer();
+        //Set flame palette
+        flamePalette = setFlamePalette(flamePalette);
+        //Create flames
+        flame1 = new Flame(500,850,BufferedImage.TYPE_INT_ARGB);
+        flame1.setPalette(flamePalette);
+        flame2 = new Flame(500,850,BufferedImage.TYPE_INT_ARGB);
+        flame2.setPalette(flamePalette);
+        //Create viewer
+        viewer = new Viewer(flame1, flame2);
+        this.setViewerRate(viewerRate);
         setMyFlame();
         
         this.add(viewer);
@@ -53,8 +58,16 @@ public class MyFlame extends JFrame {
     }
     
     //METHODS
-    public void setFlamePalette(int flameNumber, FlamePalette palette){
-        
+    public FlamePalette setFlamePalette(FlamePalette palette){
+        palette = new FlamePalette();
+        palette.addTargetColor(new TargetColor(255, Color.WHITE));
+        palette.addTargetColor(new TargetColor(220, Color.YELLOW));
+        palette.addTargetColor(new TargetColor(170, Color.ORANGE));
+        palette.addTargetColor(new TargetColor(120, Color.ORANGE.darker()));
+        palette.addTargetColor(new TargetColor(90, Color.RED));
+        palette.addTargetColor(new TargetColor(0, Color.BLACK.brighter()));
+        return palette;
+
     }
     
     public void setStop(boolean s){
@@ -67,6 +80,7 @@ public class MyFlame extends JFrame {
     }
     
     public void setViewerRate(int rate){
+        viewer.setRate(rate);
         
     }
 
@@ -74,7 +88,7 @@ public class MyFlame extends JFrame {
         
         this.setTitle("Flame");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setBounds(70, 40, 1900, 1000);
+        this.setBounds(0, 0, 1900, 1000);
         //this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setResizable(false);        
     }

@@ -12,11 +12,20 @@ import java.awt.Color;
  * @author alfon
  */
 public class TargetColor {
-    //VARIABLES
-    private Color color; 
-    
-    public TargetColor(Color color){
+    private int temperature;
+    private Color color;
+
+    public TargetColor(int temperature, Color color){
+        this.temperature = temperature;
         this.color = color;
+    }
+
+    public int getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(int temperature) {
+        this.temperature = temperature;
     }
 
     public Color getColor() {
@@ -28,5 +37,6 @@ public class TargetColor {
     }
     
     
-    
 }
+    
+  

@@ -14,48 +14,57 @@ import java.util.ArrayList;
  * @author alfon
  */
 public class FlamePalette {
-    
-    //VARIABLES
-    private ArrayList<TargetColor> targetColorList;
-    private Color[] colorList;
-    private int depth;
 
-    public int getDepth() {
-        return depth;
+    private ArrayList<TargetColor> targetColorList = new ArrayList<TargetColor>();
+    private int[] colorList;
+
+    public void addTargetColor(TargetColor targetColor) {
+        this.targetColorList.add(targetColor);
     }
 
-    public void setDepth(int depth) {
-        this.depth = depth;
-    }
-    
-    //PUBLIC METHODS
-    public void addTargetColor(TargetColor targetColor){
-        
-    }
-    
-    public Color getColor(int temperature){
-        return Color.BLACK;
-    }
-    
-    
-    //PRIVATE METHODS
-    private void createColors(){
-        //Variables
-        TargetColor targetPrev;
-        TargetColor targetNew;
-        //Set depth
-        if(this.colorList == null){
-            this.colorList = new Color[depth];
+    public int getColor(int num) {
+        if (this.colorList == null){
+            createColors();
         }
-        
-        //Sort the list of target colors
-        //for()
-        
-        
+        return colorList[num];
     }
-    
-    private void interpolateColors(TargetColor targetFrom, TargetColor targetEnd){
-        
+
+    private void createColors() {
+        this.colorList = new int[256];
+        for (int i = 0 ; i < (targetColorList.size() - 1) ; i++) {
+            interpolateColors(targetColorList.get(i), targetColorList.get(i+1));
+        } 
     }
-    
+
+    private void interpolateColors(TargetColor targetFrom, TargetColor targetEnd) {
+
+        int[] fromColor = new int[]{
+            targetFrom.getColor().getRed(), 
+            targetFrom.getColor().getGreen(), 
+            targetFrom.getColor().getBlue(), 
+            targetFrom.getColor().getAlpha()
+        };
+        int[] endColor = new int[]{
+            targetEnd.getColor().getRed(), 
+            targetEnd.getColor().getGreen(), 
+            targetEnd.getColor().getBlue(), 
+            targetEnd.getColor().getAlpha()
+        };
+        
+        double steps = targetFrom.getTemperature() - targetEnd.getTemperature(); 
+        double A = (endColor[3] - fromColor[3]) / steps;
+        double R = (endColor[0] - fromColor[0]) / steps;
+        double G = (endColor[1] - fromColor[1]) / steps;
+        double B = (endColor[2] - fromColor[2]) / steps;
+        int j = 0;
+        for (int i = targetFrom.getTemperature() ; i > targetEnd.getTemperature() ; i--) {
+            this.colorList[i] = new Color(
+                (int)(fromColor[0] + (R*j)),
+                (int)(fromColor[1] + (G*j)), 
+                (int)(fromColor[2] + (B*j)), 
+                (int)(fromColor[3] + (A*j))
+            ).getRGB();
+            j++;
+        }
+    }
 }

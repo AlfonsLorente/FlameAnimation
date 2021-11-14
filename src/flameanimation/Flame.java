@@ -23,7 +23,8 @@ public class Flame extends BufferedImage implements Runnable {
     //VARIABLES
     private int width;
     private int height;
-    private FlamePalette flamePalete;
+    private FlamePalette flamePalette;
+
     private boolean endFlame = false;
     private boolean pausedFlame = false;
     private int rate = 150;
@@ -36,10 +37,9 @@ public class Flame extends BufferedImage implements Runnable {
         super(width, height, imageType);
         this.width = width;
         this.height = height;
+        this.flamePalette = flamePalette;
         this.pixels = new int[width][height];
-        //thread = new Thread(this);
-        //thread.start();
-       
+
 
     }
     
@@ -56,26 +56,12 @@ public class Flame extends BufferedImage implements Runnable {
         
     }
     
-    public void doSomething(){
-        for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                int a = (int)(Math.random()*256); //generating
-                int r = (int)(Math.random()*256); //values
-                int g = (int)(Math.random()*256); //less than
-                int b = (int)(Math.random()*256); //256
-                int p = (a<<24) | (r<<16) | (g<<8) | b; //pixel
-                this.setRGB(x, y, p);
-           }
-        }
-        
-    }
     public void paint(Graphics g){
         g.drawImage(this, width, height, null);
     }
     
-    public void setPalette(){
+    public void setPalette(FlamePalette flamePalette){
+        this.flamePalette = flamePalette;
         
     }
     
@@ -128,25 +114,31 @@ public class Flame extends BufferedImage implements Runnable {
         {
             for (int x = 0; x < width; x++)
             {
-                    int a; //generating
-                    int r = 255; //values
-                    int g = pixels[x][y]; //less thanWW
-                    int b = 30; //256
-                    int p;
-                    if(g < 20){
-                         a = 0; //generating
-                         p = (a<<24) | (r<<16) | (g<<8) | b; //pixel
-                        this.setRGB(x, y,p);    
+                int a; //generating
+                int r = 255; //values
+                int g = pixels[x][y]; //less thanWW
+                int b = 30; //256
+                int p;
+                /*if(g < 20){
+                    //a = 0; //generating
+                    //p = (a<<24) | (r<<16) | (g<<8) | b; //pixel
+                    //this.setRGB(x, y,p);    
+                    int color = flamePalette.getColor(pixels[x][y]);
+                    
+                    this.setRGB(x, y, color);
 
-                    }else{
-                    a = 200; //generating
-                         p = (a<<24) | (r<<16) | (g<<8) | b;
-                        this.setRGB(x, y, p);    
-                    }
+                }else{
+                    //a = 200; //generating
+                    //p = (a<<24) | (r<<16) | (g<<8) | b;
+                    //this.setRGB(x, y, p);    
+                    int color = flamePalette.getColor(pixels[x][y]);
+                    this.setRGB(x, y, color);
+                } */
+                int color = flamePalette.getColor(pixels[x][y]);
+                    this.setRGB(x, y, color);
                 
                 
-                
-           }
+            }
         }
     }
     
@@ -162,7 +154,7 @@ public class Flame extends BufferedImage implements Runnable {
                     num = num + ((int)(Math.random()*14.8) - (int)(Math.random()*15));
                 }
                 
-                if(num < 10) {
+                if(num < 15) {
                     num = 0;
                 }
                 pixels[x][y] = num;
@@ -170,24 +162,7 @@ public class Flame extends BufferedImage implements Runnable {
                 
 
         }
-    }
-    
-    /*
-    private void fillTempreaturesTo0(){
-        for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                int a = 255; //generating
-                int r = 0; //values
-                int g = 0; //less than
-                int b = 0; //256
-                int p = (a<<24) | (r<<16) | (g<<8) | b; //pixel
-                this.setRGB(x, y, p);
-           }
-        }
-    }
-*/
+    }    
     
 
     @Override

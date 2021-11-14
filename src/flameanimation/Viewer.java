@@ -25,8 +25,8 @@ import javax.swing.ImageIcon;
  */
 public class Viewer extends Canvas implements Runnable{
     //VARIABLES
-    private int rate = 40;
-    private Flame flame;
+    private int rate;
+    private Flame flame1;
     private Flame flame2;
     private BufferedImage image;
     private Thread thread;
@@ -35,24 +35,50 @@ public class Viewer extends Canvas implements Runnable{
 
 
     //CONSTRUCTOR
-    public Viewer(){
+    public Viewer(Flame flame){
 
         try{
             image = ImageIO.read(new File("IMG/hoguera.jpeg"));
         }catch(IOException e){
             e.getMessage();
         }
-
+        this.flame1 = flame;
         flame = new Flame(500,850,BufferedImage.TYPE_INT_ARGB);
         thread = new Thread(flame);
         thread.start();
-        flame2 = new Flame(500,850,BufferedImage.TYPE_INT_ARGB);
+        
+
+
+        
+        
+    }
+    
+    public Viewer(Flame flame1, Flame flame2){
+
+        try{
+            image = ImageIO.read(new File("IMG/hoguera.jpeg"));
+        }catch(IOException e){
+            e.getMessage();
+        }
+        this.flame1 = flame1;
+        thread = new Thread(flame1);
+        thread.start();
+        this.flame2 = flame2;
         thread = new Thread(flame2);
         thread.start();
 
 
         
         
+    }
+    
+    //GETTERS AND SETTERS
+    public int getRate() {
+        return rate;
+    }
+
+    public void setRate(int rate) {
+        this.rate = rate;
     }
 
     
@@ -63,27 +89,19 @@ public class Viewer extends Canvas implements Runnable{
             this.createBufferStrategy(2);
         }else{
             graphics = bs.getDrawGraphics();
-            g.drawImage(image, 0,0, null);
+            graphics.drawImage(image, 0,0, null);
             
-            g.drawImage(flame,630,0,700,850,null);
-            g.drawImage(flame2,630,0,700,850,null);
+            graphics.drawImage(flame1,630,0,700,850,null);
+            if(flame2 != null){
+                graphics.drawImage(flame2,630,0,700,850,null);
+            }
             bs.show();
-            g.dispose();
+            graphics.dispose();
         }
-        
-        
         
     } 
 
-    
-    //GETTERS AND SETTERS
-    public int getRate() {
-        return rate;
-    }
-
-    public void setRate(int rate) {
-        this.rate = rate;
-    }
+ 
 
     @Override
     public void run() {
