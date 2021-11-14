@@ -5,6 +5,8 @@
  */
 package flameanimation;
 
+import java.awt.Color;
+import java.util.ArrayList;
 import javax.swing.JPanel;
 
 /**
@@ -12,5 +14,6 @@ import javax.swing.JPanel;
  * @author alfon
  */
 public class ControlPanel extends JPanel {
+    
     
 }
