@@ -95,7 +95,7 @@ public class MyFlame extends JFrame {
         
         this.setTitle("Flame");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setBounds(0, 0, 1900, 1000);
+        this.setBounds(0, 0, 1360, 790);
         this.setResizable(false);        
     }
     

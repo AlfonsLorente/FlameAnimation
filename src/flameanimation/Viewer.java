@@ -85,10 +85,10 @@ public class Viewer extends Canvas implements Runnable{
             this.createBufferStrategy(2);
         }else{
             graphics = bs.getDrawGraphics();
-            graphics.drawImage(image, 0,0, null);
-            graphics.drawImage(flame1,630,0,700,850,null);
+            graphics.drawImage(image.getScaledInstance(1350, -1, BufferedImage.SCALE_SMOOTH), 0,0, this);
+            graphics.drawImage(flame1,480,0,400,600,null);
             if(flame2 != null){
-                graphics.drawImage(flame2,630,0,700,850,null);
+                graphics.drawImage(flame2,480,0,400,600,null);
             }
             bs.show();
             graphics.dispose();
