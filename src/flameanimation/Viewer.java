@@ -30,8 +30,6 @@ public class Viewer extends Canvas implements Runnable{
     private Flame flame2;
     private BufferedImage image;
     private Thread thread;
-    private Graphics graphics;
-    private BufferStrategy bs;
 
 
     //CONSTRUCTORS
@@ -77,37 +75,49 @@ public class Viewer extends Canvas implements Runnable{
     
     //PUBLICS METHODS:
     //paint: Draw the flames and the background image
-    @Override
-    public void paint(Graphics g){
+    public void paint(){
         //The buffered strategy trys to prevent flickering
-        bs = this.getBufferStrategy();
+        //Uses the buffered strategy
+        BufferStrategy bs = this.getBufferStrategy();
+        Graphics g = bs.getDrawGraphics();
         if (bs==null){
-            this.createBufferStrategy(2);
-        }else{
-            graphics = bs.getDrawGraphics();
-            graphics.drawImage(image.getScaledInstance(1350, -1, BufferedImage.SCALE_SMOOTH), 0,0, this);
-            graphics.drawImage(flame1,480,0,400,600,null);
-            if(flame2 != null){
-                graphics.drawImage(flame2,480,0,400,600,null);
-            }
-            bs.show();
-            graphics.dispose();
+            return;
         }
+        if (g==null){
+            return;
+        }
+        g = bs.getDrawGraphics();
+        g.drawImage(image.getScaledInstance(1350, -1, BufferedImage.SCALE_SMOOTH), 0,0, this);
+        g.drawImage(flame1,480,0,400,600,null);
+        if(flame2 != null){
+            g.drawImage(flame2,480,0,400,600,null);
+        }
+        bs.show();
+        g.dispose();
+    }
         
-    } 
+   
 
  
 
     //run: Called by the thread, it runs the paint function
     @Override
     public void run() {
+        //Initial sleep to prevent pair error
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Viewer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //implements the buffer strategy
+        createBufferStrategy(2);
         while(true){
             try {
                 Thread.sleep(rate);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Viewer.class.getName()).log(Level.SEVERE, null, ex);
         }
-            paint(graphics);
+            paint();
         }
     }
 
