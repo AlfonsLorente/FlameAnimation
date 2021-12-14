@@ -150,17 +150,14 @@ public class Flame extends BufferedImage implements Runnable {
                 num =(pixels[x][y+1] + pixels[x+1][y+1] + pixels[x-1][y+1])/3;
                 if(num != 0 && num < 245){
                     //Setting random values to give some live/reality to the flame
-                    num = num + ((int)(Math.random()*3) - (int)(Math.random()*3.2));
+                    num = num + ((int)(Math.random()*2.5) - (int)(Math.random()*2.7));
                 }
                 //Avoids posibles errors created with the random before done
-                if(num < 5) {
+                if(num < 10) {
                     num = 0;
                 }
                 pixels[x][y] = num;
-                /*pixels[x][y] = (pixels[x][y+1] + pixels[x+1][y+1] + pixels[x-1][y+1])/3;
-                if(pixels[x][y] < 10) {
-                    pixels[x][y] = 0;
-                }*/
+                
             }
 
         }
