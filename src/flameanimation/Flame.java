@@ -26,7 +26,7 @@ public class Flame extends BufferedImage implements Runnable {
     private FlamePalette flamePalette;
 
     private boolean pausedFlame = false;
-    private int rate = 80;
+    private int rate = 90;
     private int[][] pixels;
 
   

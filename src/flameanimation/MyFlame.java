@@ -23,7 +23,7 @@ public class MyFlame extends JFrame {
     private static Viewer viewer;
     private static MyFlame myFlame;
     private Thread thread;
-    private int viewerRate = 40;
+    private int viewerRate = 20;
     private FlamePalette flamePalette;
     private Flame flame1;
     private Flame flame2;
