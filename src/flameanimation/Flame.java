@@ -26,7 +26,7 @@ public class Flame extends BufferedImage implements Runnable {
     private FlamePalette flamePalette;
 
     private boolean pausedFlame = false;
-    private int rate = 150;
+    private int rate = 80;
     private int[][] pixels;
 
   
@@ -94,7 +94,7 @@ public class Flame extends BufferedImage implements Runnable {
         for (int x = colFrom; x < width; x++)
         {
             int varAux = (int) (Math.random()*100);
-            if(varAux > 85){
+            if(varAux > 80){
                 //Add random 255 pixels
                 pixels[x][height-1] = 0;
             }
@@ -148,15 +148,19 @@ public class Flame extends BufferedImage implements Runnable {
             for (int x=1; x < width-1; x++){
                 //Formula to calcule the top pixel (or bottom pixel, depends on which way you look at)
                 num =(pixels[x][y+1] + pixels[x+1][y+1] + pixels[x-1][y+1])/3;
-                if(num != 0 && num < 230){
+                if(num != 0 && num < 245){
                     //Setting random values to give some live/reality to the flame
-                    num = num + ((int)(Math.random()*14.8) - (int)(Math.random()*15));
+                    num = num + ((int)(Math.random()*3) - (int)(Math.random()*3.2));
                 }
                 //Avoids posibles errors created with the random before done
-                if(num < 15) {
+                if(num < 5) {
                     num = 0;
                 }
                 pixels[x][y] = num;
+                /*pixels[x][y] = (pixels[x][y+1] + pixels[x+1][y+1] + pixels[x-1][y+1])/3;
+                if(pixels[x][y] < 10) {
+                    pixels[x][y] = 0;
+                }*/
             }
 
         }

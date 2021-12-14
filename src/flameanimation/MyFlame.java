@@ -23,7 +23,7 @@ public class MyFlame extends JFrame {
     private static Viewer viewer;
     private static MyFlame myFlame;
     private Thread thread;
-    private int viewerRate = 70;
+    private int viewerRate = 40;
     private FlamePalette flamePalette;
     private Flame flame1;
     private Flame flame2;
@@ -64,11 +64,11 @@ public class MyFlame extends JFrame {
     public FlamePalette setFlamePalette(FlamePalette palette){
         palette = new FlamePalette();
         palette.addTargetColor(new TargetColor(255, Color.WHITE));
-        palette.addTargetColor(new TargetColor(220, Color.YELLOW));
-        palette.addTargetColor(new TargetColor(170, Color.ORANGE));
-        palette.addTargetColor(new TargetColor(120, Color.ORANGE.darker()));
-        palette.addTargetColor(new TargetColor(90, Color.RED));
-        palette.addTargetColor(new TargetColor(0, Color.RED.darker().darker().darker()));
+        palette.addTargetColor(new TargetColor(210, Color.YELLOW));
+        palette.addTargetColor(new TargetColor(150, Color.ORANGE));
+        palette.addTargetColor(new TargetColor(100, Color.ORANGE.darker()));
+        palette.addTargetColor(new TargetColor(70, Color.RED));
+        palette.addTargetColor(new TargetColor(0, Color.RED.darker().darker()));
         return palette;
 
     }
