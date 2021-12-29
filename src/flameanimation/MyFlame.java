@@ -43,10 +43,8 @@ public class MyFlame extends JFrame {
         //Create flames
         flame1 = new Flame(500,850,BufferedImage.TYPE_INT_ARGB);
         flame1.setPalette(flamePalette);
-        flame2 = new Flame(500,850,BufferedImage.TYPE_INT_ARGB);
-        flame2.setPalette(flamePalette);
         //Create viewer
-        viewer = new Viewer(flame1, flame2);
+        viewer = new Viewer(flame1);
         this.setViewerRate(viewerRate);
         //Set the jframe
         setMyFlame();

@@ -46,22 +46,7 @@ public class Viewer extends Canvas implements Runnable{
         
     }
     
-    //2 FLAMES
-    public Viewer(Flame flame1, Flame flame2){
-        try{
-            image = ImageIO.read(new File("IMG/hoguera.jpeg"));
-        }catch(IOException e){
-            e.getMessage();
-        }
-        this.flame1 = flame1;
-        thread = new Thread(flame1);
-        thread.start();
-        this.flame2 = flame2;
-        thread = new Thread(flame2);
-        thread.start();
-
-        
-    }
+    
     
     //GETTERS AND SETTERS
     public int getRate() {

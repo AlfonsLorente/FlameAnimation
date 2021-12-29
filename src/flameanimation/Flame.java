@@ -110,16 +110,16 @@ public class Flame extends BufferedImage implements Runnable {
             int rand = (int) (Math.random()*100);
             //This creates more sparks at the center of the fire than at the outsides
             if(x > width/3 && x < (width*2/3)){
-               if(rand > 50){
+               if(rand > 45){
                     //Add random 255 pixels
                     pixels[x][height-1] = 255;
             } 
             }else if (x > width/10 && x < (width*8/9)){
-                if(rand > 75){
+                if(rand > 60){
                     pixels[x][height-1] = 255;
                 }
             }else{
-                 if(rand > 85){
+                 if(rand > 70){
                     pixels[x][height-1] = 255;
                 }
             }
@@ -150,7 +150,7 @@ public class Flame extends BufferedImage implements Runnable {
                 num =(pixels[x][y+1] + pixels[x+1][y+1] + pixels[x-1][y+1])/3;
                 if(num != 0 && num < 245){
                     //Setting random values to give some live/reality to the flame
-                    num = num + ((int)(Math.random()*2.5) - (int)(Math.random()*2.7));
+                    num = num + ((int)(Math.random()*2) - (int)(Math.random()*2.1));
                 }
                 //Avoids posibles errors created with the random before done
                 if(num < 10) {
