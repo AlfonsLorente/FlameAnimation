@@ -27,6 +27,7 @@ public class MyFlame extends JFrame {
     private FlamePalette flamePalette;
     private Flame flame1;
     private Flame flame2;
+    private GridBagConstraints constraints = new GridBagConstraints();  
 
     //MAIN
     public static void main(String[] args) {
@@ -48,7 +49,8 @@ public class MyFlame extends JFrame {
         this.setViewerRate(viewerRate);
         //Set the jframe
         setMyFlame();
-        this.add(viewer);
+       // this.add(viewer);
+        setGridRules();
         //Start the viewer thread
         thread = new Thread(viewer);
         thread.start();
@@ -69,6 +71,20 @@ public class MyFlame extends JFrame {
         palette.addTargetColor(new TargetColor(0, Color.RED.darker().darker()));
         return palette;
 
+    }
+    
+    public void setGridRules(){
+        constraints.gridx = 0; // El área de texto empieza en la columna cero.
+        constraints.gridy = 0; // El área de texto empieza en la fila cero
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+
+        constraints.fill = GridBagConstraints.BOTH;
+        this.add(viewer , constraints);
+        //constraints.gridx = 1; // El área de texto empieza en la columna cero.
+//        constraints.gridy = 0; // El área de texto empieza en la fila cero
+
+        //this.add(viewer , constraints);
     }
     
     //setStop: Not implemented
@@ -93,6 +109,14 @@ public class MyFlame extends JFrame {
         
         this.setTitle("Flame");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLayout (new GridBagLayout());
+        
+        /*JButton boton1 = new JButton ("Boton 1");
+        constraints.gridx = 2;
+        constraints.gridy = 0;
+        constraints.gridwidth = 1;
+        constraints.gridheight = 1;
+        this.getContentPane().add (boton1, constraints);*/
         this.setBounds(0, 0, 1360, 790);
         this.setResizable(false);        
     }
