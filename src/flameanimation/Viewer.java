@@ -32,10 +32,10 @@ public class Viewer extends Canvas implements Runnable{
     private Thread fireThread;
 
     enum FireState {
-    STOP,
-    PAUSE,
-    RESUME
-  }
+        EXIT,
+        PAUSE,
+        RESUME
+    }
 
     //CONSTRUCTORS
     //1 FLAME
@@ -64,8 +64,8 @@ public class Viewer extends Canvas implements Runnable{
     
     public void setFireThread(FireState state){
         switch(state){
-            case STOP:
-                fireThread.stop();
+            case EXIT:
+                System.exit(0);
                 break;
             case PAUSE:
                 fireThread.suspend();

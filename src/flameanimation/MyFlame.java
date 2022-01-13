@@ -9,6 +9,8 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.image.BufferedImage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -20,8 +22,8 @@ import javax.swing.JPanel;
 public class MyFlame extends JFrame {
     //VARIABLES
     private boolean isPaused = false;
-    private boolean isStoped = false;
-
+    private boolean isExit = false;
+    private int flameCoolAmount = 80;
     private static Viewer viewer;
     private Thread thread;
     private int viewerRate = 20;
@@ -30,11 +32,13 @@ public class MyFlame extends JFrame {
     private Flame flame2;
     private ControlPanel controlPanel;
     private GridBagConstraints constraints = new GridBagConstraints();  
+    private Color c1, c2, c3, c4, c5;
 
     //MAIN
     public static void main(String[] args) {
         
         MyFlame myFlame = new MyFlame();
+        
         
     }
     
@@ -47,6 +51,7 @@ public class MyFlame extends JFrame {
         flame1 = new Flame(500,850,BufferedImage.TYPE_INT_ARGB);
         flame1.setRate(90);
         flame1.setPalette(flamePalette);
+        flame1.setCoolAmount(flameCoolAmount);
         //Create viewer
         viewer = new Viewer(flame1);
         this.setViewerRate(viewerRate);
@@ -69,15 +74,87 @@ public class MyFlame extends JFrame {
     //setFlamePalette: Prepare the palette
     public FlamePalette setFlamePalette(FlamePalette palette){
         palette = new FlamePalette();
-        palette.addTargetColor(new TargetColor(255, Color.WHITE));
-        palette.addTargetColor(new TargetColor(210, Color.YELLOW));
-        palette.addTargetColor(new TargetColor(150, Color.ORANGE));
-        palette.addTargetColor(new TargetColor(100, Color.ORANGE.darker()));
-        palette.addTargetColor(new TargetColor(70, Color.RED));
-        palette.addTargetColor(new TargetColor(0, Color.RED.darker()));
+        c1 = Color.WHITE;
+        c2 = Color.YELLOW;
+        c3 = Color.ORANGE;
+        c4 = Color.ORANGE.darker();
+        c5 = Color.RED;
+        
+        palette.addTargetColor(new TargetColor(255, c1));
+        palette.addTargetColor(new TargetColor(220, c2));
+        palette.addTargetColor(new TargetColor(160, c3));
+        palette.addTargetColor(new TargetColor(100, c4));
+        palette.addTargetColor(new TargetColor(0, c5));
         return palette;
 
     }
+    
+    public void setFlamePalette(Color c1, Color c2, Color c3, Color c4, Color c5){
+        FlamePalette palette = new FlamePalette();
+        palette.addTargetColor(new TargetColor(255, c1));
+        palette.addTargetColor(new TargetColor(220, c2));
+        palette.addTargetColor(new TargetColor(140, c3));
+        palette.addTargetColor(new TargetColor(100, c4));
+        palette.addTargetColor(new TargetColor(0, c5));
+        flamePalette = palette;
+        flame1.setPalette(flamePalette);
+
+    }
+    
+
+    public Color getC1() {
+        return c1;
+    }
+
+    public void setC1(Color c1) {
+        this.c1 = c1;
+        this.setFlamePalette(c1, c2, c3, c4, c5);
+    }
+
+    public Color getC2() {
+        return c2;
+    }
+
+    public void setC2(Color c2) {
+        this.c2 = c2;
+        this.setFlamePalette(c1, c2, c3, c4, c5);
+    }
+
+    public Color getC3() {
+        return c3;
+    }
+
+    public void setC3(Color c3) {
+        this.c3 = c3;
+        this.setFlamePalette(c1, c2, c3, c4, c5);
+    }
+
+    public Color getC4() {
+        return c4;
+    }
+
+    public void setC4(Color c4) {
+        this.c4 = c4;
+        this.setFlamePalette(c1, c2, c3, c4, c5);
+    }
+
+    public Color getC5() {
+        return c5;
+    }
+
+    public void setC5(Color c5) {
+        this.c5 = c5;
+        this.setFlamePalette(c1, c2, c3, c4, c5);
+    }
+
+    public void setFlameCoolAmount(int flameCoolAmount) {
+        this.flameCoolAmount = flameCoolAmount;
+        flame1.setCoolAmount(flameCoolAmount);
+    }
+
+    
+    
+    
     
     public void setGridRules(){
        
@@ -96,18 +173,15 @@ public class MyFlame extends JFrame {
         constraints.weighty = 1;
 
         this.add (controlPanel, constraints);
-                //constraints.gridx = 1; // El área de texto empieza en la columna cero.
-//        constraints.gridy = 0; // El área de texto empieza en la fila cero
 
-        //this.add(viewer , constraints);
     }
     
     //setStop: Not implemented
-    public void setStop(){
-         if(isStoped == false){
-            isStoped = true;
-            viewer.setFireThread(Viewer.FireState.STOP);
-        }
+    public void setExit(){
+         if(isExit == false){
+            isExit = true;
+            viewer.setFireThread(Viewer.FireState.EXIT);
+        } 
     }
 
     //setPause: Not implemented
@@ -143,8 +217,6 @@ public class MyFlame extends JFrame {
         this.setTitle("Flame");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout (new GridBagLayout());
-        
-        
         this.setBounds(0, 0, 1360, 790);
         this.setResizable(false);        
     }
