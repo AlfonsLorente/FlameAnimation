@@ -45,6 +45,7 @@ public class MyFlame extends JFrame {
         flamePalette = setFlamePalette(flamePalette);
         //Create flames
         flame1 = new Flame(500,850,BufferedImage.TYPE_INT_ARGB);
+        flame1.setRate(90);
         flame1.setPalette(flamePalette);
         //Create viewer
         viewer = new Viewer(flame1);
@@ -82,17 +83,18 @@ public class MyFlame extends JFrame {
        
         constraints.gridx = 1; // El área de texto empieza en la columna cero.
         constraints.gridy = 0; // El área de texto empieza en la fila cero
-        constraints.weightx = 0.8;
-        constraints.weighty = 0.8;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+
         constraints.fill = GridBagConstraints.BOTH;
 
         this.add(viewer , constraints);
         
         constraints.gridx = 0;
         constraints.gridy = 0;
-        constraints.weightx = 0.2;
-        constraints.weighty = 0.2;
-        
+        constraints.weightx = 0;
+        constraints.weighty = 1;
+
         this.add (controlPanel, constraints);
                 //constraints.gridx = 1; // El área de texto empieza en la columna cero.
 //        constraints.gridy = 0; // El área de texto empieza en la fila cero
@@ -128,6 +130,10 @@ public class MyFlame extends JFrame {
     public void setViewerRate(int rate){
         viewer.setRate(rate);
         
+    }
+    
+    public void setFlameRate(int rate){
+        flame1.setRate(rate);
     }
 
     //PRIVATE METHODS
