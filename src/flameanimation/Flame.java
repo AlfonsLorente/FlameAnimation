@@ -153,7 +153,7 @@ public class Flame extends BufferedImage implements Runnable {
                     num = num + ((int)(Math.random()*2) - (int)(Math.random()*2.1));
                 }
                 //Avoids posibles errors created with the random before done
-                if(num < 10) {
+                if(num < 5) {
                     num = 0;
                 }
                 pixels[x][y] = num;
