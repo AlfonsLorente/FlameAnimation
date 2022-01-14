@@ -91,7 +91,7 @@ public class ControlPanel extends JPanel {
     private void stopSetUp() {
         GridBagConstraints constraints = new GridBagConstraints();  
 
-        stop = new JButton("STOP");
+        stop = new JButton("Exit");
         constraints.gridx = 0; // El área de texto empieza en la columna cero.
         constraints.gridy = 0; // El área de texto empieza en la fila cero
         constraints.ipady = 10;
