@@ -9,11 +9,24 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import java.io.*;
+import javax.sound.sampled.*;
+
 
 /**
  *
@@ -33,6 +46,10 @@ public class MyFlame extends JFrame {
     private ControlPanel controlPanel;
     private GridBagConstraints constraints = new GridBagConstraints();  
     private Color c1, c2, c3, c4, c5;
+    
+    private InputStream inputStream; 
+        // getAudioInputStream() also accepts a File or InputStream
+        
 
     //MAIN
     public static void main(String[] args) {
@@ -199,7 +216,6 @@ public class MyFlame extends JFrame {
     //PRIVATE METHODS
     //setMyFlame: Sets the jframe
     private void setMyFlame() {
-        
         this.setTitle("Flame");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().setBackground(Color.BLACK);
