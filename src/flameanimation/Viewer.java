@@ -29,11 +29,16 @@ public class Viewer extends Canvas implements Runnable{
     private Flame flame1;
     private Flame flame2;
     private BufferedImage image;
-    private Thread thread;
+    private Thread fireThread;
 
+    //fireState: enum that sets the fire state
+    enum FireState {
+        EXIT,
+        PAUSE,
+        RESUME
+    }
 
-    //CONSTRUCTORS
-    //1 FLAME
+    //CONSTRUCTOR
     public Viewer(Flame flame){
         try{
             image = ImageIO.read(new File("IMG/hoguera.jpeg"));
@@ -41,8 +46,8 @@ public class Viewer extends Canvas implements Runnable{
             e.getMessage();
         }
         this.flame1 = flame;
-        thread = new Thread(flame);
-        thread.start();
+        fireThread = new Thread(flame);
+        fireThread.start();
         
     }
     
@@ -56,7 +61,20 @@ public class Viewer extends Canvas implements Runnable{
     public void setRate(int rate) {
         this.rate = rate;
     }
-
+    //setFireThread: sets the state of the fire
+    public void setFireThread(FireState state){
+        switch(state){
+            case EXIT:
+                System.exit(0);
+                break;
+            case PAUSE:
+                fireThread.suspend();
+                break;
+            case RESUME:
+                fireThread.resume();
+                break;
+        }
+    }
     
     //PUBLICS METHODS:
     //paint: Draw the flames and the background image
@@ -72,8 +90,8 @@ public class Viewer extends Canvas implements Runnable{
             return;
         }
         g = bs.getDrawGraphics();
-        g.drawImage(image.getScaledInstance(1350, -1, BufferedImage.SCALE_SMOOTH), 0,0, this);
-        g.drawImage(flame1,480,0,400,600,null);
+        g.drawImage(image.getScaledInstance(1350, -1, BufferedImage.SCALE_SMOOTH), -130, 0, this);
+        g.drawImage(flame1,360,0,400,600,null);
         if(flame2 != null){
             g.drawImage(flame2,480,0,400,600,null);
         }
