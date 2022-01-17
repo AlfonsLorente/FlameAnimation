@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JLabel;
@@ -64,7 +65,7 @@ public class ControlPanel extends JPanel {
         flameRateSetUp();
         createCoolSetUp();
         paletteChooserSetUp();
-        
+        audioButtonSetUp();
         
     }
     
@@ -392,6 +393,31 @@ public class ControlPanel extends JPanel {
                 }
             }  
               
+        });  
+    }
+
+    private void audioButtonSetUp() {
+       //Declare the grid bag constraints
+        GridBagConstraints constraints = new GridBagConstraints();  
+        //set up stop
+        JButton audio = new JButton();
+        audio.setIcon( new ImageIcon("IMG/audio.png") );
+        audio.setBackground(Color.red);
+        //set up constraints
+        constraints.gridx = 2; 
+        constraints.gridy = 6; 
+        constraints.ipady = 10;
+        constraints.fill = GridBagConstraints.BOTH;
+         constraints.gridwidth = 2;
+       constraints.weightx = 0.1;
+        constraints.weighty = 0.1;
+        
+        this.add(audio , constraints);
+        //add the button listener
+        audio.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e){  
+                myFlame.songController();
+            }  
         });  
     }
 

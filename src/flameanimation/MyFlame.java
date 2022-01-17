@@ -46,10 +46,11 @@ public class MyFlame extends JFrame {
     private ControlPanel controlPanel;
     private GridBagConstraints constraints = new GridBagConstraints();  
     private Color c1, c2, c3, c4, c5;
+    private String audio = "MUSIC/zombies.wav";
+    private Clip clip;
+    private boolean audioPlaying = false;
     
-    private InputStream inputStream; 
-        // getAudioInputStream() also accepts a File or InputStream
-        
+
 
     //MAIN
     public static void main(String[] args) {
@@ -77,6 +78,8 @@ public class MyFlame extends JFrame {
         controlPanel.setMyFlame(this);
         //Set the jframe
         setMyFlame();
+        //set Audio
+        setUpAudio(audio);
        // this.add(viewer);
         setGridRules();
         //Start the viewer thread
@@ -243,6 +246,27 @@ public class MyFlame extends JFrame {
         //Add the control panel with the contraints.
         this.add (controlPanel, constraints);
 
+    }
+    
+    
+    public void setUpAudio(String audio){
+       try {
+        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(audio).getAbsoluteFile());
+        clip = AudioSystem.getClip();
+        clip.open(audioInputStream);
+       } catch(Exception e) {
+         System.out.println(e.getMessage());
+       }
+     }
+    
+    public void songController(){
+        if(audioPlaying){
+            audioPlaying = false;
+            clip.stop();
+        }else{
+            audioPlaying = true;
+            clip.start();
+        }
     }
     
     
