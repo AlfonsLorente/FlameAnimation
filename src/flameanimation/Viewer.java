@@ -31,14 +31,14 @@ public class Viewer extends Canvas implements Runnable{
     private BufferedImage image;
     private Thread fireThread;
 
+    //fireState: enum that sets the fire state
     enum FireState {
         EXIT,
         PAUSE,
         RESUME
     }
 
-    //CONSTRUCTORS
-    //1 FLAME
+    //CONSTRUCTOR
     public Viewer(Flame flame){
         try{
             image = ImageIO.read(new File("IMG/hoguera.jpeg"));
@@ -61,7 +61,7 @@ public class Viewer extends Canvas implements Runnable{
     public void setRate(int rate) {
         this.rate = rate;
     }
-    
+    //setFireThread: sets the state of the fire
     public void setFireThread(FireState state){
         switch(state){
             case EXIT:

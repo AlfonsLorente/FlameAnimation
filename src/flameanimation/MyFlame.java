@@ -70,38 +70,8 @@ public class MyFlame extends JFrame {
         
     }
     
-    //PUBLIC METHODS
-    //setFlamePalette: Prepare the palette
-    public FlamePalette setFlamePalette(FlamePalette palette){
-        palette = new FlamePalette();
-        c1 = Color.WHITE;
-        c2 = Color.YELLOW;
-        c3 = Color.ORANGE;
-        c4 = Color.ORANGE.darker();
-        c5 = Color.RED;
-        
-        palette.addTargetColor(new TargetColor(255, c1));
-        palette.addTargetColor(new TargetColor(220, c2));
-        palette.addTargetColor(new TargetColor(160, c3));
-        palette.addTargetColor(new TargetColor(100, c4));
-        palette.addTargetColor(new TargetColor(0, c5));
-        return palette;
-
-    }
+    //GETTERS AND SETTERS
     
-    public void setFlamePalette(Color c1, Color c2, Color c3, Color c4, Color c5){
-        FlamePalette palette = new FlamePalette();
-        palette.addTargetColor(new TargetColor(255, c1));
-        palette.addTargetColor(new TargetColor(220, c2));
-        palette.addTargetColor(new TargetColor(140, c3));
-        palette.addTargetColor(new TargetColor(100, c4));
-        palette.addTargetColor(new TargetColor(0, c5));
-        flamePalette = palette;
-        flame1.setPalette(flamePalette);
-
-    }
-    
-
     public Color getC1() {
         return c1;
     }
@@ -155,26 +125,42 @@ public class MyFlame extends JFrame {
     
     
     
-    
-    public void setGridRules(){
-       
-        constraints.gridx = 1; // El área de texto empieza en la columna cero.
-        constraints.gridy = 0; // El área de texto empieza en la fila cero
-        constraints.weightx = 1;
-        constraints.weighty = 1;
-
-        constraints.fill = GridBagConstraints.BOTH;
-
-        this.add(viewer , constraints);
-        
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.weightx = 0;
-        constraints.weighty = 1;
-
-        this.add (controlPanel, constraints);
+    //PUBLIC METHODS
+    //setFlamePalette: Prepare the palette
+    public FlamePalette setFlamePalette(FlamePalette palette){
+        //Create the palette
+        palette = new FlamePalette();
+        c1 = Color.WHITE;
+        c2 = Color.YELLOW;
+        c3 = Color.ORANGE;
+        c4 = Color.ORANGE.darker();
+        c5 = Color.RED.darker();
+        //set the palette colors
+        palette.addTargetColor(new TargetColor(255, c1));
+        palette.addTargetColor(new TargetColor(220, c2));
+        palette.addTargetColor(new TargetColor(160, c3));
+        palette.addTargetColor(new TargetColor(100, c4));
+        palette.addTargetColor(new TargetColor(0, c5));
+        return palette;
 
     }
+    
+    //setFlamePalette: Prepare the palette
+    public void setFlamePalette(Color c1, Color c2, Color c3, Color c4, Color c5){
+        //Set new palette colors
+        FlamePalette palette = new FlamePalette();
+        palette.addTargetColor(new TargetColor(255, c1));
+        palette.addTargetColor(new TargetColor(220, c2));
+        palette.addTargetColor(new TargetColor(140, c3));
+        palette.addTargetColor(new TargetColor(100, c4));
+        palette.addTargetColor(new TargetColor(0, c5));
+        flamePalette = palette;
+        flame1.setPalette(flamePalette);
+
+    }
+    
+
+   
     
     //setStop: Not implemented
     public void setExit(){
@@ -216,9 +202,31 @@ public class MyFlame extends JFrame {
         
         this.setTitle("Flame");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.getContentPane().setBackground(Color.BLACK);
         this.setLayout (new GridBagLayout());
         this.setBounds(0, 0, 1360, 790);
         this.setResizable(false);        
+    }
+    
+     //setGridRules: set up the gridbag layout rules
+    private void setGridRules(){
+        //Set the constraints up for the viewer
+        constraints.gridx = 1; // El área de texto empieza en la columna cero.
+        constraints.gridy = 0; // El área de texto empieza en la fila cero
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.fill = GridBagConstraints.BOTH;
+        //Add the viewer with the contraints.
+        this.add(viewer , constraints);
+        
+        //Set the constraints up for the control panel
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.weightx = 0;
+        constraints.weighty = 1;
+        //Add the control panel with the contraints.
+        this.add (controlPanel, constraints);
+
     }
     
     
