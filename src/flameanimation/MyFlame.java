@@ -55,7 +55,7 @@ public class MyFlame extends JFrame {
     //MAIN
     public static void main(String[] args) {
         
-        MyFlame myFlame = new MyFlame();
+        new MyFlame();
         
         
     }
@@ -67,7 +67,7 @@ public class MyFlame extends JFrame {
         flamePalette = setFlamePalette(flamePalette);
         //Create flames
         flame1 = new Flame(500,850,BufferedImage.TYPE_INT_ARGB);
-        flame1.setRate(90);
+        flame1.setRate(50);
         flame1.setPalette(flamePalette);
         flame1.setCoolAmount(flameCoolAmount);
         //Create viewer
@@ -182,7 +182,7 @@ public class MyFlame extends JFrame {
 
    
     
-    //setStop: Not implemented
+    //setExit: Exists the application
     public void setExit(){
          if(isExit == false){
             isExit = true;
@@ -190,7 +190,7 @@ public class MyFlame extends JFrame {
         } 
     }
 
-    //setPause: Not implemented
+    //setPause: pauses and despauses the application
     public void setPause(){
         if(isPaused == false){
             isPaused = true;
@@ -248,7 +248,7 @@ public class MyFlame extends JFrame {
 
     }
     
-    
+    //setUpAudio: Sets up the audio system
     public void setUpAudio(String audio){
        try {
         AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(audio).getAbsoluteFile());
@@ -259,6 +259,7 @@ public class MyFlame extends JFrame {
        }
      }
     
+    //songController: start or stop the song
     public void songController(){
         if(audioPlaying){
             audioPlaying = false;

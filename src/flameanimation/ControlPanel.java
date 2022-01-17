@@ -251,7 +251,7 @@ public class ControlPanel extends JPanel {
         flameSliderRate.setOpaque(false);
         flameSliderRate.setForeground(Color.WHITE);
         flameSliderRate.setBackground(Color.red);
-        flameSliderRate.setValue(90);
+        flameSliderRate.setValue(50);
         //set up the constraints
         constraints.gridwidth = 5;
         constraints.gridx = 1; 
@@ -399,18 +399,18 @@ public class ControlPanel extends JPanel {
     private void audioButtonSetUp() {
        //Declare the grid bag constraints
         GridBagConstraints constraints = new GridBagConstraints();  
-        //set up stop
+        //set up audio
         JButton audio = new JButton();
-        audio.setIcon( new ImageIcon("IMG/audio.png") );
-        audio.setBackground(Color.red);
+        audio.setBorderPainted(false);
+        audio.setFocusPainted(false);
+        audio.setContentAreaFilled(false);
+        audio.setIcon( new ImageIcon("IMG/nota.png") );
         //set up constraints
-        constraints.gridx = 2; 
+        constraints.gridx = 1; 
         constraints.gridy = 6; 
         constraints.ipady = 10;
-        constraints.fill = GridBagConstraints.BOTH;
-         constraints.gridwidth = 2;
-       constraints.weightx = 0.1;
-        constraints.weighty = 0.1;
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.gridwidth = 3;
         
         this.add(audio , constraints);
         //add the button listener
