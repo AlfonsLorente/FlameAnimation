@@ -202,7 +202,7 @@ public class ControlPanel extends JPanel {
         viewerSliderRate.setMinorTickSpacing(25);  
         viewerSliderRate.setMajorTickSpacing(50);  
         viewerSliderRate.setPaintTicks(true);  
-        viewerSliderRate.setPaintLabels(false); 
+        viewerSliderRate.setPaintLabels(true); 
         viewerSliderRate.setOpaque(false);
         viewerSliderRate.setForeground(Color.WHITE);
         viewerSliderRate.setBackground(Color.red);
@@ -246,7 +246,7 @@ public class ControlPanel extends JPanel {
         flameSliderRate.setMinorTickSpacing(25);
         flameSliderRate.setMajorTickSpacing(50); 
         flameSliderRate.setPaintTicks(true);  
-        flameSliderRate.setPaintLabels(false); 
+        flameSliderRate.setPaintLabels(true); 
         flameSliderRate.setOpaque(false);
         flameSliderRate.setForeground(Color.WHITE);
         flameSliderRate.setBackground(Color.red);
@@ -289,7 +289,7 @@ public class ControlPanel extends JPanel {
         coolSlider.setPaintTicks(true);  
         coolSlider.setPaintLabels(true); 
         coolSlider.setPaintTicks(true);  
-        coolSlider.setPaintLabels(false); 
+        coolSlider.setPaintLabels(true); 
         coolSlider.setOpaque(false);
         coolSlider.setForeground(Color.WHITE);
         coolSlider.setBackground(Color.red);
