@@ -254,6 +254,7 @@ public class MyFlame extends JFrame {
         AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(audio).getAbsoluteFile());
         clip = AudioSystem.getClip();
         clip.open(audioInputStream);
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
        } catch(Exception e) {
          System.out.println(e.getMessage());
        }
