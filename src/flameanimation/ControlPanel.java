@@ -6,10 +6,13 @@
 package flameanimation;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -19,6 +22,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
@@ -26,12 +30,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTabbedPane;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.ColorUIResource;
 
 /**
  *
@@ -62,7 +68,8 @@ public class ControlPanel extends JPanel {
         }
         //SET UP THE CONTROLPANEL
         controlPanelSetUp();
-        tabsSetUp();
+        controlPanelFlameSetUp();
+        controlPanelConvolutionSetUp();
         titleSetUp();
         stopSetUp();
         pauseSetUp();
@@ -71,6 +78,8 @@ public class ControlPanel extends JPanel {
         createCoolSetUp();
         paletteChooserSetUp();
         audioButtonSetUp();
+        tabsSetUp();
+
         
     }
     
@@ -80,30 +89,51 @@ public class ControlPanel extends JPanel {
         this.myFlame = myFlame;
     }
     
-    //PROTECTED METHODS
-    //paintComponent: Paints the background
-    @Override
-    protected void paintComponent(Graphics g) {
-    super.paintComponent(g);
-        g.drawImage(bufferedImage, 0, 0, null);
-    }
+
     
     //PRIVATE METHODS
     //contolPanelSetUp: sets the base of this class
     private void controlPanelSetUp() {
-        this.setLayout(new GridBagLayout(0,0));
-        this.setBackground(Color.decode("#A020F0"));
+        this.setLayout(new GridBagLayout());
+        this.setBackground(Color.BLACK);
         this.setVisible(true);
         
     }
     
+    private void controlPanelFlameSetUp() {
+        panelFlame = new JPanel();
+        panelFlame.setLayout(new GridBagLayout());
+        panelFlame.setBackground(null);
+        panelFlame.setVisible(true);
+    }
+
+    private void controlPanelConvolutionSetUp() {
+        panelConvolution = new JPanel();
+        panelConvolution.setLayout(new GridBagLayout());
+        panelConvolution.setBackground(null);
+        panelConvolution.setVisible(true);
+    }
+
+    
     
     private void tabsSetUp() {
-        tabs = new JTabbedPane();
-        tabs.setLayout(new GridBagLayout());
-        tabs.setBounds(120, 200, 50, 50);
-        tabs.addTab("Fire", stop);
-       
+        GridBagConstraints constraints = new GridBagConstraints();  
+        
+        tabs = new JTabbedPane(JTabbedPane.TOP);
+        tabs.addTab("Fire", panelFlame);
+        tabs.addTab("Convolution", panelConvolution);
+        tabs.setForeground(Color.WHITE);
+        tabs.setBackground(Color.RED.darker().darker().darker().darker());
+        constraints.gridx = 0; 
+        constraints.gridy = 1; 
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.gridwidth = 1;
+        constraints.anchor = GridBagConstraints.NORTH;
+        constraints.fill = GridBagConstraints.BOTH;
+        //set the title
+        this.add(tabs, constraints);
+
         
 
     }
@@ -117,17 +147,16 @@ public class ControlPanel extends JPanel {
         title = new JLabel("WITCHES N'STITCHES");
         title.setForeground(Color.WHITE);
         title.setFont(new Font("Serif", Font.BOLD, 25));
-        title.setOpaque(true);
         title.setBackground(Color.BLACK);
+        title.setOpaque(true);
         //set up constraints
         constraints.gridx = 0; 
         constraints.gridy = 0; 
         constraints.weightx = 1;
-        constraints.weighty = 0.05;
-        constraints.gridwidth = 6;
-        title.setBounds(50, 100, 300, 300);
+        constraints.weighty = 0.1;
+        constraints.gridwidth = 1;
         //set the title
-        this.add(title);
+        this.add(title, constraints);
     }
 
     
@@ -146,12 +175,12 @@ public class ControlPanel extends JPanel {
         
         //set up constraints
         constraints.gridx = 0; 
-        constraints.gridy = 1; 
+        constraints.gridy = 0; 
         constraints.ipady = 10;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.weightx = 0.1;
         constraints.weighty = 0.1;
-        tabs.add(stop , constraints);
+        panelFlame.add(stop , constraints);
         //add the button listener
         stop.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){  
@@ -180,13 +209,13 @@ public class ControlPanel extends JPanel {
         //set up contraints
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 1; 
-        constraints.gridy = 1; 
+        constraints.gridy = 0; 
         constraints.weightx = 0.9;
         constraints.weighty = 0.1;
         constraints.gridwidth = 5;
         constraints.ipady = 10;
         //add the pause button
-        tabs.add(pause , constraints);
+        panelFlame.add(pause , constraints);
         //add the button listener
         pause.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){  
@@ -209,11 +238,11 @@ public class ControlPanel extends JPanel {
         viewerLabelRate.setForeground(Color.white);
         //set up the constrains
         constraints.gridx = 0;
-        constraints.gridy = 2; 
+        constraints.gridy = 1; 
         constraints.weightx = 0.1;
         constraints.weighty = 0.1;
         //add the label
-        tabs.add(viewerLabelRate, constraints);
+        panelFlame.add(viewerLabelRate, constraints);
         
         //set up the slider
         viewerSliderRate = new JSlider(JSlider.HORIZONTAL, 0, 200, 50);
@@ -229,11 +258,11 @@ public class ControlPanel extends JPanel {
         //set up constraints
         constraints.gridwidth = 5;
         constraints.gridx = 1;
-        constraints.gridy = 2;
+        constraints.gridy = 1;
         constraints.weightx = 0.9;
         constraints.weighty = 0.1;
         //add the slide
-        tabs.add(viewerSliderRate, constraints);
+        panelFlame.add(viewerSliderRate, constraints);
         //set the slide change listener
         viewerSliderRate.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent event) {
@@ -253,11 +282,11 @@ public class ControlPanel extends JPanel {
         flameLabelRate.setForeground(Color.white);
         //set up constraints
         constraints.gridx = 0;
-        constraints.gridy = 3;
+        constraints.gridy = 2;
         constraints.weightx = 0.1;
         constraints.weighty = 0.1;
         //add the label
-        tabs.add(flameLabelRate, constraints);
+        panelFlame.add(flameLabelRate, constraints);
         
         //set up the slider
         flameSliderRate = new JSlider(JSlider.HORIZONTAL, 0, 200, 50);
@@ -272,11 +301,11 @@ public class ControlPanel extends JPanel {
         //set up the constraints
         constraints.gridwidth = 5;
         constraints.gridx = 1; 
-        constraints.gridy = 3;
+        constraints.gridy = 2;
         constraints.weightx = 0.9;
         constraints.weighty = 0.1;
         //add the flame slider
-        tabs.add(flameSliderRate, constraints);
+        panelFlame.add(flameSliderRate, constraints);
         //set the slide change listener
         flameSliderRate.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent event) {
@@ -295,10 +324,10 @@ public class ControlPanel extends JPanel {
         coolLabel.setForeground(Color.WHITE);
         //set up constraints
         constraints.gridx = 0; 
-        constraints.gridy = 4;
+        constraints.gridy = 3;
         constraints.weightx = 0.1;
         constraints.weighty = 0.1;
-        tabs.add(coolLabel, constraints);
+        panelFlame.add(coolLabel, constraints);
         
         //set up the slider
         coolSlider = new JSlider(JSlider.HORIZONTAL, 20, 100, 20);
@@ -315,10 +344,10 @@ public class ControlPanel extends JPanel {
         //set up slider constraints
         constraints.gridwidth = 5;
         constraints.gridx = 1; 
-        constraints.gridy = 4;
+        constraints.gridy = 3;
         constraints.weightx = 0.9;
         constraints.weighty = 0.1;
-        tabs.add(coolSlider, constraints);
+        panelFlame.add(coolSlider, constraints);
         //add slider change listener
         coolSlider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent event) {
@@ -338,12 +367,12 @@ public class ControlPanel extends JPanel {
         paletteChooserLabel.setForeground(Color.white);
         //set up label constraints
         constraints.gridx = 0;
-        constraints.gridy = 5; 
+        constraints.gridy = 4; 
         constraints.weightx = 1;
         constraints.weighty = 0.1;
         constraints.gridwidth = 1;
         constraints.fill = GridBagConstraints.HORIZONTAL;
-        tabs.add(paletteChooserLabel, constraints);
+        panelFlame.add(paletteChooserLabel, constraints);
         
         //Set the palette button changers
         setPaletteButton(1);
@@ -367,10 +396,10 @@ public class ControlPanel extends JPanel {
         paletteChooserButton.setBorder(compound);
         //its constraints
         constraints.gridx = i;
-        constraints.gridy = 5; 
+        constraints.gridy = 4; 
         constraints.weightx = 0;
         constraints.weighty = 0.1;
-        tabs.add(paletteChooserButton, constraints);
+        panelFlame.add(paletteChooserButton, constraints);
         
         //Add the button listener for every palette button
         paletteChooserButton.addActionListener(new ActionListener(){  
@@ -424,12 +453,13 @@ public class ControlPanel extends JPanel {
         audio.setIcon( new ImageIcon("IMG/nota.png") );
         //set up constraints
         constraints.gridx = 1; 
-        constraints.gridy = 6; 
+        constraints.gridy = 5; 
         constraints.ipady = 10;
         constraints.fill = GridBagConstraints.NONE;
         constraints.gridwidth = 3;
-        
-        tabs.add(audio , constraints);
+        constraints.weightx = 0;
+        constraints.weighty = 0.1;
+        panelFlame.add(audio , constraints);
         //add the button listener
         audio.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){  
@@ -437,6 +467,7 @@ public class ControlPanel extends JPanel {
             }  
         });  
     }
+
 
 
 
