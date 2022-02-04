@@ -228,7 +228,7 @@ public class ControlPanel extends JPanel implements ActionListener{
         constraints.gridy = 0; 
         constraints.weightx = 0.9;
         constraints.weighty = 0.1;
-        constraints.gridwidth = 5;
+        constraints.gridwidth = 6;
         constraints.ipady = 10;
         //add the pause button
         panelFlame.add(pause , constraints);
@@ -272,7 +272,7 @@ public class ControlPanel extends JPanel implements ActionListener{
         viewerSliderRate.setValue(20);
         
         //set up constraints
-        constraints.gridwidth = 5;
+        constraints.gridwidth = 6;
         constraints.gridx = 1;
         constraints.gridy = 1;
         constraints.weightx = 0.9;
@@ -315,7 +315,7 @@ public class ControlPanel extends JPanel implements ActionListener{
         flameSliderRate.setBackground(Color.red);
         flameSliderRate.setValue(50);
         //set up the constraints
-        constraints.gridwidth = 5;
+        constraints.gridwidth = 6;
         constraints.gridx = 1; 
         constraints.gridy = 2;
         constraints.weightx = 0.9;
@@ -358,7 +358,7 @@ public class ControlPanel extends JPanel implements ActionListener{
         coolSlider.setBackground(Color.red);
         coolSlider.setValue(80);
         //set up slider constraints
-        constraints.gridwidth = 5;
+        constraints.gridwidth = 6;
         constraints.gridx = 1; 
         constraints.gridy = 3;
         constraints.weightx = 0.9;

@@ -25,6 +25,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.io.*;
+import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
 
 
@@ -41,16 +42,24 @@ public class MyFlame extends JFrame {
     private Thread thread;
     private int viewerRate = 20;
     private FlamePalette flamePalette;
-    private Flame flame1;
-    private Flame flame2;
+    private Flame flame;
     private ControlPanel controlPanel;
     private GridBagConstraints constraints = new GridBagConstraints();  
     private Color c1, c2, c3, c4, c5;
     private String audio = "MUSIC/zombies.wav";
     private Clip clip;
     private boolean audioPlaying = false;
-    
+    private String imageSrc = "IMG/hoguera.jpeg";
 
+    private BufferedImage image;
+    private BufferedImage convolutedImage;
+    private Convolution convolution;
+    private Convolution.Type convType = Convolution.Type.EMBOSS;
+    private boolean redState = true, greenState = true, blueState = true;
+
+    
+    
+ 
 
     //MAIN
     public static void main(String[] args) {
@@ -66,13 +75,16 @@ public class MyFlame extends JFrame {
         //Set flame palette
         flamePalette = setFlamePalette(flamePalette);
         //Create flames
-        flame1 = new Flame(500,850,BufferedImage.TYPE_INT_ARGB);
-        flame1.setRate(50);
-        flame1.setPalette(flamePalette);
-        flame1.setCoolAmount(flameCoolAmount);
+        flame = new Flame(500,850,BufferedImage.TYPE_INT_ARGB);
+        flame.setRate(50);
+        flame.setPalette(flamePalette);
+        flame.setCoolAmount(flameCoolAmount);
         //Create viewer
-        viewer = new Viewer(flame1);
-        this.setViewerRate(viewerRate);
+        setUpImages();
+        setUpViewer();
+
+        
+
         //Create control panel
         controlPanel = new ControlPanel();
         controlPanel.setMyFlame(this);
@@ -89,6 +101,9 @@ public class MyFlame extends JFrame {
         this.setVisible(true);
         
     }
+
+
+    
     
     //GETTERS AND SETTERS
     
@@ -136,10 +151,17 @@ public class MyFlame extends JFrame {
         this.c5 = c5;
         this.setFlamePalette(c1, c2, c3, c4, c5);
     }
-
+    private void setUpViewer() {
+        viewer = new Viewer(flame);
+        viewer.setImage(image);
+        viewer.setConvolutedImage(convolutedImage);  
+        viewer.setImageSrc(imageSrc);
+        this.setViewerRate(viewerRate);
+    }
+    
     public void setFlameCoolAmount(int flameCoolAmount) {
         this.flameCoolAmount = flameCoolAmount;
-        flame1.setCoolAmount(flameCoolAmount);
+        flame.setCoolAmount(flameCoolAmount);
     }
 
     
@@ -175,7 +197,7 @@ public class MyFlame extends JFrame {
         palette.addTargetColor(new TargetColor(100, c4));
         palette.addTargetColor(new TargetColor(0, c5));
         flamePalette = palette;
-        flame1.setPalette(flamePalette);
+        flame.setPalette(flamePalette);
 
     }
     
@@ -213,7 +235,7 @@ public class MyFlame extends JFrame {
     }
     
     public void setFlameRate(int rate){
-        flame1.setRate(rate);
+        flame.setRate(rate);
     }
 
     //PRIVATE METHODS
@@ -270,6 +292,58 @@ public class MyFlame extends JFrame {
             clip.start();
         }
     }
+    
+    
+    
+    private void setUpImages() {
+        try {
+            image = ImageIO.read(new File(imageSrc));
+        } catch (IOException ex) {
+            Logger.getLogger(Viewer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        convolution = new Convolution(image, convType, redState, greenState, blueState);
+        convolutedImage = convolution.getConvolutedImage();
+
+    }
+
+    public void changeConvolutedImage(Convolution.Type newType) {
+        if (!convType.equals(newType)) {
+            convType = newType;
+            convolution = new Convolution(image, convType, redState, greenState, blueState);
+            convolutedImage = convolution.getConvolutedImage();
+            viewer.setConvolutedImage(convolutedImage);
+
+        }
+    }
+    
+    public void changeConvolutedImage(String colorName , boolean colorState) {
+        if(colorName.equals("red")){
+            redState = colorState;
+        }
+        else if(colorName.equals("green")){
+            greenState = colorState;
+        }else if(colorName.equals("blue")){
+            blueState = colorState;
+        }
+            
+        convolution = new Convolution(image, convType, redState, greenState, blueState);        
+        convolutedImage = convolution.getConvolutedImage();
+        convolution = new Convolution(image, convType, redState, greenState, blueState);
+        convolutedImage = convolution.getConvolutedImage();
+        viewer.setConvolutedImage(convolutedImage);
+
+    }
+    
+    public void changeImage(String imageSrc){
+        this.imageSrc = imageSrc;
+        setUpImages();
+        viewer.setImage(image);
+        viewer.setConvolutedImage(convolutedImage);
+        
+    }
+
+
+
     
     
 }

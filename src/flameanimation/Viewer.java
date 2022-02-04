@@ -26,10 +26,16 @@ import javax.swing.ImageIcon;
 public class Viewer extends Canvas implements Runnable{
     //VARIABLES
     private int rate;
-    private Flame flame1;
-    private Flame flame2;
+    private Flame flame;
     private BufferedImage image;
     private Thread fireThread;
+    private String imageSrc;
+    private BufferedImage convolutedImage;
+
+
+    void setImageSrc(String imageSrc) {
+        this.imageSrc = imageSrc;
+    }
 
     //fireState: enum that sets the fire state
     enum FireState {
@@ -45,7 +51,7 @@ public class Viewer extends Canvas implements Runnable{
         }catch(IOException e){
             e.getMessage();
         }
-        this.flame1 = flame;
+        this.flame = flame;
         fireThread = new Thread(flame);
         fireThread.start();
         
@@ -76,6 +82,25 @@ public class Viewer extends Canvas implements Runnable{
         }
     }
     
+    
+    public BufferedImage getImage() {
+        return image;
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
+    }
+
+    public BufferedImage getConvolutedImage() {
+        return convolutedImage;
+    }
+
+    public void setConvolutedImage(BufferedImage convolutedImage) {
+        this.convolutedImage = convolutedImage;
+    }
+
+    
+    
     //PUBLICS METHODS:
     //paint: Draw the flames and the background image
     public void paint(){
@@ -90,11 +115,10 @@ public class Viewer extends Canvas implements Runnable{
             return;
         }
         g = bs.getDrawGraphics();
-        g.drawImage(image.getScaledInstance(1350, -1, BufferedImage.SCALE_SMOOTH), -130, 0, this);
-        g.drawImage(flame1,360,0,400,600,null);
-        if(flame2 != null){
-            g.drawImage(flame2,480,0,400,600,null);
-        }
+        g.drawImage(image.getScaledInstance(350, -1, BufferedImage.SCALE_SMOOTH), 0, 0, this);
+        g.drawImage(convolutedImage.getScaledInstance(350, -1, BufferedImage.SCALE_SMOOTH), 350, 0, this);
+        g.fillRect(700, 0, 350, 195);
+        g.drawImage(flame,720,-55,300,250,null);
         bs.show();
         g.dispose();
     }
