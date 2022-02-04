@@ -25,6 +25,7 @@ import javax.swing.JColorChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.JTabbedPane;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -46,6 +47,9 @@ public class ControlPanel extends JPanel {
     private Border margin = new EmptyBorder(5, 15, 5, 15);
     private Border compound = new CompoundBorder(line, margin);
     private BufferedImage bufferedImage;
+    private JTabbedPane tabs;
+    private JPanel panelFlame, panelConvolution;
+    
     
 
     //CONSTRUCTOR
@@ -58,6 +62,7 @@ public class ControlPanel extends JPanel {
         }
         //SET UP THE CONTROLPANEL
         controlPanelSetUp();
+        tabsSetUp();
         titleSetUp();
         stopSetUp();
         pauseSetUp();
@@ -86,12 +91,23 @@ public class ControlPanel extends JPanel {
     //PRIVATE METHODS
     //contolPanelSetUp: sets the base of this class
     private void controlPanelSetUp() {
-        
-        this.setLayout(new GridBagLayout());
+        this.setLayout(new GridBagLayout(0,0));
         this.setBackground(Color.decode("#A020F0"));
         this.setVisible(true);
         
     }
+    
+    
+    private void tabsSetUp() {
+        tabs = new JTabbedPane();
+        tabs.setLayout(new GridBagLayout());
+        tabs.setBounds(120, 200, 50, 50);
+        tabs.addTab("Fire", stop);
+       
+        
+
+    }
+
     
     //titleSetUp: set up the title
     private void titleSetUp() {
@@ -109,8 +125,9 @@ public class ControlPanel extends JPanel {
         constraints.weightx = 1;
         constraints.weighty = 0.05;
         constraints.gridwidth = 6;
+        title.setBounds(50, 100, 300, 300);
         //set the title
-        this.add(title, constraints);
+        this.add(title);
     }
 
     
@@ -134,7 +151,7 @@ public class ControlPanel extends JPanel {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.weightx = 0.1;
         constraints.weighty = 0.1;
-        this.add(stop , constraints);
+        tabs.add(stop , constraints);
         //add the button listener
         stop.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){  
@@ -169,7 +186,7 @@ public class ControlPanel extends JPanel {
         constraints.gridwidth = 5;
         constraints.ipady = 10;
         //add the pause button
-        this.add(pause , constraints);
+        tabs.add(pause , constraints);
         //add the button listener
         pause.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){  
@@ -196,7 +213,7 @@ public class ControlPanel extends JPanel {
         constraints.weightx = 0.1;
         constraints.weighty = 0.1;
         //add the label
-        this.add(viewerLabelRate, constraints);
+        tabs.add(viewerLabelRate, constraints);
         
         //set up the slider
         viewerSliderRate = new JSlider(JSlider.HORIZONTAL, 0, 200, 50);
@@ -216,7 +233,7 @@ public class ControlPanel extends JPanel {
         constraints.weightx = 0.9;
         constraints.weighty = 0.1;
         //add the slide
-        this.add(viewerSliderRate, constraints);
+        tabs.add(viewerSliderRate, constraints);
         //set the slide change listener
         viewerSliderRate.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent event) {
@@ -240,7 +257,7 @@ public class ControlPanel extends JPanel {
         constraints.weightx = 0.1;
         constraints.weighty = 0.1;
         //add the label
-        this.add(flameLabelRate, constraints);
+        tabs.add(flameLabelRate, constraints);
         
         //set up the slider
         flameSliderRate = new JSlider(JSlider.HORIZONTAL, 0, 200, 50);
@@ -259,7 +276,7 @@ public class ControlPanel extends JPanel {
         constraints.weightx = 0.9;
         constraints.weighty = 0.1;
         //add the flame slider
-        this.add(flameSliderRate, constraints);
+        tabs.add(flameSliderRate, constraints);
         //set the slide change listener
         flameSliderRate.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent event) {
@@ -281,7 +298,7 @@ public class ControlPanel extends JPanel {
         constraints.gridy = 4;
         constraints.weightx = 0.1;
         constraints.weighty = 0.1;
-        this.add(coolLabel, constraints);
+        tabs.add(coolLabel, constraints);
         
         //set up the slider
         coolSlider = new JSlider(JSlider.HORIZONTAL, 20, 100, 20);
@@ -301,7 +318,7 @@ public class ControlPanel extends JPanel {
         constraints.gridy = 4;
         constraints.weightx = 0.9;
         constraints.weighty = 0.1;
-        this.add(coolSlider, constraints);
+        tabs.add(coolSlider, constraints);
         //add slider change listener
         coolSlider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent event) {
@@ -326,7 +343,7 @@ public class ControlPanel extends JPanel {
         constraints.weighty = 0.1;
         constraints.gridwidth = 1;
         constraints.fill = GridBagConstraints.HORIZONTAL;
-        this.add(paletteChooserLabel, constraints);
+        tabs.add(paletteChooserLabel, constraints);
         
         //Set the palette button changers
         setPaletteButton(1);
@@ -353,7 +370,7 @@ public class ControlPanel extends JPanel {
         constraints.gridy = 5; 
         constraints.weightx = 0;
         constraints.weighty = 0.1;
-        this.add(paletteChooserButton, constraints);
+        tabs.add(paletteChooserButton, constraints);
         
         //Add the button listener for every palette button
         paletteChooserButton.addActionListener(new ActionListener(){  
@@ -412,7 +429,7 @@ public class ControlPanel extends JPanel {
         constraints.fill = GridBagConstraints.NONE;
         constraints.gridwidth = 3;
         
-        this.add(audio , constraints);
+        tabs.add(audio , constraints);
         //add the button listener
         audio.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){  
@@ -420,6 +437,7 @@ public class ControlPanel extends JPanel {
             }  
         });  
     }
+
 
 
 
