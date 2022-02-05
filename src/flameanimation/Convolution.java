@@ -56,7 +56,7 @@ public class Convolution{
         this.image = image;
         this.width = image.getWidth();
         this.height = image.getHeight();
-        this.convolutedImage = new BufferedImage(width-2, height-2, image.getType());
+        this.convolutedImage = new BufferedImage(width, height, image.getType());
         this.modRed = modRed;
         this.modGreen = modGreen;
         this.modBlue = modBlue;
@@ -66,9 +66,9 @@ public class Convolution{
         this.blueList = new int[width][height];
         this.alphaList = new int[width][height];
         
-        this.convolutedRedList = new int[width-2][height-2];
-        this.convolutedGreenList = new int[width-2][height-2];
-        this.convolutedBlueList = new int[width-2][height-2];
+        this.convolutedRedList = new int[width][height];
+        this.convolutedGreenList = new int[width][height];
+        this.convolutedBlueList = new int[width][height];
         
         fillColorLists();
         this.type = type;
@@ -84,6 +84,33 @@ public class Convolution{
 
     public void setImage(BufferedImage image) {
         this.image = image;
+    }
+
+    public int[][] getRedList() {
+        if(modRed){
+            return convolutedRedList;
+        }else{
+            return redList;
+
+        }
+    }
+
+    public int[][] getGreenList() {
+        if(modRed){
+            return convolutedGreenList;
+        }else{
+            return greenList;
+
+        }
+    }
+
+    public int[][] getBlueList() {
+        if(modRed){
+            return convolutedBlueList;
+        }else{
+            return blueList;
+
+        }
     }
     
     
@@ -189,10 +216,10 @@ public class Convolution{
     private void fillColorLists() {
          for(int i = 0; i < width; i++){
             for(int j = 0; j < height; j++){
-                redList[i][j] = new Color(image.getRGB(i, j)).getRed();
-                greenList[i][j] = new Color(image.getRGB(i, j)).getGreen();
-                blueList[i][j] = new Color(image.getRGB(i, j)).getBlue();
-                alphaList[i][j] = new Color(image.getRGB(i, j)).getAlpha();
+                redList[i][j] = new Color(image.getRGB(i, j), true).getRed();
+                greenList[i][j] = new Color(image.getRGB(i, j), true).getGreen();
+                blueList[i][j] = new Color(image.getRGB(i, j), true).getBlue();
+                alphaList[i][j] = new Color(image.getRGB(i, j), true).getAlpha();
 
 
             }
@@ -203,8 +230,8 @@ public class Convolution{
 
     private void applyConvolution() {
         
-        for(int i = 1; i < width-1; i++){
-            for(int j = 1; j < height-1; j++){
+        for(int i = 0; i < width; i++){
+            for(int j = 0; j < height; j++){
                 if(modRed) evolveColor(i, j, RED);
                 if(modGreen) evolveColor(i, j, GREEN);
                 if(modBlue) evolveColor(i, j, BLUE);
@@ -218,12 +245,91 @@ public class Convolution{
 
     private void evolveColor(int i, int j, int colorMod) {
         int[][] colorList;
-        int color;
+        int color = 0;
         if(colorMod == RED) colorList = redList;
         else if(colorMod == GREEN) colorList = greenList;
         else colorList = blueList;
         
-        color = Math.round((
+        if(i == 0 && j == 0){
+            color = Math.round((
+                (colorList[i+0][j-0]*kernel[1][1]) + 
+                (colorList[i+0][j+1]*kernel[1][2]) + 
+                (colorList[i+1][j-0]*kernel[2][1]) + 
+                (colorList[i+1][j+1]*kernel[2][2])
+                ));
+            color = Math.round(color/kernelDiv);
+        
+            
+        }else if(i == width-1 && j == height-1){
+            color = Math.round((
+                (colorList[i-1][j-1]*kernel[0][0]) + 
+                (colorList[i-1][j-0]*kernel[0][1]) + 
+                (colorList[i+0][j-1]*kernel[1][0]) + 
+                (colorList[i+0][j-0]*kernel[1][1]) 
+                ));
+            color = Math.round(color/kernelDiv);
+        }else if(i == 0 && j == height-1){
+            color = Math.round((
+                (colorList[i+0][j-1]*kernel[1][0]) + 
+                (colorList[i+0][j-0]*kernel[1][1]) + 
+                (colorList[i+1][j-1]*kernel[2][0]) + 
+                (colorList[i+1][j-0]*kernel[2][1]) 
+                ));
+            color = Math.round(color/kernelDiv);
+        }else if(i == width-1 && j == 0){
+            color = Math.round((
+                (colorList[i-1][j-0]*kernel[0][1]) + 
+                (colorList[i-1][j+1]*kernel[0][2]) + 
+                (colorList[i+0][j-0]*kernel[1][1]) + 
+                (colorList[i+0][j+1]*kernel[1][2]) 
+                ));
+            color = Math.round(color/kernelDiv);
+        
+        }else if(i == 0){
+            color = Math.round((
+                (colorList[i+0][j-1]*kernel[1][0]) + 
+                (colorList[i+0][j-0]*kernel[1][1]) + 
+                (colorList[i+0][j+1]*kernel[1][2]) + 
+                (colorList[i+1][j-1]*kernel[2][0]) + 
+                (colorList[i+1][j-0]*kernel[2][1]) + 
+                (colorList[i+1][j+1]*kernel[2][2])
+                ));
+            color = Math.round(color/kernelDiv);
+        }else if(i == width-1){
+            color = Math.round((
+                (colorList[i-1][j-1]*kernel[0][0]) + 
+                (colorList[i-1][j-0]*kernel[0][1]) + 
+                (colorList[i-1][j+1]*kernel[0][2]) + 
+                (colorList[i+0][j-1]*kernel[1][0]) + 
+                (colorList[i+0][j-0]*kernel[1][1]) + 
+                (colorList[i+0][j+1]*kernel[1][2]) 
+                ));
+            color = Math.round(color/kernelDiv);
+        }else if(j == 0){
+            color = Math.round((
+                (colorList[i-1][j-0]*kernel[0][1]) + 
+                (colorList[i-1][j+1]*kernel[0][2]) + 
+                (colorList[i+0][j-0]*kernel[1][1]) + 
+                (colorList[i+0][j+1]*kernel[1][2]) + 
+                (colorList[i+1][j-0]*kernel[2][1]) + 
+                (colorList[i+1][j+1]*kernel[2][2])
+                ));
+            color = Math.round(color/kernelDiv);
+        
+        }else if(j == height-1){
+            color = Math.round((
+                (colorList[i-1][j-1]*kernel[0][0]) + 
+                (colorList[i-1][j-0]*kernel[0][1]) + 
+                (colorList[i+0][j-1]*kernel[1][0]) + 
+                (colorList[i+0][j-0]*kernel[1][1]) + 
+                (colorList[i+1][j-1]*kernel[2][0]) + 
+                (colorList[i+1][j-0]*kernel[2][1]) 
+                ));
+            color = Math.round(color/kernelDiv);
+        
+            
+        }else{
+            color = Math.round((
                 (colorList[i-1][j-1]*kernel[0][0]) + 
                 (colorList[i-1][j-0]*kernel[0][1]) + 
                 (colorList[i-1][j+1]*kernel[0][2]) + 
@@ -234,7 +340,11 @@ public class Convolution{
                 (colorList[i+1][j-0]*kernel[2][1]) + 
                 (colorList[i+1][j+1]*kernel[2][2])
                 ));
-        color = Math.round(color/kernelDiv);
+            color = Math.round(color/kernelDiv);
+        
+        
+        }
+        
         
         
         if(color > 255) color = 255;
@@ -242,9 +352,9 @@ public class Convolution{
         
         
         
-        if(colorMod == RED) convolutedRedList[i-1][j-1] = color;
-        else if(colorMod == GREEN) convolutedGreenList[i-1][j-1] = color;
-        else convolutedBlueList[i-1][j-1] = color;
+        if(colorMod == RED) convolutedRedList[i][j] = color;
+        else if(colorMod == GREEN) convolutedGreenList[i][j] = color;
+        else convolutedBlueList[i][j] = color;
         
         
         
@@ -253,35 +363,38 @@ public class Convolution{
         
     private void setUpConvolutedImage() {
         int pixel;
-        for (int i = 0; i < width - 2; i++) {
-            for (int j = 0; j < height - 2; j++) {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
                 
                 if(modRed && modGreen && modBlue){
                     pixel = (alphaList[i][j] << 24) | (convolutedRedList[i][j] << 16) | (convolutedGreenList[i][j] << 8) | convolutedBlueList[i][j];
                     convolutedImage.setRGB(i, j, pixel);
                 }
                 else if(modRed && modGreen && !modBlue){
-                    pixel = (alphaList[i][j] << 24) | (convolutedRedList[i][j] << 16) | (convolutedGreenList[i][j] << 8) | blueList[i+1][j+1];
+                    pixel = (alphaList[i][j] << 24) | (convolutedRedList[i][j] << 16) | (convolutedGreenList[i][j] << 8) | blueList[i][j];
                     convolutedImage.setRGB(i, j, pixel);
                 }
                 else if(modRed && !modGreen && modBlue){
-                    pixel = (alphaList[i][j] << 24) | (convolutedRedList[i][j] << 16) | (greenList[i+1][j+1] << 8) | convolutedBlueList[i][j];
+                    pixel = (alphaList[i][j] << 24) | (convolutedRedList[i][j] << 16) | (greenList[i][j] << 8) | convolutedBlueList[i][j];
                     convolutedImage.setRGB(i, j, pixel);
                 }
                 else if(!modRed && modGreen && modBlue){
-                    pixel = (alphaList[i][j] << 24) | (redList[i+1][j+1] << 16) | (convolutedGreenList[i][j] << 8) | convolutedBlueList[i][j];
+                    pixel = (alphaList[i][j] << 24) | (redList[i][j] << 16) | (convolutedGreenList[i][j] << 8) | convolutedBlueList[i][j];
                     convolutedImage.setRGB(i, j, pixel);
                 }
                 else if(modRed){
-                    pixel = (alphaList[i][j] << 24) | (convolutedRedList[i][j] << 16) | (greenList[i+1][j+1] << 8) | blueList[i+1][j+1];
+                    pixel = (alphaList[i][j] << 24) | (convolutedRedList[i][j] << 16) | (greenList[i][j] << 8) | blueList[i][j];
                     convolutedImage.setRGB(i, j, pixel);
                 }
                 else if(modGreen) {
-                    pixel = (alphaList[i][j] << 24) | (redList[i+1][j+1] << 16) | (convolutedGreenList[i][j] << 8) | blueList[i+1][j+1];
+                    pixel = (alphaList[i][j] << 24) | (redList[i][j] << 16) | (convolutedGreenList[i][j] << 8) | blueList[i][j];
                     convolutedImage.setRGB(i, j, pixel);
                 }
                 else if(modBlue) {
-                    pixel = (alphaList[i][j] << 24) | (redList[i+1][j+1] << 16) | (greenList[i+1][j+1] << 8) | convolutedBlueList[i][j];
+                    pixel = (alphaList[i][j] << 24) | (redList[i][j] << 16) | (greenList[i][j] << 8) | convolutedBlueList[i][j];
+                    convolutedImage.setRGB(i, j, pixel);
+                }else{
+                    pixel = (alphaList[i][j] << 24) | (redList[i][j] << 16) | (greenList[i][j] << 8) | blueList[i][j];
                     convolutedImage.setRGB(i, j, pixel);
                 }
             }

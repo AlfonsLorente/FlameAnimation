@@ -28,14 +28,11 @@ public class Viewer extends Canvas implements Runnable{
     private int rate;
     private Flame flame;
     private BufferedImage image;
-    private Thread fireThread;
-    private String imageSrc;
+    private Thread fireThread, fireAnimationThread;
     private BufferedImage convolutedImage;
+    private FlameAnimation flameAnimation;
 
 
-    void setImageSrc(String imageSrc) {
-        this.imageSrc = imageSrc;
-    }
 
     //fireState: enum that sets the fire state
     enum FireState {
@@ -45,16 +42,17 @@ public class Viewer extends Canvas implements Runnable{
     }
 
     //CONSTRUCTOR
-    public Viewer(Flame flame){
-        try{
-            image = ImageIO.read(new File("IMG/hoguera.jpeg"));
-        }catch(IOException e){
-            e.getMessage();
-        }
+    public Viewer(Flame flame, BufferedImage image, BufferedImage convolutedImage, FlameAnimation flameAnimation){
+        this.image = image;
+        this.convolutedImage = convolutedImage;
         this.flame = flame;
-        fireThread = new Thread(flame);
-        fireThread.start();
+        this.flameAnimation = flameAnimation;
         
+        
+    }
+
+    public void setFlameAnimation(FlameAnimation flameAnimation) {
+        this.flameAnimation = flameAnimation;
     }
     
     
@@ -67,21 +65,7 @@ public class Viewer extends Canvas implements Runnable{
     public void setRate(int rate) {
         this.rate = rate;
     }
-    //setFireThread: sets the state of the fire
-    public void setFireThread(FireState state){
-        switch(state){
-            case EXIT:
-                System.exit(0);
-                break;
-            case PAUSE:
-                fireThread.suspend();
-                break;
-            case RESUME:
-                fireThread.resume();
-                break;
-        }
-    }
-    
+   
     
     public BufferedImage getImage() {
         return image;
@@ -101,6 +85,7 @@ public class Viewer extends Canvas implements Runnable{
 
     
     
+    
     //PUBLICS METHODS:
     //paint: Draw the flames and the background image
     public void paint(){
@@ -115,10 +100,14 @@ public class Viewer extends Canvas implements Runnable{
             return;
         }
         g = bs.getDrawGraphics();
+        g.fillRect(700, 0, 350, 195);
         g.drawImage(image.getScaledInstance(350, -1, BufferedImage.SCALE_SMOOTH), 0, 0, this);
         g.drawImage(convolutedImage.getScaledInstance(350, -1, BufferedImage.SCALE_SMOOTH), 350, 0, this);
-        g.fillRect(700, 0, 350, 195);
         g.drawImage(flame,720,-55,300,250,null);
+        g.drawImage(image.getScaledInstance(1000, -1, BufferedImage.SCALE_SMOOTH), 20, 200, this);
+        g.drawImage(flameAnimation.getScaledInstance(1000, -1, BufferedImage.SCALE_SMOOTH), 20, 200, this);
+
+
         bs.show();
         g.dispose();
     }

@@ -28,28 +28,31 @@ import java.io.*;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
 
-
 /**
  *
  * @author alfon
  */
 public class MyFlame extends JFrame {
+
     //VARIABLES
     private boolean isPaused = false;
     private boolean isExit = false;
-    private int flameCoolAmount = 80;
+    private int flameCoolAmount = 70;
     private static Viewer viewer;
     private Thread thread;
     private int viewerRate = 20;
     private FlamePalette flamePalette;
     private Flame flame;
+    private FlameAnimation flameAnimation;
+    private Thread fireThread, fireAnimationThread;
+
     private ControlPanel controlPanel;
-    private GridBagConstraints constraints = new GridBagConstraints();  
+    private GridBagConstraints constraints = new GridBagConstraints();
     private Color c1, c2, c3, c4, c5;
     private String audio = "MUSIC/zombies.wav";
     private Clip clip;
     private boolean audioPlaying = false;
-    private String imageSrc = "IMG/hoguera.jpeg";
+    private String imageSrc = "IMG/ciudadnoche2.jpg";
 
     private BufferedImage image;
     private BufferedImage convolutedImage;
@@ -57,33 +60,38 @@ public class MyFlame extends JFrame {
     private Convolution.Type convType = Convolution.Type.EMBOSS;
     private boolean redState = true, greenState = true, blueState = true;
 
-    
-    
- 
-
-    //MAIN
-    public static void main(String[] args) {
-        
-        new MyFlame();
-        
-        
+        //fireState: enum that sets the fire state
+    enum FireState {
+        EXIT,
+        PAUSE,
+        RESUME
     }
     
+    //MAIN
+    public static void main(String[] args) {
+
+        new MyFlame();
+
+    }
+
     //CONSTRUCTOR
-    public MyFlame(){
-        
+    public MyFlame() {
+
         //Set flame palette
         flamePalette = setFlamePalette(flamePalette);
-        //Create flames
-        flame = new Flame(500,850,BufferedImage.TYPE_INT_ARGB);
-        flame.setRate(50);
-        flame.setPalette(flamePalette);
-        flame.setCoolAmount(flameCoolAmount);
+
         //Create viewer
         setUpImages();
-        setUpViewer();
+        //Create flames
 
-        
+         setUpFlame();
+
+        setUpFlameAnimation();
+        fireThread = new Thread(flame);
+        fireThread.start();
+        fireAnimationThread = new Thread(flameAnimation);
+        fireAnimationThread.start();
+        setUpViewer();
 
         //Create control panel
         controlPanel = new ControlPanel();
@@ -92,21 +100,17 @@ public class MyFlame extends JFrame {
         setMyFlame();
         //set Audio
         setUpAudio(audio);
-       // this.add(viewer);
+        // this.add(viewer);
         setGridRules();
         //Start the viewer thread
         thread = new Thread(viewer);
         thread.start();
         //Set the jframe visible
         this.setVisible(true);
-        
+
     }
 
-
-    
-    
     //GETTERS AND SETTERS
-    
     public Color getC1() {
         return c1;
     }
@@ -151,25 +155,29 @@ public class MyFlame extends JFrame {
         this.c5 = c5;
         this.setFlamePalette(c1, c2, c3, c4, c5);
     }
+
+    private void setUpFlame() {
+        flame = new Flame(500, 850, BufferedImage.TYPE_INT_ARGB);
+        flame.setRate(50);
+        flame.setPalette(flamePalette);
+        flame.setCoolAmount(flameCoolAmount);
+
+    }
+
     private void setUpViewer() {
-        viewer = new Viewer(flame);
-        viewer.setImage(image);
-        viewer.setConvolutedImage(convolutedImage);  
-        viewer.setImageSrc(imageSrc);
+        viewer = new Viewer(flame,image, convolutedImage, flameAnimation);
         this.setViewerRate(viewerRate);
     }
-    
+
     public void setFlameCoolAmount(int flameCoolAmount) {
         this.flameCoolAmount = flameCoolAmount;
         flame.setCoolAmount(flameCoolAmount);
+        flameAnimation.setCoolAmount(flameCoolAmount);
     }
 
-    
-    
-    
     //PUBLIC METHODS
     //setFlamePalette: Prepare the palette
-    public FlamePalette setFlamePalette(FlamePalette palette){
+    public FlamePalette setFlamePalette(FlamePalette palette) {
         //Create the palette
         palette = new FlamePalette();
         c1 = Color.WHITE;
@@ -186,9 +194,9 @@ public class MyFlame extends JFrame {
         return palette;
 
     }
-    
+
     //setFlamePalette: Prepare the palette
-    public void setFlamePalette(Color c1, Color c2, Color c3, Color c4, Color c5){
+    public void setFlamePalette(Color c1, Color c2, Color c3, Color c4, Color c5) {
         //Set new palette colors
         FlamePalette palette = new FlamePalette();
         palette.addTargetColor(new TargetColor(255, c1));
@@ -198,44 +206,68 @@ public class MyFlame extends JFrame {
         palette.addTargetColor(new TargetColor(0, c5));
         flamePalette = palette;
         flame.setPalette(flamePalette);
+        flameAnimation.setPalette(flamePalette);
 
     }
-    
 
-   
-    
     //setExit: Exists the application
-    public void setExit(){
-         if(isExit == false){
+    public void setExit() {
+        if (isExit == false) {
             isExit = true;
-            viewer.setFireThread(Viewer.FireState.EXIT);
-        } 
+            this.setFireThread(Viewer.FireState.EXIT);
+        }
     }
 
     //setPause: pauses and despauses the application
-    public void setPause(){
-        if(isPaused == false){
+    public void setPause() {
+        if (isPaused == false) {
             isPaused = true;
-            viewer.setFireThread(Viewer.FireState.PAUSE);
-        } else{
+            this.setFireThread(Viewer.FireState.PAUSE);
+        } else {
             isPaused = false;
-            viewer.setFireThread(Viewer.FireState.RESUME);
+            this.setFireThread(Viewer.FireState.RESUME);
 
         }
-        
+
+    }
+    
+    //setFireThread: sets the state of the fire
+    public void setFireThread(Viewer.FireState state){
+        switch(state){
+            case EXIT:
+                System.exit(0);
+                break;
+            case PAUSE:
+                fireThread.suspend();
+                fireAnimationThread.suspend();
+                break;
+            case RESUME:
+                fireThread.resume();
+                fireAnimationThread.resume();
+                break;
+        }
     }
     
     
-    
-    
+
+    private void setUpFlameAnimation() {
+        flameAnimation = new FlameAnimation(convolutedImage.getWidth(),
+                convolutedImage.getHeight(),
+                BufferedImage.TYPE_INT_ARGB, convolutedImage);
+        flameAnimation.setRate(50);
+        flameAnimation.setPalette(flamePalette);
+        flameAnimation.setCoolAmount(flameCoolAmount);
+    }
+
     //setViewerRate: Sets the framerate of the viewer
-    public void setViewerRate(int rate){
+    public void setViewerRate(int rate) {
         viewer.setRate(rate);
-        
+
     }
-    
-    public void setFlameRate(int rate){
+
+    public void setFlameRate(int rate) {
         flame.setRate(rate);
+        flameAnimation.setRate(rate);
     }
 
     //PRIVATE METHODS
@@ -244,13 +276,13 @@ public class MyFlame extends JFrame {
         this.setTitle("Flame");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().setBackground(Color.BLACK);
-        this.setLayout (new GridBagLayout());
+        this.setLayout(new GridBagLayout());
         this.setBounds(0, 0, 1360, 790);
-        this.setResizable(false);        
+        this.setResizable(false);
     }
-    
-     //setGridRules: set up the gridbag layout rules
-    private void setGridRules(){
+
+    //setGridRules: set up the gridbag layout rules
+    private void setGridRules() {
         //Set the constraints up for the viewer
         constraints.gridx = 1; // El área de texto empieza en la columna cero.
         constraints.gridy = 0; // El área de texto empieza en la fila cero
@@ -258,43 +290,41 @@ public class MyFlame extends JFrame {
         constraints.weighty = 1;
         constraints.fill = GridBagConstraints.BOTH;
         //Add the viewer with the contraints.
-        this.add(viewer , constraints);
-        
+        this.add(viewer, constraints);
+
         //Set the constraints up for the control panel
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.weightx = 0;
         constraints.weighty = 1;
         //Add the control panel with the contraints.
-        this.add (controlPanel, constraints);
+        this.add(controlPanel, constraints);
 
     }
-    
+
     //setUpAudio: Sets up the audio system
-    public void setUpAudio(String audio){
-       try {
-        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(audio).getAbsoluteFile());
-        clip = AudioSystem.getClip();
-        clip.open(audioInputStream);
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
-       } catch(Exception e) {
-         System.out.println(e.getMessage());
-       }
-     }
-    
+    public void setUpAudio(String audio) {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(audio).getAbsoluteFile());
+            clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     //songController: start or stop the song
-    public void songController(){
-        if(audioPlaying){
+    public void songController() {
+        if (audioPlaying) {
             audioPlaying = false;
             clip.stop();
-        }else{
+        } else {
             audioPlaying = true;
             clip.start();
         }
     }
-    
-    
-    
+
     private void setUpImages() {
         try {
             image = ImageIO.read(new File(imageSrc));
@@ -312,38 +342,43 @@ public class MyFlame extends JFrame {
             convolution = new Convolution(image, convType, redState, greenState, blueState);
             convolutedImage = convolution.getConvolutedImage();
             viewer.setConvolutedImage(convolutedImage);
+            flameAnimation.setConvolutedImage(convolutedImage);
 
+
+            
         }
     }
-    
-    public void changeConvolutedImage(String colorName , boolean colorState) {
-        if(colorName.equals("red")){
+
+    public void changeConvolutedImage(String colorName, boolean colorState) {
+        if (colorName.equals("red")) {
             redState = colorState;
-        }
-        else if(colorName.equals("green")){
+        } else if (colorName.equals("green")) {
             greenState = colorState;
-        }else if(colorName.equals("blue")){
+        } else if (colorName.equals("blue")) {
             blueState = colorState;
         }
-            
-        convolution = new Convolution(image, convType, redState, greenState, blueState);        
+
+        convolution = new Convolution(image, convType, redState, greenState, blueState);
         convolutedImage = convolution.getConvolutedImage();
         convolution = new Convolution(image, convType, redState, greenState, blueState);
         convolutedImage = convolution.getConvolutedImage();
-        viewer.setConvolutedImage(convolutedImage);
 
+        viewer.setConvolutedImage(convolutedImage);
+        flameAnimation.setConvolutedImage(convolutedImage);
     }
-    
-    public void changeImage(String imageSrc){
+
+    public void changeImage(String imageSrc) {
         this.imageSrc = imageSrc;
         setUpImages();
         viewer.setImage(image);
-        viewer.setConvolutedImage(convolutedImage);
         
+        viewer.setConvolutedImage(convolutedImage);
+        flameAnimation.setConvolutedImage(convolutedImage);
+        viewer.setFlameAnimation(flameAnimation);
+        
+
+        
+
     }
 
-
-
-    
-    
 }

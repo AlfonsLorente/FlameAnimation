@@ -21,13 +21,13 @@ import javax.imageio.ImageIO;
  */
 public class Flame extends BufferedImage implements Runnable {
     //VARIABLES
-    private int width;
-    private int height;
+    protected int width;
+    protected int height;
     private FlamePalette flamePalette;
-    private int coolAmount = 80;
+    protected int coolAmount = 70;
     private boolean pausedFlame = false;
     private int rate = 50;
-    private int[][] pixels;
+    protected int[][] pixels;
 
   
     
@@ -53,6 +53,10 @@ public class Flame extends BufferedImage implements Runnable {
 
     public void setCoolAmount(int coolAmount) {
         this.coolAmount = coolAmount;
+    }
+
+    public int[][] getPixels() {
+        return pixels;
     }
     
     
@@ -94,7 +98,7 @@ public class Flame extends BufferedImage implements Runnable {
     
     //PRIVATE METHODS
     //createCool: Creates cold points to prevent the fire to overburn
-    private void createCool(int colFrom){
+    protected void createCool(int colFrom){
         //go over the first pixel width row
         for (int x = colFrom; x < width; x++)
         {
@@ -108,7 +112,7 @@ public class Flame extends BufferedImage implements Runnable {
     }
     
     //createSparks: Creates 255 points to start the fire
-    private void createSparks(int colFrom){
+    protected void createSparks(int colFrom){
         //go over the first pixel width row
         for (int x = colFrom; x < width; x++)
         {
@@ -149,20 +153,21 @@ public class Flame extends BufferedImage implements Runnable {
     //temperatureEvolve: This evolves the fire looking for the bottom pixels temperature and setting a new one for the top one.
     private void temperatureEvolve(){
         int num;
-        for (int y=height-2; y>=0; y--){
-            for (int x=1; x < width-1; x++){
+        for (int x=width-2; x >= 1; x--){
+            for (int y=height-2; y>=0; y--){
                 //Formula to calcule the top pixel (or bottom pixel, depends on which way you look at)
                 num =(pixels[x][y+1] + pixels[x+1][y+1] + pixels[x-1][y+1])/3;
+
                 if(num != 0 && num < 245){
                     //Setting random values to give some live/reality to the flame
-                    num = num + ((int)(Math.random()*2) - (int)(Math.random()*2.1));
+                    num = num + ((int)(Math.random()*1) - (int)(Math.random()*1.3));
                 }
                 //Avoids posibles errors created with the random before done
                 if(num < 5) {
                     num = 0;
                 }
                 pixels[x][y] = num;
-                
+
             }
 
         }
