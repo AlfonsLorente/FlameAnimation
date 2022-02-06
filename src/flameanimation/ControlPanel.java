@@ -37,6 +37,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
@@ -92,6 +93,7 @@ public class ControlPanel extends JPanel implements ActionListener{
         paletteChooserSetUp();
         audioButtonSetUp();
         fileChooserSetUp();
+        userTextInputSetUp();
         convoluterSetUp();
         
         tabsSetUp();
@@ -313,7 +315,7 @@ public class ControlPanel extends JPanel implements ActionListener{
         flameSliderRate.setOpaque(false);
         flameSliderRate.setForeground(Color.WHITE);
         flameSliderRate.setBackground(Color.red);
-        flameSliderRate.setValue(50);
+        flameSliderRate.setValue(30);
         //set up the constraints
         constraints.gridwidth = 6;
         constraints.gridx = 1; 
@@ -521,6 +523,108 @@ public class ControlPanel extends JPanel implements ActionListener{
         
     }
     
+   
+    private void userTextInputSetUp() {
+        GridBagConstraints constraintsLabel = new GridBagConstraints();
+        JLabel textInputTitle = new JLabel("Set your own filter: ");
+        
+        fileChooserButton.setContentAreaFilled(true);
+        textInputTitle.setForeground(Color.WHITE);
+         //set up constraints
+        constraintsLabel.gridx = 0;
+        constraintsLabel.gridy = 1;
+        constraintsLabel.weightx = 1;
+        constraintsLabel.weighty = 0.5;
+        constraintsLabel.gridwidth = 3;
+        panelConvolution.add(textInputTitle, constraintsLabel);
+        
+        
+        JTextField textInput1 = setTextInput(0,2);
+        JTextField textInput2 = setTextInput(1,2);
+        JTextField textInput3 = setTextInput(2,2);
+        JTextField textInput4 = setTextInput(0,3);
+        JTextField textInput5 = setTextInput(1,3);
+        JTextField textInput6 = setTextInput(2,3);
+        JTextField textInput7 = setTextInput(0,4);
+        JTextField textInput8 = setTextInput(1,4);
+        JTextField textInput9 = setTextInput(2,4);
+        
+        
+        GridBagConstraints constraintsDivText = new GridBagConstraints();
+        JLabel divText = new JLabel("Division: ");
+        divText.setForeground(Color.WHITE);
+         //set up constraints
+        constraintsDivText.gridx = 0;
+        constraintsDivText.gridy = 5;
+        constraintsDivText.weightx = 1;
+        constraintsDivText.weighty = 0.5;
+        constraintsDivText.gridwidth = 1;
+        panelConvolution.add(divText, constraintsDivText);
+        
+        JTextField divInput = setTextInput(1,5);
+        
+        
+        GridBagConstraints constraintsButton = new GridBagConstraints();
+        JButton sendTextInput = new JButton("Send");
+        sendTextInput.setBorderPainted(true);
+        sendTextInput.setFocusPainted(false);
+        sendTextInput.setContentAreaFilled(true);
+        sendTextInput.setBackground(Color.WHITE);
+        sendTextInput.setForeground(Color.BLACK);
+        sendTextInput.setBorder(compound);
+         //set up constraints
+        constraintsButton.gridx = 2;
+        constraintsButton.gridy = 5;
+        constraintsButton.weightx = 1;
+        constraintsButton.weighty = 0.5;
+        constraintsButton.gridwidth = 1;
+        
+        panelConvolution.add(sendTextInput, constraintsButton);
+        sendTextInput.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                float[][] kernel = new float[3][3];
+                kernel[0][0] = Float.parseFloat(textInput1.getText().toString());
+                kernel[0][1] = Float.parseFloat(textInput2.getText().toString());
+                kernel[0][2] = Float.parseFloat(textInput3.getText().toString());
+                kernel[1][0] = Float.parseFloat(textInput4.getText().toString());
+                kernel[1][1] = Float.parseFloat(textInput5.getText().toString());
+                kernel[1][2] = Float.parseFloat(textInput6.getText().toString());
+                kernel[2][0] = Float.parseFloat(textInput7.getText().toString());
+                kernel[2][1] = Float.parseFloat(textInput8.getText().toString());
+                kernel[2][2] = Float.parseFloat(textInput9.getText().toString());
+                float div = Float.parseFloat(divInput.getText().toString());
+                myFlame.changeConvolutionKernel(kernel, div);
+                
+                
+            }
+        });
+        
+    }
+    
+    
+    private JTextField setTextInput(int x, int y ){
+        GridBagConstraints constraints = new GridBagConstraints();
+        JTextField tf = new JTextField("1");
+        tf.setHorizontalAlignment(JTextField.CENTER);
+        //set up constraints
+        constraints.gridx = x;
+        constraints.gridy = y;
+        constraints.weightx = 1;
+        constraints.weighty = 0.3;
+        constraints.gridwidth = 1;
+        constraints.ipadx = 30;
+        constraints.ipady = 30;
+
+        panelConvolution.add(tf, constraints);
+        return tf;
+        
+        
+    }
+
+    
+    
+    
     //stopSetUp
     private void convoluterSetUp() {
         setConvolutionList();
@@ -555,7 +659,7 @@ public class ControlPanel extends JPanel implements ActionListener{
 
         //set up constraints
         constraints.gridx = 0;
-        constraints.gridy = 1;
+        constraints.gridy = 6;
         constraints.weightx = 1;
         constraints.weighty = 1;
         constraints.gridwidth = 3;
@@ -601,7 +705,7 @@ public class ControlPanel extends JPanel implements ActionListener{
         colorChooserLabel.setForeground(Color.white);
         //set up constraints
         cLabel.gridx = 0;
-        cLabel.gridy = 2;
+        cLabel.gridy = 7;
         cLabel.weightx = 0.1;
         cLabel.weighty = 0;
         cLabel.gridwidth = 3;
@@ -615,7 +719,7 @@ public class ControlPanel extends JPanel implements ActionListener{
         
         //set up constraints
         cCheckBox.gridx = 0;
-        cCheckBox.gridy = 3;
+        cCheckBox.gridy = 8;
         cCheckBox.weightx = 0.1;
         cCheckBox.weighty = 0.3;
         panelConvolution.add(redCheckbox, cCheckBox);
@@ -668,6 +772,10 @@ public class ControlPanel extends JPanel implements ActionListener{
         });
     }
 
+  
+    
+    
+    
     
 
 }

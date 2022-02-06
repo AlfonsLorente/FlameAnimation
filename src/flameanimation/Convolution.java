@@ -40,6 +40,10 @@ public class Convolution{
     public static final int BLUE = 2;
     private Type type;
 
+    
+
+
+
 
     
     enum Type{
@@ -48,7 +52,8 @@ public class Convolution{
         RAISE,
         OUTLINE,
         EMBOSS,
-        BLUR
+        BLUR,
+        PERSONALITZED
     }
     
     
@@ -77,6 +82,34 @@ public class Convolution{
         
         
     }
+    
+    
+    Convolution(BufferedImage image, boolean redState, boolean greenState, boolean blueState, float[][] kernel, float div) {
+        this.image = image;
+        this.width = image.getWidth();
+        this.height = image.getHeight();
+        this.convolutedImage = new BufferedImage(width, height, image.getType());
+        this.modRed = modRed;
+        this.modGreen = modGreen;
+        this.modBlue = modBlue;
+
+        this.redList = new int[width][height];
+        this.greenList = new int[width][height];
+        this.blueList = new int[width][height];
+        this.alphaList = new int[width][height];
+        
+        this.convolutedRedList = new int[width][height];
+        this.convolutedGreenList = new int[width][height];
+        this.convolutedBlueList = new int[width][height];
+        
+        fillColorLists();
+        this.type = Type.PERSONALITZED;
+        this.kernel = kernel;
+        this.kernelDiv = div;
+        
+        startConvolution();
+    }
+    
 
     public BufferedImage getConvolutedImage() {
         return convolutedImage;
@@ -86,31 +119,12 @@ public class Convolution{
         this.image = image;
     }
 
-    public int[][] getRedList() {
-        if(modRed){
-            return convolutedRedList;
-        }else{
-            return redList;
-
-        }
+    public void setKernel(float[][] kernel) {
+        this.kernel = kernel;
     }
 
-    public int[][] getGreenList() {
-        if(modRed){
-            return convolutedGreenList;
-        }else{
-            return greenList;
-
-        }
-    }
-
-    public int[][] getBlueList() {
-        if(modRed){
-            return convolutedBlueList;
-        }else{
-            return blueList;
-
-        }
+    public void setKernelDiv(float kernelDiv) {
+        this.kernelDiv = kernelDiv;
     }
     
     
@@ -206,11 +220,14 @@ public class Convolution{
                 blur();
                 break;
                 
-                
+            case PERSONALITZED:
+                applyConvolution();
             default:
                 return;
         }
     }
+        
+
 
     
     private void fillColorLists() {

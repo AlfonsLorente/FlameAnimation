@@ -59,6 +59,8 @@ public class MyFlame extends JFrame {
     private Convolution convolution;
     private Convolution.Type convType = Convolution.Type.EMBOSS;
     private boolean redState = true, greenState = true, blueState = true;
+    private float[][] kernel = new float[3][3];
+    private float kernelDiv = 1;
 
         //fireState: enum that sets the fire state
     enum FireState {
@@ -158,7 +160,7 @@ public class MyFlame extends JFrame {
 
     private void setUpFlame() {
         flame = new Flame(500, 850, BufferedImage.TYPE_INT_ARGB);
-        flame.setRate(50);
+        flame.setRate(30);
         flame.setPalette(flamePalette);
         flame.setCoolAmount(flameCoolAmount);
 
@@ -331,7 +333,13 @@ public class MyFlame extends JFrame {
         } catch (IOException ex) {
             Logger.getLogger(Viewer.class.getName()).log(Level.SEVERE, null, ex);
         }
-        convolution = new Convolution(image, convType, redState, greenState, blueState);
+        if (convType.equals(Convolution.Type.PERSONALITZED)) {
+                convolution = new Convolution(image, redState, greenState, blueState, kernel, kernelDiv);
+
+            } else {
+                convolution = new Convolution(image, convType, redState, greenState, blueState);
+
+            }
         convolutedImage = convolution.getConvolutedImage();
 
     }
@@ -339,7 +347,12 @@ public class MyFlame extends JFrame {
     public void changeConvolutedImage(Convolution.Type newType) {
         if (!convType.equals(newType)) {
             convType = newType;
+            if (convType.equals(Convolution.Type.PERSONALITZED)) {
+            convolution = new Convolution(image, redState, greenState, blueState, kernel, kernelDiv);
+        } else {
             convolution = new Convolution(image, convType, redState, greenState, blueState);
+
+        }
             convolutedImage = convolution.getConvolutedImage();
             viewer.setConvolutedImage(convolutedImage);
             flameAnimation.setConvolutedImage(convolutedImage);
@@ -358,9 +371,14 @@ public class MyFlame extends JFrame {
             blueState = colorState;
         }
 
-        convolution = new Convolution(image, convType, redState, greenState, blueState);
-        convolutedImage = convolution.getConvolutedImage();
-        convolution = new Convolution(image, convType, redState, greenState, blueState);
+        
+        if (convType.equals(Convolution.Type.PERSONALITZED)) {
+            convolution = new Convolution(image, redState, greenState, blueState, kernel, kernelDiv);
+        } else {
+            convolution = new Convolution(image, convType, redState, greenState, blueState);
+
+        }
+        
         convolutedImage = convolution.getConvolutedImage();
 
         viewer.setConvolutedImage(convolutedImage);
@@ -380,5 +398,19 @@ public class MyFlame extends JFrame {
         
 
     }
+        
 
+    
+    void changeConvolutionKernel(float[][] kernel, float div) {
+        this.convType = Convolution.Type.PERSONALITZED;
+        this.kernel = kernel;
+        this.kernelDiv = div;
+        convolution = new Convolution(image, redState, greenState, blueState, kernel, div);
+        convolutedImage = convolution.getConvolutedImage();
+        flameAnimation.setConvolutedImage(convolutedImage);
+
+        viewer.setConvolutedImage(convolutedImage);
+    }
+
+    
 }
