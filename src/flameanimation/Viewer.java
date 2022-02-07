@@ -130,8 +130,10 @@ public class Viewer extends Canvas implements Runnable{
         while(true){
             try {
                 Thread.sleep(rate);
+                System.out.println("pene: " + Thread.activeCount());
             } catch (InterruptedException ex) {
                 Logger.getLogger(Viewer.class.getName()).log(Level.SEVERE, null, ex);
+                
         }
             paint();
         }

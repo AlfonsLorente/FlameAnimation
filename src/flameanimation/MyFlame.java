@@ -71,7 +71,6 @@ public class MyFlame extends JFrame {
     
     //MAIN
     public static void main(String[] args) {
-
         new MyFlame();
 
     }
@@ -185,13 +184,13 @@ public class MyFlame extends JFrame {
         c1 = Color.WHITE;
         c2 = Color.YELLOW;
         c3 = Color.ORANGE;
-        c4 = Color.ORANGE.darker();
-        c5 = Color.RED.darker();
+        c4 = Color.RED.darker();
+        c5 = Color.GRAY.darker();
         //set the palette colors
         palette.addTargetColor(new TargetColor(255, c1));
         palette.addTargetColor(new TargetColor(220, c2));
-        palette.addTargetColor(new TargetColor(160, c3));
-        palette.addTargetColor(new TargetColor(100, c4));
+        palette.addTargetColor(new TargetColor(140, c3));
+        palette.addTargetColor(new TargetColor(15, c4));
         palette.addTargetColor(new TargetColor(0, c5));
         return palette;
 
@@ -204,7 +203,7 @@ public class MyFlame extends JFrame {
         palette.addTargetColor(new TargetColor(255, c1));
         palette.addTargetColor(new TargetColor(220, c2));
         palette.addTargetColor(new TargetColor(140, c3));
-        palette.addTargetColor(new TargetColor(100, c4));
+        palette.addTargetColor(new TargetColor(15, c4));
         palette.addTargetColor(new TargetColor(0, c5));
         flamePalette = palette;
         flame.setPalette(flamePalette);
