@@ -90,22 +90,40 @@ public class MyFlame extends JFrame {
         setUpFlameAnimation();
         fireThread = new Thread(flame);
         fireThread.start();
+        System.out.println("Threads1 " + Thread.activeCount());
+        
         fireAnimationThread = new Thread(flameAnimation);
         fireAnimationThread.start();
+                System.out.println("Threads2 " + Thread.activeCount());
+
         setUpViewer();
+        System.out.println("Threads3 " + Thread.activeCount());
 
         //Create control panel
         controlPanel = new ControlPanel();
+                        System.out.println("Threads4 " + Thread.activeCount());
+
         controlPanel.setMyFlame(this);
         //Set the jframe
+
         setMyFlame();
+                System.out.println("Threads5 " + Thread.activeCount());
+
         //set Audio
-        setUpAudio(audio);
-        // this.add(viewer);
+        //setUpAudio(audio);
+                        System.out.println("Threads6 " + Thread.activeCount());
+
         setGridRules();
+                System.out.println("Threads7 " + Thread.activeCount());
+
         //Start the viewer thread
         thread = new Thread(viewer);
+                        System.out.println("Threads8 " + Thread.activeCount());
+
         thread.start();
+                        System.out.println("Threads9 " + Thread.activeCount());
+
+
         //Set the jframe visible
         this.setVisible(true);
 

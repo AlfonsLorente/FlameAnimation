@@ -153,18 +153,18 @@ public class Flame extends BufferedImage implements Runnable {
     //temperatureEvolve: This evolves the fire looking for the bottom pixels temperature and setting a new one for the top one.
     private void temperatureEvolve(){
         int num;
-        for (int y=height-2; y>=0; y--){
+        for (int y=height-2; y>=1; y--){
             for (int x=width-2; x >= 1; x--){
                 //Formula to calcule the top pixel (or bottom pixel, depends on which way you look at)
-                num =(pixels[x][y+1] + pixels[x+1][y+1] + pixels[x-1][y+1] + 
-                        pixels[x][y] + pixels[x+1][y] + pixels[x-1][y])/6 ;
+                num = (int)Math.round((pixels[x][y+1] + pixels[x+1][y+1] + pixels[x-1][y+1] + 
+                        pixels[x][y] + pixels[x+1][y] + pixels[x-1][y])/6);
 
                 if(num != 0 && num < 245){
                     //Setting random values to give some live/reality to the flame
-                    num = num + ((int)(Math.random()*1) - (int)(Math.random()*1.3));
+                    num = num + ((int)(Math.random()*1) - (int)(Math.random()*1.2));
                 }
                 //Avoids posibles errors created with the random before done
-                if(num < 5) {
+                if(num < 3) {
                     num = 0;
                 }
                 pixels[x][y] = num;

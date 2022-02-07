@@ -28,7 +28,6 @@ public class Viewer extends Canvas implements Runnable{
     private int rate;
     private Flame flame;
     private BufferedImage image;
-    private Thread fireThread, fireAnimationThread;
     private BufferedImage convolutedImage;
     private FlameAnimation flameAnimation;
 
