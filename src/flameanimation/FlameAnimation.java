@@ -23,11 +23,12 @@ public class FlameAnimation extends Flame {
     }
 
     public void setConvolutedImage(BufferedImage convolutedImage) {
-        this.cleanFlame();
-        super.width = convolutedImage.getWidth();
-        super.height = convolutedImage.getHeight();
+        this.width = convolutedImage.getWidth();
+        this.height = convolutedImage.getHeight();
         this.convolutedImage = convolutedImage;
+        this.cleanFlame();
         createSparks();
+        
 
     }
 
@@ -58,6 +59,8 @@ public class FlameAnimation extends Flame {
 
     @Override
     protected void createCool() {
+        
+        
         for (int i = 0; i < this.getWidth(); i++) {
             for (int j = 0; j < this.getHeight(); j++) {
                 int rand = (int) (Math.random() * 100);

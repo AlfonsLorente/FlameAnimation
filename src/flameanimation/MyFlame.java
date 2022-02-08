@@ -343,9 +343,9 @@ public class MyFlame extends JFrame {
 
         } else {
             convolution = new Convolution(image, convType, redState, greenState, blueState);
-
         }
         convolutedImage = convolution.getConvolutedImage();
+        System.out.println("cv " + convolutedImage.getWidth());
 
     }
 
@@ -388,12 +388,29 @@ public class MyFlame extends JFrame {
     }
 
     public void changeImage(String imageSrc) {
-        this.imageSrc = imageSrc;
-        setUpImages();
-        viewer.setImage(image);
+        try {
+            image = ImageIO.read(new File(imageSrc));
+        } catch (IOException ex) {
+            Logger.getLogger(Viewer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (convType.equals(Convolution.Type.PERSONALITZED)) {
+            convolution = new Convolution(image, redState, greenState, blueState, kernel, kernelDiv);
 
+        } else {
+            convolution = new Convolution(image, convType, redState, greenState, blueState);
+        }
+        convolutedImage = convolution.getConvolutedImage();
+        System.out.println("cv " + image.getWidth());
+        
+        viewer.setImage(image);
         viewer.setConvolutedImage(convolutedImage);
+        fireAnimationThread.interrupt();
+        setUpFlameAnimation();
+        fireAnimationThread = new Thread(flameAnimation);
+        fireAnimationThread.start();
+        
         flameAnimation.setConvolutedImage(convolutedImage);
+
         viewer.setFlameAnimation(flameAnimation);
 
     }

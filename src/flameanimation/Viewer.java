@@ -72,6 +72,7 @@ public class Viewer extends Canvas implements Runnable{
 
     public void setImage(BufferedImage image) {
         this.image = image;
+        System.out.println("setImage " + image.getWidth());
     }
 
     public BufferedImage getConvolutedImage() {
@@ -127,6 +128,7 @@ public class Viewer extends Canvas implements Runnable{
         //implements the buffer strategy
         createBufferStrategy(2);
         while(true){
+            System.out.println(Thread.activeCount());
             try {
                 Thread.sleep(rate);
             } catch (InterruptedException ex) {
