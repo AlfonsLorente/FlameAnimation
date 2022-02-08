@@ -345,7 +345,6 @@ public class MyFlame extends JFrame {
             convolution = new Convolution(image, convType, redState, greenState, blueState);
         }
         convolutedImage = convolution.getConvolutedImage();
-        System.out.println("cv " + convolutedImage.getWidth());
 
     }
 
@@ -400,7 +399,6 @@ public class MyFlame extends JFrame {
             convolution = new Convolution(image, convType, redState, greenState, blueState);
         }
         convolutedImage = convolution.getConvolutedImage();
-        System.out.println("cv " + image.getWidth());
         
         viewer.setImage(image);
         viewer.setConvolutedImage(convolutedImage);

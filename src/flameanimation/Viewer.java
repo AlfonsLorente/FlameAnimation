@@ -129,7 +129,6 @@ public class Viewer extends Canvas implements Runnable{
         //implements the buffer strategy
         createBufferStrategy(2);
         while(true){
-            System.out.println(Thread.activeCount());
             try {
                 Thread.sleep(rate);
             } catch (InterruptedException ex) {

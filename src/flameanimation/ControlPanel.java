@@ -509,7 +509,7 @@ public class ControlPanel extends JPanel implements ActionListener{
         fileChooserButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                fileChooser = new JFileChooser("C:\\Users\\pc\\Documents\\", FileSystemView.getFileSystemView());
+                fileChooser = new JFileChooser("IMG/", FileSystemView.getFileSystemView());
                 int r = fileChooser.showSaveDialog(null);
  
             // if the user selects a file
