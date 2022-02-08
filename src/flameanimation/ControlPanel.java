@@ -74,12 +74,7 @@ public class ControlPanel extends JPanel implements ActionListener{
 
     //CONSTRUCTOR
     public ControlPanel() {
-        //Get the background image from the files
-        try {
-            bufferedImage = (BufferedImage)ImageIO.read(new File("IMG/bgcontrolpanel.png"));
-        } catch (IOException ex) {
-            Logger.getLogger(ControlPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         //SET UP THE CONTROLPANEL
         controlPanelSetUp();
         controlPanelFlameSetUp();

@@ -169,18 +169,46 @@ public class Flame extends BufferedImage implements Runnable {
     private void temperatureEvolve(){
         int num;
         for (int y=height-2; y>=1; y--){
-            for (int x=width-2; x >= 1; x--){
+            for (int x= 1; x < width-1; x++){
                 //Formula to calcule the top pixel (or bottom pixel, depends on which way you look at)
-                num = (int)Math.round((pixels[x][y+1] + pixels[x+1][y+1] + pixels[x-1][y+1] + 
-                        pixels[x][y] + pixels[x][y-1] + pixels[x][y+1] )/6 * 0.99);
-
+                num = (int)Math.round(
+                        ((pixels[x][y+1] * 2.5) +
+                        (pixels[x+1][y+1] * 1.2) +
+                        (pixels[x-1][y+1] * 1.2) + 
+                        (pixels[x][y] * 1.1 ) +
+                        (pixels[x+1][y] * 0.5) + 
+                        (pixels[x-1][y] * 0.6) +
+                        (pixels[x][y-1] * 0.5) + 
+                        (pixels[x-1][y-1] * 0.1) + 
+                        (pixels[x+1][y-1] * 0.1))/9 * 1.05);
+                int rand = (int)(Math.random()*100);
+                if(rand > 85){
+                    num = pixels[x][y+1];
+                }else if(rand > 80){
+                    num = (int)Math.round(pixels[x][y+1] * 0.9);
+                    
+                }else if(rand > 70){
+                    num = (int) Math.round(num * 0.95);
+                }else if(rand > 50){
+                    if (num < 80){
+                        num =(int)Math.round(num * 1.08) ;
+                    }
+                }
+                
+                
+                else if(rand > 65){
+                    num = (int)Math.round(
+                        (pixels[x][y+1] + pixels[x+1][y+1] +  pixels[x-1][y+1] + pixels[x][y] + pixels[x+1][y] + pixels[x-1][y]) /6);
+                }
                 if(num != 0 && num < 245){
                     //Setting random values to give some live/reality to the flame
-                    num = num + ((int)(Math.random()*1.6) - (int)(Math.random()*1.5));
+                    num = num + ((int)(Math.random()*1.4) - (int)(Math.random()*1.5));
                 }
                 //Avoids posibles errors created with the random before done
-                if(num < 1) {
+                if(num < 5) {
                     num = 0;
+                }if(num > 255){
+                    num = 255;
                 }
                 pixels[x][y] = num;
 

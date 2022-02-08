@@ -69,7 +69,9 @@ public class FlameAnimation extends Flame {
                         pixels[i][j] = 0;
                     }
                 } else if (pixels[i][j] < 3 && sparks[i][j] == 255) {
-                        pixels[i][j] = sparks[i][j];
+                    int random = (int) (Math.random() * 100);
+                    if(random > 30){
+                        pixels[i][j] = sparks[i][j];}
                     
                 }
 
