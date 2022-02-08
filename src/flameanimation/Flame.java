@@ -29,6 +29,7 @@ public class Flame extends BufferedImage implements Runnable {
     private int rate = 30;
     protected int[][] pixels;
     protected int[][] sparks;
+    private boolean alive = true;
 
   
     
@@ -50,6 +51,10 @@ public class Flame extends BufferedImage implements Runnable {
     
     public void setRate(int rate){
         this.rate = rate;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 
     public void setCoolAmount(int coolAmount) {
@@ -82,7 +87,7 @@ public class Flame extends BufferedImage implements Runnable {
     @Override
     public void run() {
         
-        while(true){
+        while(alive){
             if(!pausedFlame){
                 flameEvolve();
                 

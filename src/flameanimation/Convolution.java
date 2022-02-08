@@ -53,6 +53,7 @@ public class Convolution{
         OUTLINE,
         EMBOSS,
         BLUR,
+        CENTERPOINTS,
         PERSONALITZED
     }
     
@@ -192,6 +193,15 @@ public class Convolution{
         kernelDiv = 1;
         applyConvolution();
     }
+     public void centerPoints(){
+        kernel = new float[][] {
+            {-1, 0, -1},
+            {0, 4, 0},
+            {-1, 0, -1}
+        };
+        kernelDiv = 1;
+        applyConvolution();
+    }
     
     
         private void startConvolution() {
@@ -218,6 +228,10 @@ public class Convolution{
                 
             case BLUR:
                 blur();
+                break;
+                
+            case CENTERPOINTS:
+                centerPoints();
                 break;
                 
             case PERSONALITZED:

@@ -57,7 +57,7 @@ public class MyFlame extends JFrame {
     private BufferedImage image;
     private BufferedImage convolutedImage;
     private Convolution convolution;
-    private Convolution.Type convType = Convolution.Type.EMBOSS;
+    private Convolution.Type convType = Convolution.Type.CENTERPOINTS;
     private boolean redState = true, greenState = true, blueState = true;
     private float[][] kernel = new float[3][3];
     private float kernelDiv = 1;
@@ -404,7 +404,7 @@ public class MyFlame extends JFrame {
         
         viewer.setImage(image);
         viewer.setConvolutedImage(convolutedImage);
-        fireAnimationThread.interrupt();
+        flameAnimation.setAlive(false);
         setUpFlameAnimation();
         fireAnimationThread = new Thread(flameAnimation);
         fireAnimationThread.start();

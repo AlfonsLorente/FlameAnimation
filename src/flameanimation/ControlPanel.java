@@ -65,7 +65,7 @@ public class ControlPanel extends JPanel implements ActionListener{
     private JTabbedPane tabs;
     private JPanel panelFlame, panelConvolution;
     private JMenu convolutionMenu;
-    private JMenuItem i1, i2, i3, i4, i5, i6;
+    private JMenuItem i1, i2, i3, i4, i5, i6, i7;
     private JMenuBar convolutionMenuBar = new JMenuBar();
     private JCheckBox redCheckbox, greenCheckbox, blueCheckbox;
     private JFileChooser fileChooser;
@@ -91,7 +91,7 @@ public class ControlPanel extends JPanel implements ActionListener{
         flameRateSetUp();
         createCoolSetUp();
         paletteChooserSetUp();
-        audioButtonSetUp();
+        //audioButtonSetUp();
         fileChooserSetUp();
         userTextInputSetUp();
         convoluterSetUp();
@@ -642,12 +642,16 @@ public class ControlPanel extends JPanel implements ActionListener{
         i4 = new JMenuItem("Outline");
         i5 = new JMenuItem("Emboss");
         i6 = new JMenuItem("Blur");
+        i7 = new JMenuItem("Center Points");
+
         convolutionMenu.add(i1);
         convolutionMenu.add(i2);
         convolutionMenu.add(i3);
         convolutionMenu.add(i4);
         convolutionMenu.add(i5);
         convolutionMenu.add(i6);
+        convolutionMenu.add(i7);
+
         convolutionMenu.setForeground(Color.BLACK);
 
 
@@ -671,6 +675,8 @@ public class ControlPanel extends JPanel implements ActionListener{
         i4.addActionListener(this);
         i5.addActionListener(this);
         i6.addActionListener(this);
+        i7.addActionListener(this);
+
 
     }
 
@@ -694,6 +700,9 @@ public class ControlPanel extends JPanel implements ActionListener{
 
         } else if (e.getActionCommand().equals("Blur")) {
             myFlame.changeConvolutedImage(Convolution.Type.BLUR);
+
+        }else if (e.getActionCommand().equals("Center Points")) {
+            myFlame.changeConvolutedImage(Convolution.Type.CENTERPOINTS);
 
         }
     }

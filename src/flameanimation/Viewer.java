@@ -100,7 +100,8 @@ public class Viewer extends Canvas implements Runnable{
             return;
         }
         g = bs.getDrawGraphics();
-        g.fillRect(700, 0, 350, 195);
+        g.setColor(Color.black);
+        g.fillRect(0, 0, 1800, 1800);
         g.drawImage(image.getScaledInstance(350, -1, BufferedImage.SCALE_SMOOTH), 0, 0, this);
         g.drawImage(convolutedImage.getScaledInstance(350, -1, BufferedImage.SCALE_SMOOTH), 350, 0, this);
         g.drawImage(flame,720,-55,300,250,null);
