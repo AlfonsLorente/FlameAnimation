@@ -64,15 +64,18 @@ public class FlameAnimation extends Flame {
         for (int i = 0; i < this.getWidth(); i++) {
             for (int j = 0; j < this.getHeight(); j++) {
                 int rand = (int) (Math.random() * 100);
-                if (pixels[i][j] == 255) {
-                    if (rand > coolAmount) {
-                        pixels[i][j] = 0;
+
+                    if(rand > coolAmount){
+                        pixels[i][j] = 1;
                     }
-                } else if (pixels[i][j] < 3 && sparks[i][j] == 255) {
+
+                
+                 if (pixels[i][j] == 0) {
                     int random = (int) (Math.random() * 100);
-                    if(random > 30){
-                        pixels[i][j] = sparks[i][j];}
-                    
+                    if(random > 10){
+                        pixels[i][j] = sparks[i][j];
+                    }
+
                 }
 
             }

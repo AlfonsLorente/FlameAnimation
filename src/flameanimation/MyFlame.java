@@ -52,7 +52,7 @@ public class MyFlame extends JFrame {
     private String audio = "MUSIC/zombies.wav";
     private Clip clip;
     private boolean audioPlaying = false;
-    private String imageSrc = "IMG/ciudadnoche2.jpg";
+    private String imageSrc = "IMG/paisajeBonito.jpg";
 
     private BufferedImage image;
     private BufferedImage convolutedImage;
@@ -331,6 +331,7 @@ public class MyFlame extends JFrame {
             clip.start();
         }
     }
+
 
     private void setUpImages() {
         try {
