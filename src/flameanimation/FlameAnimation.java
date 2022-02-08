@@ -32,7 +32,7 @@ public class FlameAnimation extends Flame {
     
     
     @Override
-    protected void createSparks(int colFrom) {
+    protected void createSparks() {
         float luminance;
         int red;
         int green;
@@ -57,7 +57,7 @@ public class FlameAnimation extends Flame {
     }
     
     @Override
-    protected void createCool(int colFrom) {
+    protected void createCool() {
         for (int i = 0; i < this.getWidth(); i++) {
             for (int j = 0; j < this.getHeight(); j++) {
                 int rand = (int) (Math.random() * 100);

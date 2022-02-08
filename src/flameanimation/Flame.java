@@ -65,8 +65,8 @@ public class Flame extends BufferedImage implements Runnable {
     //PUBLIC METHODS
     //flameEvolve: Controls the execution of the fire.
     public void flameEvolve(){
-        createSparks(0);
-        createCool(0);
+        createSparks();
+        createCool();
         temperatureEvolve();
         createFlameImage();
 
@@ -98,9 +98,9 @@ public class Flame extends BufferedImage implements Runnable {
     
     //PRIVATE METHODS
     //createCool: Creates cold points to prevent the fire to overburn
-    protected void createCool(int colFrom){
+    protected void createCool(){
         //go over the first pixel width row
-        for (int x = colFrom; x < width; x++)
+        for (int x = 0; x < width; x++)
         {
             int varAux = (int) (Math.random()*100);
             if(varAux > coolAmount){
@@ -112,23 +112,23 @@ public class Flame extends BufferedImage implements Runnable {
     }
     
     //createSparks: Creates 255 points to start the fire
-    protected void createSparks(int colFrom){
+    protected void createSparks(){
         //go over the first pixel width row
-        for (int x = colFrom; x < width; x++)
+        for (int x = 0; x < width; x++)
         {
             int rand = (int) (Math.random()*100);
             //This creates more sparks at the center of the fire than at the outsides
             if(x > width/3 && x < (width*2/3)){
-               if(rand > 45){
+               if(rand > 55){
                     //Add random 255 pixels
                     pixels[x][height-1] = 255;
             } 
             }else if (x > width/10 && x < (width*8/9)){
-                if(rand > 60){
+                if(rand > 70){
                     pixels[x][height-1] = 255;
                 }
             }else{
-                 if(rand > 70){
+                 if(rand > 80){
                     pixels[x][height-1] = 255;
                 }
             }
@@ -157,11 +157,11 @@ public class Flame extends BufferedImage implements Runnable {
             for (int x=width-2; x >= 1; x--){
                 //Formula to calcule the top pixel (or bottom pixel, depends on which way you look at)
                 num = (int)Math.round((pixels[x][y+1] + pixels[x+1][y+1] + pixels[x-1][y+1] + 
-                        pixels[x][y] + pixels[x+1][y] + pixels[x-1][y])/6);
+                        pixels[x][y] + pixels[x+1][y] + pixels[x-1][y])/6*0.98);
 
                 if(num != 0 && num < 245){
                     //Setting random values to give some live/reality to the flame
-                    num = num + ((int)(Math.random()*1) - (int)(Math.random()*1.2));
+                    num = num + ((int)(Math.random()*2) - (int)(Math.random()*2.2));
                 }
                 //Avoids posibles errors created with the random before done
                 if(num < 3) {
@@ -170,8 +170,10 @@ public class Flame extends BufferedImage implements Runnable {
                 pixels[x][y] = num;
 
             }
-
+            
         }
+        
+
     }    
             
 }

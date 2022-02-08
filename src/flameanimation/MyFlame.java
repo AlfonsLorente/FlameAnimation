@@ -92,8 +92,8 @@ public class MyFlame extends JFrame {
         fireThread.start();
         System.out.println("Threads1 " + Thread.activeCount());
         
-        fireAnimationThread = new Thread(flameAnimation);
-        fireAnimationThread.start();
+        //fireAnimationThread = new Thread(flameAnimation);
+        //fireAnimationThread.start();
                 System.out.println("Threads2 " + Thread.activeCount());
 
         setUpViewer();
@@ -176,7 +176,7 @@ public class MyFlame extends JFrame {
     }
 
     private void setUpFlame() {
-        flame = new Flame(500, 850, BufferedImage.TYPE_INT_ARGB);
+        flame = new Flame(250, 300, BufferedImage.TYPE_INT_ARGB);
         flame.setRate(30);
         flame.setPalette(flamePalette);
         flame.setCoolAmount(flameCoolAmount);
@@ -206,9 +206,9 @@ public class MyFlame extends JFrame {
         c5 = Color.GRAY.darker();
         //set the palette colors
         palette.addTargetColor(new TargetColor(255, c1));
-        palette.addTargetColor(new TargetColor(220, c2));
-        palette.addTargetColor(new TargetColor(140, c3));
-        palette.addTargetColor(new TargetColor(15, c4));
+        palette.addTargetColor(new TargetColor(200, c2));
+        palette.addTargetColor(new TargetColor(50, c3));
+        palette.addTargetColor(new TargetColor(8, c4));
         palette.addTargetColor(new TargetColor(0, c5));
         return palette;
 
@@ -220,8 +220,8 @@ public class MyFlame extends JFrame {
         FlamePalette palette = new FlamePalette();
         palette.addTargetColor(new TargetColor(255, c1));
         palette.addTargetColor(new TargetColor(220, c2));
-        palette.addTargetColor(new TargetColor(140, c3));
-        palette.addTargetColor(new TargetColor(15, c4));
+        palette.addTargetColor(new TargetColor(50, c3));
+        palette.addTargetColor(new TargetColor(8, c4));
         palette.addTargetColor(new TargetColor(0, c5));
         flamePalette = palette;
         flame.setPalette(flamePalette);
