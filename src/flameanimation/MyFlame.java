@@ -40,7 +40,7 @@ public class MyFlame extends JFrame {
     private int flameCoolAmount = 70;
     private static Viewer viewer;
     private Thread thread;
-    private int viewerRate = 20;
+    private int viewerRate = 50;
     private FlamePalette flamePalette;
     private Flame flame;
     private FlameAnimation flameAnimation;
@@ -189,15 +189,15 @@ public class MyFlame extends JFrame {
     public FlamePalette setFlamePalette(FlamePalette palette) {
         //Create the palette
         palette = new FlamePalette();
-        c1 = Color.WHITE;
-        c2 = Color.YELLOW;
-        c3 = Color.ORANGE;
-        c4 = Color.RED;
-        c5 = Color.GRAY.darker().darker();
+        c1 = new Color(255, 255, 255, 255);
+        c2 = new Color(255, 233, 0, 240);
+        c3 = new Color(155,135,12, 230);
+        c4 = new Color(204,0,0, 220);
+        c5 = new Color(51,46,46, 210);
         //set the palette colors
         palette.addTargetColor(new TargetColor(255, c1));
-        palette.addTargetColor(new TargetColor(150, c2));
-        palette.addTargetColor(new TargetColor(50, c3));
+        palette.addTargetColor(new TargetColor(50, c2));
+        palette.addTargetColor(new TargetColor(20, c3));
         palette.addTargetColor(new TargetColor(15, c4));
         palette.addTargetColor(new TargetColor(0, c5));
         return palette;
@@ -207,6 +207,12 @@ public class MyFlame extends JFrame {
     //setFlamePalette: Prepare the palette
     public void setFlamePalette(Color c1, Color c2, Color c3, Color c4, Color c5) {
         //Set new palette colors
+        c1 = new Color(c1.getRed(), c1.getGreen(), c1.getBlue(), 255);
+        c2 = new Color(c2.getRed(), c2.getGreen(), c2.getBlue(), 240);
+        c3 = new Color(c3.getRed(), c3.getGreen(), c3.getBlue(), 230);
+        c4 = new Color(c4.getRed(), c4.getGreen(), c4.getBlue(), 220);
+        c5 = new Color(c5.getRed(), c5.getGreen(), c5.getBlue(), 210);
+        
         FlamePalette palette = new FlamePalette();
         palette.addTargetColor(new TargetColor(255, c1));
         palette.addTargetColor(new TargetColor(170, c2));

@@ -266,7 +266,7 @@ public class ControlPanel extends JPanel implements ActionListener{
         viewerSliderRate.setOpaque(false);
         viewerSliderRate.setForeground(Color.WHITE);
         viewerSliderRate.setBackground(Color.red);
-        viewerSliderRate.setValue(20);
+        viewerSliderRate.setValue(50);
         
         //set up constraints
         constraints.gridwidth = 6;
@@ -310,7 +310,7 @@ public class ControlPanel extends JPanel implements ActionListener{
         flameSliderRate.setOpaque(false);
         flameSliderRate.setForeground(Color.WHITE);
         flameSliderRate.setBackground(Color.red);
-        flameSliderRate.setValue(30);
+        flameSliderRate.setValue(50);
         //set up the constraints
         constraints.gridwidth = 6;
         constraints.gridx = 1; 

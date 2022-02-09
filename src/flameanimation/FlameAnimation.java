@@ -28,7 +28,6 @@ public class FlameAnimation extends Flame {
         this.convolutedImage = convolutedImage;
         this.cleanFlame();
         createSparks();
-        
 
     }
 
@@ -46,7 +45,7 @@ public class FlameAnimation extends Flame {
                 green = new Color(convolutedImage.getRGB(i, j), true).getGreen();
                 blue = new Color(convolutedImage.getRGB(i, j), true).getBlue();
                 luminance = (red * 0.2116f + green * 0.7152f + blue * 0.0722f) / 255;
-                if (luminance > 0.8) {
+                if (luminance > 0.75) {
                     sparks[i][j] = 255;
 
                 } else {
@@ -59,23 +58,22 @@ public class FlameAnimation extends Flame {
 
     @Override
     protected void createCool() {
-        
-        
+
         for (int i = 0; i < this.getWidth(); i++) {
             for (int j = 0; j < this.getHeight(); j++) {
+
+                if (pixels[i][j] == 0) {
+                    pixels[i][j] = sparks[i][j];
+
+                }
+
                 int rand = (int) (Math.random() * 100);
-
-                    if(rand > coolAmount){
-                        pixels[i][j] = 1;
-                    }
-
+                if (rand > coolAmount) {
+                    pixels[i][j] = 0;
+                }
                 
-                 if (pixels[i][j] == 0) {
-                    int random = (int) (Math.random() * 100);
-                    if(random > 10){
-                        pixels[i][j] = sparks[i][j];
-                    }
-
+                if(pixels[i][j] > 10 && pixels[i][j] < 150){
+                    pixels[i][j] *= 1.1;
                 }
 
             }

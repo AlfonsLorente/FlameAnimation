@@ -27,7 +27,7 @@ public class Flame extends BufferedImage implements Runnable {
     private FlamePalette flamePalette;
     protected int coolAmount = 70;
     private boolean pausedFlame = false;
-    private int rate = 30;
+    private int rate = 50;
     protected int[][] pixels;
     protected int[][] sparks;
     private boolean alive = true;
@@ -69,9 +69,8 @@ public class Flame extends BufferedImage implements Runnable {
         if (sparks == null) {
             createSparks();
         }
-
         createCool();
-        coolAllFire();
+        changeFireBehaviour();
         temperatureEvolve();
         createFlameImage();
 
@@ -114,16 +113,16 @@ public class Flame extends BufferedImage implements Runnable {
 
     }
 
-    private void coolAllFire() {
+    private void changeFireBehaviour() {
         for (int y = height - 2; y >= 1; y--) {
             for (int x = 1; x < width - 1; x++) {
                 int rand = (int) (Math.random() * 100);
                 if (rand > 60) {
                     if (y < height / 2) {
-                        pixels[x][y] = (int) Math.round(pixels[x][y] * 0.8);
+                        pixels[x][y] = (int) Math.round(pixels[x][y] * 0.9);
                     } else {
                         if (pixels[x][y] < 180) {
-                            pixels[x][y] = (int) Math.round(pixels[x][y] * 1.4);
+                            pixels[x][y] = (int) Math.round(pixels[x][y] * 1.5);
                         }
 
                     }
@@ -231,4 +230,5 @@ public class Flame extends BufferedImage implements Runnable {
 
     }
 
+   
 }
