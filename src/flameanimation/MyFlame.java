@@ -166,7 +166,7 @@ public class MyFlame extends JFrame {
     }
 
     private void setUpFlame() {
-        flame = new Flame(100, 200, BufferedImage.TYPE_INT_ARGB);
+        flame = new Flame(600, 450, BufferedImage.TYPE_INT_ARGB);
         flame.setRate(30);
         flame.setPalette(flamePalette);
         flame.setCoolAmount(flameCoolAmount);

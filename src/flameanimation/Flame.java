@@ -70,7 +70,7 @@ public class Flame extends BufferedImage implements Runnable {
             createSparks();
         }
         createCool();
-        changeFireBehaviour();
+        //changeFireBehaviour();
         temperatureEvolve();
         createFlameImage();
 
@@ -129,9 +129,9 @@ public class Flame extends BufferedImage implements Runnable {
                 }
                 int r = (int) (Math.random() * 100);
                 if (x > width / 2) {
-                    if(r > 85){
+                    if (r > 85) {
                         pixels[x][y] = (int) Math.round(pixels[x][y] * 0.95);
-                    }else{
+                    } else {
                         if (pixels[x][y] < 200) {
                             pixels[x][y] = (int) Math.round(pixels[x][y] * 1.01);
                         }
@@ -170,8 +170,8 @@ public class Flame extends BufferedImage implements Runnable {
 
     //createFlameImage: Loops around all the flame image and sets the pixels to its color with the flame palette
     private void createFlameImage() {
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 int color = flamePalette.getColor(pixels[x][y]);
                 this.setRGB(x, y, color);
 
@@ -194,7 +194,7 @@ public class Flame extends BufferedImage implements Runnable {
                         + (pixels[x - 1][y] * 0.6)
                         + (pixels[x][y - 1] * 0.5)
                         + (pixels[x - 1][y - 1] * 0.1)
-                        + (pixels[x + 1][y - 1] * 0.1)) / 9 * 1.05);
+                        + (pixels[x + 1][y - 1] * 0.1)) / 9 * 1.12);
                 int rand = (int) (Math.random() * 100);
                 if (rand > 85) {
                     num = pixels[x][y + 1];
@@ -223,12 +223,44 @@ public class Flame extends BufferedImage implements Runnable {
                     num = 255;
                 }
                 pixels[x][y] = num;
+                /*
+                int rand2 = (int) (Math.random() * 100);
+                if (rand2 > 60) {
+                    if (y < height / 2) {
+                        pixels[x][y] = (int) Math.round(pixels[x][y] * 0.9);
+                    } else {
+                        if (pixels[x][y] < 180) {
+                            pixels[x][y] = (int) Math.round(pixels[x][y] * 1.5);
+                        }
 
+                    }
+                }
+                int r = (int) (Math.random() * 100);
+                if (x > width / 2) {
+                    if(r > 85){
+                        pixels[x][y] = (int) Math.round(pixels[x][y] * 0.95);
+                    }else{
+                        if (pixels[x][y] < 200) {
+                            pixels[x][y] = (int) Math.round(pixels[x][y] * 1.01);
+                        }
+                    }
+                }*/
             }
 
         }
 
     }
 
-   
+    /*
+    private void temperatureEvolve() {
+        for (int j = pixels[0].length - 2; j >= 0; j--) {
+                for (int i = 1; i < pixels.length - 1; i++) {
+                    pixels[i][j] = (int) (((pixels[i][j + 1] + pixels[i + 1][j + 1]
+                            + pixels[i - 1][j + 1] + pixels[i - 1][j] + pixels[i + 1][j]
+                            + pixels[i][j]) / 6) * 1);
+                }
+        }
+    }
+    
+     */
 }
