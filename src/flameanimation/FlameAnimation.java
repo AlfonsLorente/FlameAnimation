@@ -45,7 +45,7 @@ public class FlameAnimation extends Flame {
                 green = new Color(convolutedImage.getRGB(i, j), true).getGreen();
                 blue = new Color(convolutedImage.getRGB(i, j), true).getBlue();
                 luminance = (red * 0.2116f + green * 0.7152f + blue * 0.0722f) / 255;
-                if (luminance > 0.75) {
+                if (luminance > 0.2) {
                     sparks[i][j] = 255;
 
                 } else {

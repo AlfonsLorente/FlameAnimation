@@ -353,7 +353,7 @@ public class ControlPanel extends JPanel implements ActionListener{
         coolSlider.setOpaque(false);
         coolSlider.setForeground(Color.WHITE);
         coolSlider.setBackground(Color.red);
-        coolSlider.setValue(70);
+        coolSlider.setValue(35);
         //set up slider constraints
         constraints.gridwidth = 6;
         constraints.gridx = 1; 

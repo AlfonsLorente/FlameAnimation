@@ -37,7 +37,7 @@ public class MyFlame extends JFrame {
     //VARIABLES
     private boolean isPaused = false;
     private boolean isExit = false;
-    private int flameCoolAmount = 70;
+    private int flameCoolAmount = 35;
     private static Viewer viewer;
     private Thread thread;
     private int viewerRate = 50;
@@ -89,8 +89,8 @@ public class MyFlame extends JFrame {
 
         setUpFlameAnimation();
 
-        fireThread = new Thread(flame);
-        fireThread.start();
+        //fireThread = new Thread(flame);
+        //fireThread.start();
 
         fireAnimationThread = new Thread(flameAnimation);
         fireAnimationThread.start();
@@ -166,7 +166,7 @@ public class MyFlame extends JFrame {
     }
 
     private void setUpFlame() {
-        flame = new Flame(600, 450, BufferedImage.TYPE_INT_ARGB);
+        flame = new Flame(400, 450, BufferedImage.TYPE_INT_ARGB);
         flame.setRate(30);
         flame.setPalette(flamePalette);
         flame.setCoolAmount(flameCoolAmount);
