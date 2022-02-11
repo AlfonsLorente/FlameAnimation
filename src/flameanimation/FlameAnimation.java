@@ -15,12 +15,22 @@ import java.awt.image.BufferedImage;
 public class FlameAnimation extends Flame {
 
     private BufferedImage convolutedImage;
+    private float luminanceMin;
+
+    
 
     public FlameAnimation(int width, int height, int imageType, BufferedImage convolutedImage) {
         super(width, height, imageType);
         this.convolutedImage = convolutedImage;
+        luminanceMin = 0.45f;
 
     }
+
+    public void setLuminanceMin(float luminanceMin) {
+        this.luminanceMin = luminanceMin;
+        createSparks();
+    }
+    
 
     public void setConvolutedImage(BufferedImage convolutedImage) {
         this.width = convolutedImage.getWidth();
@@ -34,7 +44,6 @@ public class FlameAnimation extends Flame {
     @Override
     public void createSparks() {
         sparks = new int[width][height];
-
         float luminance;
         int red;
         int green;
@@ -45,7 +54,7 @@ public class FlameAnimation extends Flame {
                 green = new Color(convolutedImage.getRGB(i, j), true).getGreen();
                 blue = new Color(convolutedImage.getRGB(i, j), true).getBlue();
                 luminance = (red * 0.2116f + green * 0.7152f + blue * 0.0722f) / 255;
-                if (luminance > 0.2) {
+                if (luminance > luminanceMin) {
                     sparks[i][j] = 255;
 
                 } else {
@@ -58,24 +67,21 @@ public class FlameAnimation extends Flame {
 
     @Override
     protected void createCool() {
-
+        int rand;
         for (int i = 0; i < this.getWidth(); i++) {
             for (int j = 0; j < this.getHeight(); j++) {
 
                 if (pixels[i][j] == 0) {
                     pixels[i][j] = sparks[i][j];
 
-                }
+                }else{
 
-                int rand = (int) (Math.random() * 100);
+                rand = (int) (Math.random() * 100);
                 if (rand > coolAmount) {
                     pixels[i][j] = 0;
                 }
-                
-                if(pixels[i][j] > 10 && pixels[i][j] < 150){
-                    pixels[i][j] *= 1.1;
                 }
-
+               
             }
 
         }

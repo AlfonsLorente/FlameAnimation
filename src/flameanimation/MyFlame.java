@@ -37,10 +37,11 @@ public class MyFlame extends JFrame {
     //VARIABLES
     private boolean isPaused = false;
     private boolean isExit = false;
-    private int flameCoolAmount = 35;
+    private int flameCoolAmount = 45;
     private static Viewer viewer;
     private Thread thread;
-    private int viewerRate = 50;
+    private int viewerRate = 55;
+    private int flameRate = 55;
     private FlamePalette flamePalette;
     private Flame flame;
     private FlameAnimation flameAnimation;
@@ -52,7 +53,7 @@ public class MyFlame extends JFrame {
     private String audio = "MUSIC/zombies.wav";
     private Clip clip;
     private boolean audioPlaying = false;
-    private String imageSrc = "IMG/paisajeBonito.jpg";
+    private String imageSrc = "IMG/paisajenevado.jpg";
 
     private BufferedImage image;
     private BufferedImage convolutedImage;
@@ -62,6 +63,7 @@ public class MyFlame extends JFrame {
     private float[][] kernel = new float[3][3];
     private float kernelDiv = 1;
 
+   
     //fireState: enum that sets the fire state
     enum FireState {
         EXIT,
@@ -89,8 +91,8 @@ public class MyFlame extends JFrame {
 
         setUpFlameAnimation();
 
-        //fireThread = new Thread(flame);
-        //fireThread.start();
+        fireThread = new Thread(flame);
+        fireThread.start();
 
         fireAnimationThread = new Thread(flameAnimation);
         fireAnimationThread.start();
@@ -166,8 +168,8 @@ public class MyFlame extends JFrame {
     }
 
     private void setUpFlame() {
-        flame = new Flame(400, 450, BufferedImage.TYPE_INT_ARGB);
-        flame.setRate(30);
+        flame = new Flame(550, 500, BufferedImage.TYPE_INT_ARGB);
+        flame.setRate(flameRate);
         flame.setPalette(flamePalette);
         flame.setCoolAmount(flameCoolAmount);
 
@@ -190,15 +192,15 @@ public class MyFlame extends JFrame {
         //Create the palette
         palette = new FlamePalette();
         c1 = new Color(255, 255, 255, 255);
-        c2 = new Color(255, 233, 0, 240);
-        c3 = new Color(155,135,12, 230);
-        c4 = new Color(204,0,0, 220);
-        c5 = new Color(51,46,46, 210);
+        c2 = new Color(255, 233, 0, 230);
+        c3 = new Color(155,135,12, 220);
+        c4 = new Color(204,0,0, 210);
+        c5 = new Color(51,46,46, 200);
         //set the palette colors
         palette.addTargetColor(new TargetColor(255, c1));
-        palette.addTargetColor(new TargetColor(50, c2));
-        palette.addTargetColor(new TargetColor(20, c3));
-        palette.addTargetColor(new TargetColor(15, c4));
+        palette.addTargetColor(new TargetColor(80, c2));
+        palette.addTargetColor(new TargetColor(30, c3));
+        palette.addTargetColor(new TargetColor(20, c4));
         palette.addTargetColor(new TargetColor(0, c5));
         return palette;
 
@@ -215,9 +217,9 @@ public class MyFlame extends JFrame {
         
         FlamePalette palette = new FlamePalette();
         palette.addTargetColor(new TargetColor(255, c1));
-        palette.addTargetColor(new TargetColor(170, c2));
-        palette.addTargetColor(new TargetColor(90, c3));
-        palette.addTargetColor(new TargetColor(15, c4));
+        palette.addTargetColor(new TargetColor(80, c2));
+        palette.addTargetColor(new TargetColor(30, c3));
+        palette.addTargetColor(new TargetColor(20, c4));
         palette.addTargetColor(new TargetColor(0, c5));
         flamePalette = palette;
         flame.setPalette(flamePalette);
@@ -429,5 +431,11 @@ public class MyFlame extends JFrame {
         flameAnimation.setConvolutedImage(convolutedImage);
         viewer.setConvolutedImage(convolutedImage);
     }
+    
+     void setLuminanceMin(int value) {
+         flameAnimation.setLuminanceMin((float)value / 100);
+         
+    }
+
 
 }

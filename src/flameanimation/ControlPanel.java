@@ -69,6 +69,8 @@ public class ControlPanel extends JPanel implements ActionListener{
     private JMenuBar convolutionMenuBar = new JMenuBar();
     private JCheckBox redCheckbox, greenCheckbox, blueCheckbox;
     private JFileChooser fileChooser;
+    private JLabel luminanceLabel;
+    private JSlider luminanceSlider;
     
     
 
@@ -86,6 +88,8 @@ public class ControlPanel extends JPanel implements ActionListener{
         flameRateSetUp();
         createCoolSetUp();
         paletteChooserSetUp();
+        flameAnimationLuminance();
+        
         //audioButtonSetUp();
         fileChooserSetUp();
         userTextInputSetUp();
@@ -266,7 +270,7 @@ public class ControlPanel extends JPanel implements ActionListener{
         viewerSliderRate.setOpaque(false);
         viewerSliderRate.setForeground(Color.WHITE);
         viewerSliderRate.setBackground(Color.red);
-        viewerSliderRate.setValue(50);
+        viewerSliderRate.setValue(55);
         
         //set up constraints
         constraints.gridwidth = 6;
@@ -310,7 +314,7 @@ public class ControlPanel extends JPanel implements ActionListener{
         flameSliderRate.setOpaque(false);
         flameSliderRate.setForeground(Color.WHITE);
         flameSliderRate.setBackground(Color.red);
-        flameSliderRate.setValue(50);
+        flameSliderRate.setValue(55);
         //set up the constraints
         constraints.gridwidth = 6;
         constraints.gridx = 1; 
@@ -353,7 +357,7 @@ public class ControlPanel extends JPanel implements ActionListener{
         coolSlider.setOpaque(false);
         coolSlider.setForeground(Color.WHITE);
         coolSlider.setBackground(Color.red);
-        coolSlider.setValue(35);
+        coolSlider.setValue(45);
         //set up slider constraints
         constraints.gridwidth = 6;
         constraints.gridx = 1; 
@@ -454,6 +458,48 @@ public class ControlPanel extends JPanel implements ActionListener{
               
         });  
     }
+    
+     private void flameAnimationLuminance() {
+         //Declare the grid bag constraints
+        GridBagConstraints constraints = new GridBagConstraints();  
+        //set up the label
+        luminanceLabel = new JLabel("Luminance min: ");
+        luminanceLabel.setForeground(Color.WHITE);
+        //set up constraints
+        constraints.gridx = 0; 
+        constraints.gridy = 5;
+        constraints.weightx = 0.1;
+        constraints.weighty = 0.1;
+        panelFlame.add(luminanceLabel, constraints);
+        
+        //set up the slider
+        luminanceSlider = new JSlider(JSlider.HORIZONTAL, 1, 100, 20);
+        luminanceSlider.setMinorTickSpacing(10);
+        luminanceSlider.setMajorTickSpacing(20);  
+        luminanceSlider.setPaintTicks(true);  
+        luminanceSlider.setPaintLabels(true); 
+        luminanceSlider.setPaintTicks(true);  
+        luminanceSlider.setPaintLabels(true); 
+        luminanceSlider.setOpaque(false);
+        luminanceSlider.setForeground(Color.WHITE);
+        luminanceSlider.setBackground(Color.red);
+        luminanceSlider.setValue(45);
+        //set up slider constraints
+        constraints.gridwidth = 6;
+        constraints.gridx = 1; 
+        constraints.gridy = 5;
+        constraints.weightx = 0.9;
+        constraints.weighty = 0.1;
+        panelFlame.add(luminanceSlider, constraints);
+        //add slider change listener
+        luminanceSlider.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent event) {
+                myFlame.setLuminanceMin(luminanceSlider.getValue());
+        
+            }   
+        });
+    }
+    
 
     private void audioButtonSetUp() {
        //Declare the grid bag constraints
@@ -775,6 +821,8 @@ public class ControlPanel extends JPanel implements ActionListener{
             }
         });
     }
+
+   
 
   
     
