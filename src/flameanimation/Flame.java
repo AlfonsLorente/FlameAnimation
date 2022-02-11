@@ -140,7 +140,7 @@ public class Flame extends BufferedImage implements Runnable {
     private void temperatureEvolve() {
         int num;
         Random randNum = new Random();
-        float rand, rand2;
+        float rand;
         for (int y = height - 2; y >= 1; y--) {
             for (int x = 1; x < width - 1; x++) {
                 //Formula to calcule the top pixel (or bottom pixel, depends on which way you look at)

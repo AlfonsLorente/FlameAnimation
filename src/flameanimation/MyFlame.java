@@ -114,7 +114,7 @@ public class MyFlame extends JFrame {
         setMyFlame();
 
         //set Audio
-        //setUpAudio(audio);
+        setUpAudio(audio);
         setGridRules();
 
         //Start the viewer thread
@@ -198,10 +198,10 @@ public class MyFlame extends JFrame {
         //Create the palette
         palette = new FlamePalette();
         c1 = new Color(255, 255, 255, 255);
-        c2 = new Color(255, 233, 40, 230);
+        c2 = new Color(255, 233, 40, 225);
         c3 = new Color(255,165,0, 200);
-        c4 = new Color(255,0,0, 170);
-        c5 = new Color(75,1,15, 150);
+        c4 = new Color(255,0,0, 175);
+        c5 = new Color(75,1,15, 140);
         //set the palette colors
         palette.addTargetColor(new TargetColor(255, c1));
         palette.addTargetColor(new TargetColor(80, c2));

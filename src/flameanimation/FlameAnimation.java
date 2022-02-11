@@ -20,7 +20,7 @@ public class FlameAnimation extends Flame {
     public FlameAnimation(int width, int height, int imageType, BufferedImage convolutedImage) {
         super(width, height, imageType);
         this.convolutedImage = convolutedImage;
-        luminanceMin = 0.45f;
+        luminanceMin = 0.80f;
 
     }
 

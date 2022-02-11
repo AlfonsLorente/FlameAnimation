@@ -90,7 +90,7 @@ public class ControlPanel extends JPanel implements ActionListener{
         paletteChooserSetUp();
         flameAnimationLuminance();
         
-        //audioButtonSetUp();
+        audioButtonSetUp();
         fileChooserSetUp();
         userTextInputSetUp();
         convoluterSetUp();
@@ -483,7 +483,7 @@ public class ControlPanel extends JPanel implements ActionListener{
         luminanceSlider.setOpaque(false);
         luminanceSlider.setForeground(Color.WHITE);
         luminanceSlider.setBackground(Color.red);
-        luminanceSlider.setValue(45);
+        luminanceSlider.setValue(80);
         //set up slider constraints
         constraints.gridwidth = 6;
         constraints.gridx = 1; 
@@ -512,7 +512,7 @@ public class ControlPanel extends JPanel implements ActionListener{
         audio.setIcon( new ImageIcon("IMG/nota.png") );
         //set up constraints
         constraints.gridx = 1; 
-        constraints.gridy = 5; 
+        constraints.gridy = 6; 
         constraints.ipady = 10;
         constraints.fill = GridBagConstraints.NONE;
         constraints.gridwidth = 3;
