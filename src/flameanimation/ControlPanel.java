@@ -509,7 +509,7 @@ public class ControlPanel extends JPanel implements ActionListener{
         audio.setBorderPainted(false);
         audio.setFocusPainted(false);
         audio.setContentAreaFilled(false);
-        audio.setIcon( new ImageIcon("IMG/nota.png") );
+        audio.setIcon( new ImageIcon("ICON/nota.png") );
         //set up constraints
         constraints.gridx = 1; 
         constraints.gridy = 6; 
