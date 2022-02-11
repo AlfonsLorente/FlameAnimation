@@ -26,10 +26,12 @@ import javax.swing.ImageIcon;
 public class Viewer extends Canvas implements Runnable{
     //VARIABLES
     private int rate;
-    private Flame flame1;
-    private Flame flame2;
+    private Flame flame;
     private BufferedImage image;
-    private Thread fireThread;
+    private BufferedImage convolutedImage;
+    private FlameAnimation flameAnimation;
+
+
 
     //fireState: enum that sets the fire state
     enum FireState {
@@ -39,16 +41,17 @@ public class Viewer extends Canvas implements Runnable{
     }
 
     //CONSTRUCTOR
-    public Viewer(Flame flame){
-        try{
-            image = ImageIO.read(new File("IMG/hoguera.jpeg"));
-        }catch(IOException e){
-            e.getMessage();
-        }
-        this.flame1 = flame;
-        fireThread = new Thread(flame);
-        fireThread.start();
+    public Viewer(Flame flame, BufferedImage image, BufferedImage convolutedImage, FlameAnimation flameAnimation){
+        this.image = image;
+        this.convolutedImage = convolutedImage;
+        this.flame = flame;
+        this.flameAnimation = flameAnimation;
         
+        
+    }
+
+    public void setFlameAnimation(FlameAnimation flameAnimation) {
+        this.flameAnimation = flameAnimation;
     }
     
     
@@ -61,20 +64,27 @@ public class Viewer extends Canvas implements Runnable{
     public void setRate(int rate) {
         this.rate = rate;
     }
-    //setFireThread: sets the state of the fire
-    public void setFireThread(FireState state){
-        switch(state){
-            case EXIT:
-                System.exit(0);
-                break;
-            case PAUSE:
-                fireThread.suspend();
-                break;
-            case RESUME:
-                fireThread.resume();
-                break;
-        }
+   
+    
+    public BufferedImage getImage() {
+        return image;
     }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
+        System.out.println("setImage " + image.getWidth());
+    }
+
+    public BufferedImage getConvolutedImage() {
+        return convolutedImage;
+    }
+
+    public void setConvolutedImage(BufferedImage convolutedImage) {
+        this.convolutedImage = convolutedImage;
+    }
+
+    
+    
     
     //PUBLICS METHODS:
     //paint: Draw the flames and the background image
@@ -90,11 +100,15 @@ public class Viewer extends Canvas implements Runnable{
             return;
         }
         g = bs.getDrawGraphics();
-        g.drawImage(image.getScaledInstance(1350, -1, BufferedImage.SCALE_SMOOTH), -130, 0, this);
-        g.drawImage(flame1,360,0,400,600,null);
-        if(flame2 != null){
-            g.drawImage(flame2,480,0,400,600,null);
-        }
+        g.setColor(Color.black);
+        g.fillRect(0, 0, 1800, 1800);
+        g.drawImage(image.getScaledInstance(340, -1, BufferedImage.SCALE_SMOOTH), 0, 0, this);
+        g.drawImage(convolutedImage.getScaledInstance(340, -1, BufferedImage.SCALE_SMOOTH), 350, 0, this);
+        g.drawImage(flame.getScaledInstance(600, -1, BufferedImage.SCALE_SMOOTH),690,-300,null);
+        g.drawImage(image.getScaledInstance(650, -1, BufferedImage.SCALE_SMOOTH), 200, 260, this);
+        g.drawImage(flameAnimation.getScaledInstance(650, -1, BufferedImage.SCALE_SMOOTH), 200, 260, this);
+
+
         bs.show();
         g.dispose();
     }
@@ -119,6 +133,7 @@ public class Viewer extends Canvas implements Runnable{
                 Thread.sleep(rate);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Viewer.class.getName()).log(Level.SEVERE, null, ex);
+                
         }
             paint();
         }
