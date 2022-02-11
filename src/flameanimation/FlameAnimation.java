@@ -17,8 +17,6 @@ public class FlameAnimation extends Flame {
     private BufferedImage convolutedImage;
     private float luminanceMin;
 
-    
-
     public FlameAnimation(int width, int height, int imageType, BufferedImage convolutedImage) {
         super(width, height, imageType);
         this.convolutedImage = convolutedImage;
@@ -30,7 +28,6 @@ public class FlameAnimation extends Flame {
         this.luminanceMin = luminanceMin;
         createSparks();
     }
-    
 
     public void setConvolutedImage(BufferedImage convolutedImage) {
         this.width = convolutedImage.getWidth();
@@ -70,18 +67,28 @@ public class FlameAnimation extends Flame {
         int rand;
         for (int i = 0; i < this.getWidth(); i++) {
             for (int j = 0; j < this.getHeight(); j++) {
-
-                if (pixels[i][j] == 0) {
-                    pixels[i][j] = sparks[i][j];
-
-                }else{
-
+                
                 rand = (int) (Math.random() * 100);
-                if (rand > coolAmount) {
-                    pixels[i][j] = 0;
+
+                if (rand < coolAmount && sparks[i][j] == 255) {
+
+                        pixels[i][j] = sparks[i][j];
+
                 }
+                
+              /*
+
+                if (sparks[i][j] == 255 && pixels[i][j] == 0) {
+                        pixels[i][j] = 255;
                 }
-               
+                else if (coolAmount > rand && sparks[i][j] == 255) {
+                   
+                        pixels[i][j] = 0;
+                    
+                    
+                }
+                */            
+
             }
 
         }

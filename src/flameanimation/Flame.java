@@ -140,25 +140,27 @@ public class Flame extends BufferedImage implements Runnable {
     private void temperatureEvolve() {
         int num;
         Random randNum = new Random();
-        float rand;
+        float rand, rand2;
         for (int y = height - 2; y >= 1; y--) {
             for (int x = 1; x < width - 1; x++) {
                 //Formula to calcule the top pixel (or bottom pixel, depends on which way you look at)
-                    rand = randNum.nextFloat() * (1.7f - 0.5f) + 0.5f ;
+                    rand = randNum.nextFloat() * (1.75f - 0.45f) + 0.45f ;
+                    //rand2 = randNum.nextFloat() * (2.9f - 2.3f) + 2.3f ;
+
                 num = (int)(((pixels[x][y + 1] * 2.5)
-                        + (pixels[x + 1][y + 1] * 1.2)
-                        + (pixels[x - 1][y + 1] * 1.2)
+                        + (pixels[x + 1][y + 1] * 1.3)
+                        + (pixels[x - 1][y + 1] * 1.3)
                         + (pixels[x][y] * 1.1)
-                        + (pixels[x + 1][y] * 0.5)
+                        + (pixels[x + 1][y] * 0.4)
                         + (pixels[x - 1][y] * 0.6)
-                        + (pixels[x][y - 1] * 0.5)
+                        + (pixels[x][y - 1] * 0.4)
                         + (pixels[x - 1][y - 1] * 0.1)
                         + (pixels[x + 1][y - 1] * 0.1)) / 9 * rand);
                 
-                if (num < 5) {
+                if (num < 2) {
                     num = 0;
                 }
-                if (num > 255) {
+                else if (num > 255) {
                     num = 255;
                 }
                 pixels[x][y] = num;

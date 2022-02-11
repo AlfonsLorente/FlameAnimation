@@ -8,6 +8,8 @@ package flameanimation;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,6 +29,9 @@ import javax.swing.JPanel;
 import java.io.*;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
+import javax.swing.ImageIcon;
+import javax.swing.JMenuBar;
+import javax.swing.JRootPane;
 
 /**
  *
@@ -62,6 +67,7 @@ public class MyFlame extends JFrame {
     private boolean redState = true, greenState = true, blueState = true;
     private float[][] kernel = new float[3][3];
     private float kernelDiv = 1;
+    private JMenuBar menubar;
 
    
     //fireState: enum that sets the fire state
@@ -168,7 +174,7 @@ public class MyFlame extends JFrame {
     }
 
     private void setUpFlame() {
-        flame = new Flame(550, 500, BufferedImage.TYPE_INT_ARGB);
+        flame = new Flame(300, 600, BufferedImage.TYPE_INT_ARGB);
         flame.setRate(flameRate);
         flame.setPalette(flamePalette);
         flame.setCoolAmount(flameCoolAmount);
@@ -192,15 +198,15 @@ public class MyFlame extends JFrame {
         //Create the palette
         palette = new FlamePalette();
         c1 = new Color(255, 255, 255, 255);
-        c2 = new Color(255, 233, 0, 230);
-        c3 = new Color(155,135,12, 220);
-        c4 = new Color(204,0,0, 210);
-        c5 = new Color(51,46,46, 200);
+        c2 = new Color(255, 233, 40, 230);
+        c3 = new Color(255,165,0, 200);
+        c4 = new Color(255,0,0, 170);
+        c5 = new Color(75,1,15, 150);
         //set the palette colors
         palette.addTargetColor(new TargetColor(255, c1));
         palette.addTargetColor(new TargetColor(80, c2));
-        palette.addTargetColor(new TargetColor(30, c3));
-        palette.addTargetColor(new TargetColor(20, c4));
+        palette.addTargetColor(new TargetColor(40, c3));
+        palette.addTargetColor(new TargetColor(15, c4));
         palette.addTargetColor(new TargetColor(0, c5));
         return palette;
 
@@ -293,6 +299,16 @@ public class MyFlame extends JFrame {
         this.getContentPane().setBackground(Color.BLACK);
         this.setLayout(new GridBagLayout());
         this.setBounds(0, 0, 1360, 790);
+        this.setUndecorated(true);
+        this.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+        this.setIconImage(new ImageIcon("ICON/flameIco.png").getImage());
+        
+        
+        
+        this.menubar = new JMenuBar();
+        menubar.setOpaque(true);
+        menubar.setBackground(Color.RED);
+        this.setJMenuBar(menubar);
         this.setResizable(false);
     }
 

@@ -72,7 +72,6 @@ public class Viewer extends Canvas implements Runnable{
 
     public void setImage(BufferedImage image) {
         this.image = image;
-        System.out.println("setImage " + image.getWidth());
     }
 
     public BufferedImage getConvolutedImage() {
@@ -104,7 +103,7 @@ public class Viewer extends Canvas implements Runnable{
         g.fillRect(0, 0, 1800, 1800);
         g.drawImage(image.getScaledInstance(340, -1, BufferedImage.SCALE_SMOOTH), 0, 0, this);
         g.drawImage(convolutedImage.getScaledInstance(340, -1, BufferedImage.SCALE_SMOOTH), 350, 0, this);
-        g.drawImage(flame.getScaledInstance(600, -1, BufferedImage.SCALE_SMOOTH),690,-300,null);
+        g.drawImage(flame.getScaledInstance(345, -1, BufferedImage.SCALE_SMOOTH),695,-440,null);
         g.drawImage(image.getScaledInstance(650, -1, BufferedImage.SCALE_SMOOTH), 200, 260, this);
         g.drawImage(flameAnimation.getScaledInstance(650, -1, BufferedImage.SCALE_SMOOTH), 200, 260, this);
 
