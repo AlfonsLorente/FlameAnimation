@@ -699,7 +699,7 @@ public class ControlPanel extends JPanel implements ActionListener {
         //Declare the grid bag constraints
         GridBagConstraints constraints = new GridBagConstraints();
         //Set up title
-        title = new JLabel("WITCHES N'STITCHES");
+        title = new JLabel("APOCALYPSE IT");
         title.setForeground(Color.WHITE);
         title.setFont(new Font("Serif", Font.BOLD, 25));
         title.setBackground(Color.BLACK);
