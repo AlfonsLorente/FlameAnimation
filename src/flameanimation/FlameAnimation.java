@@ -21,10 +21,11 @@ public class FlameAnimation extends Flame {
     //CONSTRUCTORS
     /**
      * sets the super variables, the convoluted image and a luminance minimum
+     *
      * @param width - int
      * @param height - height
      * @param imageType - int
-     * @param convolutedImage - BufferedImage 
+     * @param convolutedImage - BufferedImage
      */
     public FlameAnimation(int width, int height, int imageType, BufferedImage convolutedImage) {
         super(width, height, imageType);
@@ -33,20 +34,10 @@ public class FlameAnimation extends Flame {
 
     }
 
-    
     //GETTERS AND SETTERS
-    
-    /**
-     * set a new luminanceMin value
-     * @param luminanceMin - float
-     */
-    public void setLuminanceMin(float luminanceMin) {
-        this.luminanceMin = luminanceMin;
-        createSparks();//need to change the spark array
-    }
-
     /**
      * change the convolutedImage
+     *
      * @param convolutedImage - BufferedImage
      */
     public void setConvolutedImage(BufferedImage convolutedImage) {
@@ -58,8 +49,38 @@ public class FlameAnimation extends Flame {
 
     }
 
+    /**
+     * set a new luminanceMin value
+     *
+     * @param luminanceMin - float
+     */
+    public void setLuminanceMin(float luminanceMin) {
+        this.luminanceMin = luminanceMin;
+        createSparks();//need to change the spark array
+    }
+
     //PROTECTED METHODS
-    
+    /**
+     * creates cool for the flame animation
+     */
+    @Override
+    protected void createCool() {
+        int rand;
+        for (int i = 0; i < this.getWidth(); i++) {
+            for (int j = 0; j < this.getHeight(); j++) {
+                rand = (int) (Math.random() * 100);
+                if (rand < coolAmount && sparks[i][j] == 255) {
+
+                    pixels[i][j] = 255;
+
+                }
+
+            }
+
+        }
+
+    }
+
     /**
      * create the sparks array depending on the luminance
      */
@@ -92,32 +113,7 @@ public class FlameAnimation extends Flame {
         }
     }
 
-    
-    /**
-     * creates cool for the flame animation 
-     */
-    @Override
-    protected void createCool() {
-        int rand;
-        for (int i = 0; i < this.getWidth(); i++) {
-            for (int j = 0; j < this.getHeight(); j++) {
-                rand = (int) (Math.random() * 100);
-                if (rand < coolAmount && sparks[i][j] == 255) {
-
-                        pixels[i][j] = 255;
-
-                }
-     
-
-            }
-
-        }
-
-    }
-    
-    
     //PRIVATE METHODS
-
     /**
      * sets all pixels to 0
      */

@@ -6,25 +6,13 @@
 package flameanimation;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -38,7 +26,6 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -46,7 +33,6 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileSystemView;
-import javax.swing.plaf.ColorUIResource;
 
 /**
  *
@@ -62,7 +48,6 @@ public class ControlPanel extends JPanel implements ActionListener {
     private Border line = new LineBorder(Color.RED);
     private Border margin = new EmptyBorder(5, 15, 5, 15);
     private Border compound = new CompoundBorder(line, margin);
-    private BufferedImage bufferedImage;
     private JTabbedPane tabs;
     private JPanel panelFlame, panelConvolution;
     private JMenu convolutionMenu;
@@ -73,8 +58,6 @@ public class ControlPanel extends JPanel implements ActionListener {
     private JLabel luminanceLabel;
     private JSlider luminanceSlider;
 
-    
-    
     /**
      * Sets up all the control panel
      */
@@ -103,26 +86,77 @@ public class ControlPanel extends JPanel implements ActionListener {
 
     }
 
-    //PUBLIC METHODS
-    //Getters and setters
+    //GETTERS AND SETTERS
     /**
      * sets myFlame parameter
-     * @param myFlame 
+     *
+     * @param myFlame
      */
     public void setMyFlame(MyFlame myFlame) {
         this.myFlame = myFlame;
     }
 
+    //PUBLIC METHODS
+    /**
+     * Get the menu item clicked on the convolution menu Sends to myFlame a
+     * convolution.Type
+     *
+     * @param e - ActionEvent from menu list
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand().equals("Sharpen")) {
+            myFlame.changeConvolutedImage(Convolution.Type.SHARPEN);
+
+        } else if (e.getActionCommand().equals("Smooth")) {
+            myFlame.changeConvolutedImage(Convolution.Type.SMOOTH);
+
+        } else if (e.getActionCommand().equals("Raise")) {
+            myFlame.changeConvolutedImage(Convolution.Type.RAISE);
+
+        } else if (e.getActionCommand().equals("Outline")) {
+            myFlame.changeConvolutedImage(Convolution.Type.OUTLINE);
+
+        } else if (e.getActionCommand().equals("Emboss")) {
+            myFlame.changeConvolutedImage(Convolution.Type.EMBOSS);
+
+        } else if (e.getActionCommand().equals("Blur")) {
+            myFlame.changeConvolutedImage(Convolution.Type.BLUR);
+
+        } else if (e.getActionCommand().equals("Center Points")) {
+            myFlame.changeConvolutedImage(Convolution.Type.CENTERPOINTS);
+
+        }
+    }
+
     //PRIVATE METHODS
     /**
-     * controlPanelSetUp()
-     * sets the base of this class
+     * Set up the audio button that will start and stop the music.
      */
-    private void controlPanelSetUp() {
-        this.setLayout(new GridBagLayout());
-        this.setBackground(Color.BLACK);
-        this.setVisible(true);
-
+    private void audioButtonSetUp() {
+        //Declare the grid bag constraints
+        GridBagConstraints constraints = new GridBagConstraints();
+        //set up audio
+        JButton audio = new JButton();
+        audio.setBorderPainted(false);
+        audio.setFocusPainted(false);
+        audio.setContentAreaFilled(false);
+        audio.setIcon(new ImageIcon("ICON/nota.png"));
+        //set up constraints
+        constraints.gridx = 1;
+        constraints.gridy = 6;
+        constraints.ipady = 10;
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.gridwidth = 3;
+        constraints.weightx = 0;
+        constraints.weighty = 0.1;
+        panelFlame.add(audio, constraints);
+        //add the button listener
+        audio.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                myFlame.songController();
+            }
+        });
     }
 
     /**
@@ -146,204 +180,13 @@ public class ControlPanel extends JPanel implements ActionListener {
     }
 
     /**
-     * Sets up the tabs of the control panel
+     * controlPanelSetUp() sets the base of this class
      */
-    private void tabsSetUp() {
-        GridBagConstraints constraints = new GridBagConstraints();
+    private void controlPanelSetUp() {
+        this.setLayout(new GridBagLayout());
+        this.setBackground(Color.BLACK);
+        this.setVisible(true);
 
-        tabs = new JTabbedPane(JTabbedPane.TOP);
-        tabs.addTab("Fire", panelFlame);
-        tabs.addTab("Convolution", panelConvolution);
-        tabs.setForeground(Color.WHITE);
-        tabs.setBackground(Color.RED.darker().darker().darker().darker());
-        constraints.gridx = 0;
-        constraints.gridy = 1;
-        constraints.weightx = 1;
-        constraints.weighty = 1;
-        constraints.gridwidth = 1;
-        constraints.anchor = GridBagConstraints.NORTH;
-        constraints.fill = GridBagConstraints.BOTH;
-        //set the title
-        this.add(tabs, constraints);
-
-    }
-
-    /**
-     * set up the title
-     */
-    private void titleSetUp() {
-        //Declare the grid bag constraints
-        GridBagConstraints constraints = new GridBagConstraints();
-        //Set up title
-        title = new JLabel("WITCHES N'STITCHES");
-        title.setForeground(Color.WHITE);
-        title.setFont(new Font("Serif", Font.BOLD, 25));
-        title.setBackground(Color.BLACK);
-        title.setOpaque(true);
-        //set up constraints
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.weightx = 1;
-        constraints.weighty = 0.1;
-        constraints.gridwidth = 1;
-        //set the title
-        this.add(title, constraints);
-    }
-
-    /**
-     * set the exit button
-     */
-    private void stopSetUp() {
-        //Declare the grid bag constraints
-        GridBagConstraints constraints = new GridBagConstraints();
-        //set up stop
-        stop = new JButton("Exit");
-        stop.setBorderPainted(true);
-        stop.setFocusPainted(false);
-        stop.setContentAreaFilled(true);
-        stop.setBackground(Color.WHITE);
-        stop.setForeground(Color.BLACK);
-        stop.setBorder(compound);
-
-        //set up constraints
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.ipady = 10;
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.weightx = 0.1;
-        constraints.weighty = 0.1;
-        panelFlame.add(stop, constraints);
-        //add the button listener
-        stop.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                myFlame.setExit();
-            }
-        });
-
-    }
-
-    /**
-     * set up pause button
-     */
-    private void pauseSetUp() {
-        //Declare the grid bag constraints
-        GridBagConstraints constraints = new GridBagConstraints();
-        //set up pause
-        pause = new JButton("Pause");
-        pause.setBorderPainted(true);
-        pause.setFocusPainted(false);
-        pause.setContentAreaFilled(true);
-        pause.setBackground(Color.WHITE);
-        pause.setForeground(Color.BLACK);
-        pause.setBorder(compound);
-
-        //set up contraints
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.gridx = 1;
-        constraints.gridy = 0;
-        constraints.weightx = 0.9;
-        constraints.weighty = 0.1;
-        constraints.gridwidth = 6;
-        constraints.ipady = 10;
-        //add the pause button
-        panelFlame.add(pause, constraints);
-        //add the button listener
-        pause.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                myFlame.setPause();
-            }
-        });
-
-    }
-
-    /**
-     * Set up the viewer rate slider
-     */
-    private void viewerRateSetUp() {
-        //Declare the grid bag constraints
-        GridBagConstraints constraints = new GridBagConstraints();
-        //set up the label
-        viewerLabelRate = new JLabel("Viewer Rate: ");
-        viewerLabelRate.setForeground(Color.white);
-        //set up the constrains
-        constraints.gridx = 0;
-        constraints.gridy = 1;
-        constraints.weightx = 0.1;
-        constraints.weighty = 0.1;
-        //add the label
-        panelFlame.add(viewerLabelRate, constraints);
-
-        //set up the slider
-        viewerSliderRate = new JSlider(JSlider.HORIZONTAL, 0, 200, 50);
-        viewerSliderRate.setMinorTickSpacing(25);
-        viewerSliderRate.setMajorTickSpacing(50);
-        viewerSliderRate.setPaintTicks(true);
-        viewerSliderRate.setPaintLabels(true);
-        viewerSliderRate.setOpaque(false);
-        viewerSliderRate.setForeground(Color.WHITE);
-        viewerSliderRate.setBackground(Color.red);
-        viewerSliderRate.setValue(55);
-
-        //set up constraints
-        constraints.gridwidth = 6;
-        constraints.gridx = 1;
-        constraints.gridy = 1;
-        constraints.weightx = 0.9;
-        constraints.weighty = 0.1;
-        //add the slide
-        panelFlame.add(viewerSliderRate, constraints);
-        //set the slide change listener
-        viewerSliderRate.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent event) {
-                myFlame.setViewerRate(viewerSliderRate.getValue());
-
-            }
-        });
-
-    }
-
-    /**
-     * set the flame rate slider up
-     */
-    private void flameRateSetUp() {
-        //Declare the grid bag constraints
-        GridBagConstraints constraints = new GridBagConstraints();
-        //set up the label
-        flameLabelRate = new JLabel("Flame Rate: ");
-        flameLabelRate.setForeground(Color.white);
-        //set up constraints
-        constraints.gridx = 0;
-        constraints.gridy = 2;
-        constraints.weightx = 0.1;
-        constraints.weighty = 0.1;
-        //add the label
-        panelFlame.add(flameLabelRate, constraints);
-
-        //set up the slider
-        flameSliderRate = new JSlider(JSlider.HORIZONTAL, 0, 200, 50);
-        flameSliderRate.setMinorTickSpacing(25);
-        flameSliderRate.setMajorTickSpacing(50);
-        flameSliderRate.setPaintTicks(true);
-        flameSliderRate.setPaintLabels(true);
-        flameSliderRate.setOpaque(false);
-        flameSliderRate.setForeground(Color.WHITE);
-        flameSliderRate.setBackground(Color.red);
-        flameSliderRate.setValue(55);
-        //set up the constraints
-        constraints.gridwidth = 6;
-        constraints.gridx = 1;
-        constraints.gridy = 2;
-        constraints.weightx = 0.9;
-        constraints.weighty = 0.1;
-        //add the flame slider
-        panelFlame.add(flameSliderRate, constraints);
-        //set the slide change listener
-        flameSliderRate.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent event) {
-                myFlame.setFlameRate(flameSliderRate.getValue());
-
-            }
-        });
     }
 
     /**
@@ -391,6 +234,134 @@ public class ControlPanel extends JPanel implements ActionListener {
     }
 
     /**
+     * sets up the file chooser button and lets you pick a file.
+     */
+    private void fileChooserSetUp() {
+        GridBagConstraints constraints = new GridBagConstraints();
+        //Set up button
+        fileChooserButton = new JButton("Choose an image");
+        fileChooserButton.setBorderPainted(true);
+        fileChooserButton.setFocusPainted(false);
+        fileChooserButton.setContentAreaFilled(true);
+        fileChooserButton.setBackground(Color.WHITE);
+        fileChooserButton.setForeground(Color.BLACK);
+        fileChooserButton.setBorder(compound);
+        //set up constraints
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.gridwidth = 3;
+
+        panelConvolution.add(fileChooserButton, constraints);
+        //Will send the path of the file
+        fileChooserButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                fileChooser = new JFileChooser("IMG/", FileSystemView.getFileSystemView());
+                int r = fileChooser.showSaveDialog(null);
+
+                // if the user selects a file
+                if (r == JFileChooser.APPROVE_OPTION) {
+                    // set the label to the path of the selected file
+                    myFlame.changeImage(fileChooser.getSelectedFile().getAbsolutePath());
+                }
+
+            }
+        });
+
+    }
+
+    /**
+     * set up the label and slider of the lumination quantiti of the
+     * FlameAnimation
+     */
+    private void flameAnimationLuminance() {
+        //Declare the grid bag constraints
+        GridBagConstraints constraints = new GridBagConstraints();
+        //set up the label
+        luminanceLabel = new JLabel("Luminance min: ");
+        luminanceLabel.setForeground(Color.WHITE);
+        //set up constraints
+        constraints.gridx = 0;
+        constraints.gridy = 5;
+        constraints.weightx = 0.1;
+        constraints.weighty = 0.1;
+        panelFlame.add(luminanceLabel, constraints);
+
+        //set up the slider
+        luminanceSlider = new JSlider(JSlider.HORIZONTAL, 1, 100, 20);
+        luminanceSlider.setMinorTickSpacing(10);
+        luminanceSlider.setMajorTickSpacing(20);
+        luminanceSlider.setPaintTicks(true);
+        luminanceSlider.setPaintLabels(true);
+        luminanceSlider.setPaintTicks(true);
+        luminanceSlider.setPaintLabels(true);
+        luminanceSlider.setOpaque(false);
+        luminanceSlider.setForeground(Color.WHITE);
+        luminanceSlider.setBackground(Color.red);
+        luminanceSlider.setValue(80);
+        //set up slider constraints
+        constraints.gridwidth = 6;
+        constraints.gridx = 1;
+        constraints.gridy = 5;
+        constraints.weightx = 0.9;
+        constraints.weighty = 0.1;
+        panelFlame.add(luminanceSlider, constraints);
+        //add slider change listener
+        luminanceSlider.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent event) {
+                myFlame.setLuminanceMin(luminanceSlider.getValue());
+
+            }
+        });
+    }
+
+    /**
+     * set the flame rate slider up
+     */
+    private void flameRateSetUp() {
+        //Declare the grid bag constraints
+        GridBagConstraints constraints = new GridBagConstraints();
+        //set up the label
+        flameLabelRate = new JLabel("Flame Rate: ");
+        flameLabelRate.setForeground(Color.white);
+        //set up constraints
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        constraints.weightx = 0.1;
+        constraints.weighty = 0.1;
+        //add the label
+        panelFlame.add(flameLabelRate, constraints);
+
+        //set up the slider
+        flameSliderRate = new JSlider(JSlider.HORIZONTAL, 0, 200, 50);
+        flameSliderRate.setMinorTickSpacing(25);
+        flameSliderRate.setMajorTickSpacing(50);
+        flameSliderRate.setPaintTicks(true);
+        flameSliderRate.setPaintLabels(true);
+        flameSliderRate.setOpaque(false);
+        flameSliderRate.setForeground(Color.WHITE);
+        flameSliderRate.setBackground(Color.red);
+        flameSliderRate.setValue(55);
+        //set up the constraints
+        constraints.gridwidth = 6;
+        constraints.gridx = 1;
+        constraints.gridy = 2;
+        constraints.weightx = 0.9;
+        constraints.weighty = 0.1;
+        //add the flame slider
+        panelFlame.add(flameSliderRate, constraints);
+        //set the slide change listener
+        flameSliderRate.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent event) {
+                myFlame.setFlameRate(flameSliderRate.getValue());
+
+            }
+        });
+    }
+
+    /**
      * set up the palette chooser
      */
     private void paletteChooserSetUp() {
@@ -418,7 +389,193 @@ public class ControlPanel extends JPanel implements ActionListener {
     }
 
     /**
+     * set up pause button
+     */
+    private void pauseSetUp() {
+        //Declare the grid bag constraints
+        GridBagConstraints constraints = new GridBagConstraints();
+        //set up pause
+        pause = new JButton("Pause");
+        pause.setBorderPainted(true);
+        pause.setFocusPainted(false);
+        pause.setContentAreaFilled(true);
+        pause.setBackground(Color.WHITE);
+        pause.setForeground(Color.BLACK);
+        pause.setBorder(compound);
+
+        //set up contraints
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        constraints.weightx = 0.9;
+        constraints.weighty = 0.1;
+        constraints.gridwidth = 6;
+        constraints.ipady = 10;
+        //add the pause button
+        panelFlame.add(pause, constraints);
+        //add the button listener
+        pause.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                myFlame.setPause();
+            }
+        });
+
+    }
+
+    /**
+     * changes the color that will be convoluted with checkbox
+     */
+    private void setConvolutionColor() {
+        GridBagConstraints cLabel = new GridBagConstraints();
+        colorChooserLabel = new JLabel("Colors to convolute");
+        colorChooserLabel.setForeground(Color.white);
+        //set up constraints
+        cLabel.gridx = 0;
+        cLabel.gridy = 7;
+        cLabel.weightx = 0.1;
+        cLabel.weighty = 0;
+        cLabel.gridwidth = 3;
+        panelConvolution.add(colorChooserLabel, cLabel);
+
+        GridBagConstraints cCheckBox = new GridBagConstraints();
+        redCheckbox = new JCheckBox("Red");
+        redCheckbox.setBackground(null);
+        redCheckbox.setForeground(Color.WHITE);
+        redCheckbox.setSelected(true);
+
+        //set up constraints
+        cCheckBox.gridx = 0;
+        cCheckBox.gridy = 8;
+        cCheckBox.weightx = 0.1;
+        cCheckBox.weighty = 0.3;
+        panelConvolution.add(redCheckbox, cCheckBox);
+        redCheckbox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == 1) {
+                    myFlame.changeConvolutedImage("red", true);
+                } else {
+                    myFlame.changeConvolutedImage("red", false);
+
+                }
+            }
+        });
+
+        greenCheckbox = new JCheckBox("Green");
+        greenCheckbox.setBackground(null);
+        greenCheckbox.setForeground(Color.WHITE);
+        greenCheckbox.setSelected(true);
+        cCheckBox.gridx = 1;
+        panelConvolution.add(greenCheckbox, cCheckBox);
+        greenCheckbox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == 1) {
+                    myFlame.changeConvolutedImage("green", true);
+                } else {
+                    myFlame.changeConvolutedImage("green", false);
+
+                }
+            }
+        });
+
+        blueCheckbox = new JCheckBox("Blue");
+        blueCheckbox.setBackground(null);
+        blueCheckbox.setForeground(Color.WHITE);
+        blueCheckbox.setSelected(true);
+        cCheckBox.gridx = 2;
+        panelConvolution.add(blueCheckbox, cCheckBox);
+        blueCheckbox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == 1) {
+                    myFlame.changeConvolutedImage("blue", true);
+                } else {
+                    myFlame.changeConvolutedImage("blue", false);
+
+                }
+            }
+        });
+    }
+
+    /**
+     * Adds the menu of convolution types
+     */
+    private void setConvolutionList() {
+        GridBagConstraints constraints = new GridBagConstraints();
+        //set up menu
+        convolutionMenu = new JMenu("Convolution type");
+        i1 = new JMenuItem("Sharpen");
+        i2 = new JMenuItem("Smooth");
+        i3 = new JMenuItem("Raise");
+        i4 = new JMenuItem("Outline");
+        i5 = new JMenuItem("Emboss");
+        i6 = new JMenuItem("Blur");
+        i7 = new JMenuItem("Center Points");
+
+        convolutionMenu.add(i1);
+        convolutionMenu.add(i2);
+        convolutionMenu.add(i3);
+        convolutionMenu.add(i4);
+        convolutionMenu.add(i5);
+        convolutionMenu.add(i6);
+        convolutionMenu.add(i7);
+
+        convolutionMenu.setForeground(Color.BLACK);
+
+        convolutionMenuBar.add(convolutionMenu);
+        convolutionMenuBar.setBorderPainted(true);
+        convolutionMenuBar.setBackground(Color.WHITE);
+        convolutionMenuBar.setForeground(Color.BLACK);
+        convolutionMenuBar.setBorder(compound);
+
+        //set up constraints
+        constraints.gridx = 0;
+        constraints.gridy = 6;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.gridwidth = 3;
+        panelConvolution.add(convolutionMenuBar, constraints);
+
+        //set action listeners
+        i1.addActionListener(this);
+        i2.addActionListener(this);
+        i3.addActionListener(this);
+        i4.addActionListener(this);
+        i5.addActionListener(this);
+        i6.addActionListener(this);
+        i7.addActionListener(this);
+
+    }
+
+    /**
+     * Make a new text field
+     *
+     * @param x - constraints gridx
+     * @param y - constraints gridy
+     * @return JTextField
+     */
+    private JTextField setTextInput(int x, int y) {
+        GridBagConstraints constraints = new GridBagConstraints();
+        JTextField tf = new JTextField("1");
+        tf.setHorizontalAlignment(JTextField.CENTER);
+        //set up constraints
+        constraints.gridx = x;
+        constraints.gridy = y;
+        constraints.weightx = 1;
+        constraints.weighty = 0.3;
+        constraints.gridwidth = 1;
+        constraints.ipadx = 30;
+        constraints.ipady = 30;
+
+        panelConvolution.add(tf, constraints);
+        return tf;
+
+    }
+
+    /**
      * sets the palette chooser butons up
+     *
      * @param i - constraint gridx
      */
     private void setPaletteButton(int i) {
@@ -481,120 +638,85 @@ public class ControlPanel extends JPanel implements ActionListener {
     }
 
     /**
-     * set up the label and slider of the lumination quantiti of the FlameAnimation
+     * set the exit button
      */
-    private void flameAnimationLuminance() {
+    private void stopSetUp() {
         //Declare the grid bag constraints
         GridBagConstraints constraints = new GridBagConstraints();
-        //set up the label
-        luminanceLabel = new JLabel("Luminance min: ");
-        luminanceLabel.setForeground(Color.WHITE);
+        //set up stop
+        stop = new JButton("Exit");
+        stop.setBorderPainted(true);
+        stop.setFocusPainted(false);
+        stop.setContentAreaFilled(true);
+        stop.setBackground(Color.WHITE);
+        stop.setForeground(Color.BLACK);
+        stop.setBorder(compound);
+
         //set up constraints
         constraints.gridx = 0;
-        constraints.gridy = 5;
+        constraints.gridy = 0;
+        constraints.ipady = 10;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.weightx = 0.1;
         constraints.weighty = 0.1;
-        panelFlame.add(luminanceLabel, constraints);
-
-        //set up the slider
-        luminanceSlider = new JSlider(JSlider.HORIZONTAL, 1, 100, 20);
-        luminanceSlider.setMinorTickSpacing(10);
-        luminanceSlider.setMajorTickSpacing(20);
-        luminanceSlider.setPaintTicks(true);
-        luminanceSlider.setPaintLabels(true);
-        luminanceSlider.setPaintTicks(true);
-        luminanceSlider.setPaintLabels(true);
-        luminanceSlider.setOpaque(false);
-        luminanceSlider.setForeground(Color.WHITE);
-        luminanceSlider.setBackground(Color.red);
-        luminanceSlider.setValue(80);
-        //set up slider constraints
-        constraints.gridwidth = 6;
-        constraints.gridx = 1;
-        constraints.gridy = 5;
-        constraints.weightx = 0.9;
-        constraints.weighty = 0.1;
-        panelFlame.add(luminanceSlider, constraints);
-        //add slider change listener
-        luminanceSlider.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent event) {
-                myFlame.setLuminanceMin(luminanceSlider.getValue());
-
+        panelFlame.add(stop, constraints);
+        //add the button listener
+        stop.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                myFlame.setExit();
             }
         });
+
     }
 
     /**
-     *  Set up the audio button that will start and stop the music.
+     * Sets up the tabs of the control panel
      */
-    private void audioButtonSetUp() {
+    private void tabsSetUp() {
+        GridBagConstraints constraints = new GridBagConstraints();
+
+        tabs = new JTabbedPane(JTabbedPane.TOP);
+        tabs.addTab("Fire", panelFlame);
+        tabs.addTab("Convolution", panelConvolution);
+        tabs.setForeground(Color.WHITE);
+        tabs.setBackground(Color.RED.darker().darker().darker().darker());
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.gridwidth = 1;
+        constraints.anchor = GridBagConstraints.NORTH;
+        constraints.fill = GridBagConstraints.BOTH;
+        //set the title
+        this.add(tabs, constraints);
+
+    }
+
+    /**
+     * set up the title
+     */
+    private void titleSetUp() {
         //Declare the grid bag constraints
         GridBagConstraints constraints = new GridBagConstraints();
-        //set up audio
-        JButton audio = new JButton();
-        audio.setBorderPainted(false);
-        audio.setFocusPainted(false);
-        audio.setContentAreaFilled(false);
-        audio.setIcon(new ImageIcon("ICON/nota.png"));
-        //set up constraints
-        constraints.gridx = 1;
-        constraints.gridy = 6;
-        constraints.ipady = 10;
-        constraints.fill = GridBagConstraints.NONE;
-        constraints.gridwidth = 3;
-        constraints.weightx = 0;
-        constraints.weighty = 0.1;
-        panelFlame.add(audio, constraints);
-        //add the button listener
-        audio.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                myFlame.songController();
-            }
-        });
-    }
-
-    
-    /**
-     * sets up the file chooser button and lets you pick a file.
-     */
-    private void fileChooserSetUp() {
-        GridBagConstraints constraints = new GridBagConstraints();
-        //Set up button
-        fileChooserButton = new JButton("Choose an image");
-        fileChooserButton.setBorderPainted(true);
-        fileChooserButton.setFocusPainted(false);
-        fileChooserButton.setContentAreaFilled(true);
-        fileChooserButton.setBackground(Color.WHITE);
-        fileChooserButton.setForeground(Color.BLACK);
-        fileChooserButton.setBorder(compound);
+        //Set up title
+        title = new JLabel("WITCHES N'STITCHES");
+        title.setForeground(Color.WHITE);
+        title.setFont(new Font("Serif", Font.BOLD, 25));
+        title.setBackground(Color.BLACK);
+        title.setOpaque(true);
         //set up constraints
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.weightx = 1;
-        constraints.weighty = 1;
-        constraints.gridwidth = 3;
-
-        panelConvolution.add(fileChooserButton, constraints);
-        //Will send the path of the file
-        fileChooserButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                fileChooser = new JFileChooser("IMG/", FileSystemView.getFileSystemView());
-                int r = fileChooser.showSaveDialog(null);
-
-                // if the user selects a file
-                if (r == JFileChooser.APPROVE_OPTION) {
-                    // set the label to the path of the selected file
-                    myFlame.changeImage(fileChooser.getSelectedFile().getAbsolutePath());
-                }
-
-            }
-        });
-
+        constraints.weighty = 0.1;
+        constraints.gridwidth = 1;
+        //set the title
+        this.add(title, constraints);
     }
 
     /**
-     * Set up the convolution user input and send button. This lets the user sets its own convolution.
+     * Set up the convolution user input and send button. This lets the user
+     * sets its own convolution.
      */
     private void userTextInputSetUp() {
         GridBagConstraints constraintsLabel = new GridBagConstraints();
@@ -673,186 +795,49 @@ public class ControlPanel extends JPanel implements ActionListener {
     }
 
     /**
-     * Make a new text field 
-     * @param x - constraints gridx
-     * @param y - constraints gridy
-     * @return JTextField
+     * Set up the viewer rate slider
      */
-    private JTextField setTextInput(int x, int y) {
+    private void viewerRateSetUp() {
+        //Declare the grid bag constraints
         GridBagConstraints constraints = new GridBagConstraints();
-        JTextField tf = new JTextField("1");
-        tf.setHorizontalAlignment(JTextField.CENTER);
-        //set up constraints
-        constraints.gridx = x;
-        constraints.gridy = y;
-        constraints.weightx = 1;
-        constraints.weighty = 0.3;
-        constraints.gridwidth = 1;
-        constraints.ipadx = 30;
-        constraints.ipady = 30;
-
-        panelConvolution.add(tf, constraints);
-        return tf;
-
-    }
-
-    
-
-    /**
-    * Adds the menu of convolution types
-    */
-    private void setConvolutionList() {
-        GridBagConstraints constraints = new GridBagConstraints();
-        //set up menu
-        convolutionMenu = new JMenu("Convolution type");
-        i1 = new JMenuItem("Sharpen");
-        i2 = new JMenuItem("Smooth");
-        i3 = new JMenuItem("Raise");
-        i4 = new JMenuItem("Outline");
-        i5 = new JMenuItem("Emboss");
-        i6 = new JMenuItem("Blur");
-        i7 = new JMenuItem("Center Points");
-
-        convolutionMenu.add(i1);
-        convolutionMenu.add(i2);
-        convolutionMenu.add(i3);
-        convolutionMenu.add(i4);
-        convolutionMenu.add(i5);
-        convolutionMenu.add(i6);
-        convolutionMenu.add(i7);
-
-        convolutionMenu.setForeground(Color.BLACK);
-
-        convolutionMenuBar.add(convolutionMenu);
-        convolutionMenuBar.setBorderPainted(true);
-        convolutionMenuBar.setBackground(Color.WHITE);
-        convolutionMenuBar.setForeground(Color.BLACK);
-        convolutionMenuBar.setBorder(compound);
-
-        //set up constraints
+        //set up the label
+        viewerLabelRate = new JLabel("Viewer Rate: ");
+        viewerLabelRate.setForeground(Color.white);
+        //set up the constrains
         constraints.gridx = 0;
-        constraints.gridy = 6;
-        constraints.weightx = 1;
-        constraints.weighty = 1;
-        constraints.gridwidth = 3;
-        panelConvolution.add(convolutionMenuBar, constraints);
+        constraints.gridy = 1;
+        constraints.weightx = 0.1;
+        constraints.weighty = 0.1;
+        //add the label
+        panelFlame.add(viewerLabelRate, constraints);
 
-        //set action listeners
-        i1.addActionListener(this);
-        i2.addActionListener(this);
-        i3.addActionListener(this);
-        i4.addActionListener(this);
-        i5.addActionListener(this);
-        i6.addActionListener(this);
-        i7.addActionListener(this);
-
-    }
-
-    /**
-     * Get the menu item clicked on the convolution menu
-     * Sends to myFlame a convolution.Type
-     * @param e - ActionEvent from menu list
-     */
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("Sharpen")) {
-            myFlame.changeConvolutedImage(Convolution.Type.SHARPEN);
-
-        } else if (e.getActionCommand().equals("Smooth")) {
-            myFlame.changeConvolutedImage(Convolution.Type.SMOOTH);
-
-        } else if (e.getActionCommand().equals("Raise")) {
-            myFlame.changeConvolutedImage(Convolution.Type.RAISE);
-
-        } else if (e.getActionCommand().equals("Outline")) {
-            myFlame.changeConvolutedImage(Convolution.Type.OUTLINE);
-
-        } else if (e.getActionCommand().equals("Emboss")) {
-            myFlame.changeConvolutedImage(Convolution.Type.EMBOSS);
-
-        } else if (e.getActionCommand().equals("Blur")) {
-            myFlame.changeConvolutedImage(Convolution.Type.BLUR);
-
-        } else if (e.getActionCommand().equals("Center Points")) {
-            myFlame.changeConvolutedImage(Convolution.Type.CENTERPOINTS);
-
-        }
-    }
-
-    /**
-     * changes the color that will be convoluted with checkbox
-     */
-    private void setConvolutionColor() {
-        GridBagConstraints cLabel = new GridBagConstraints();
-        colorChooserLabel = new JLabel("Colors to convolute");
-        colorChooserLabel.setForeground(Color.white);
-        //set up constraints
-        cLabel.gridx = 0;
-        cLabel.gridy = 7;
-        cLabel.weightx = 0.1;
-        cLabel.weighty = 0;
-        cLabel.gridwidth = 3;
-        panelConvolution.add(colorChooserLabel, cLabel);
-
-        GridBagConstraints cCheckBox = new GridBagConstraints();
-        redCheckbox = new JCheckBox("Red");
-        redCheckbox.setBackground(null);
-        redCheckbox.setForeground(Color.WHITE);
-        redCheckbox.setSelected(true);
+        //set up the slider
+        viewerSliderRate = new JSlider(JSlider.HORIZONTAL, 0, 200, 50);
+        viewerSliderRate.setMinorTickSpacing(25);
+        viewerSliderRate.setMajorTickSpacing(50);
+        viewerSliderRate.setPaintTicks(true);
+        viewerSliderRate.setPaintLabels(true);
+        viewerSliderRate.setOpaque(false);
+        viewerSliderRate.setForeground(Color.WHITE);
+        viewerSliderRate.setBackground(Color.red);
+        viewerSliderRate.setValue(55);
 
         //set up constraints
-        cCheckBox.gridx = 0;
-        cCheckBox.gridy = 8;
-        cCheckBox.weightx = 0.1;
-        cCheckBox.weighty = 0.3;
-        panelConvolution.add(redCheckbox, cCheckBox);
-        redCheckbox.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == 1) {
-                    myFlame.changeConvolutedImage("red", true);
-                } else {
-                    myFlame.changeConvolutedImage("red", false);
+        constraints.gridwidth = 6;
+        constraints.gridx = 1;
+        constraints.gridy = 1;
+        constraints.weightx = 0.9;
+        constraints.weighty = 0.1;
+        //add the slide
+        panelFlame.add(viewerSliderRate, constraints);
+        //set the slide change listener
+        viewerSliderRate.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent event) {
+                myFlame.setViewerRate(viewerSliderRate.getValue());
 
-                }
             }
         });
 
-        greenCheckbox = new JCheckBox("Green");
-        greenCheckbox.setBackground(null);
-        greenCheckbox.setForeground(Color.WHITE);
-        greenCheckbox.setSelected(true);
-        cCheckBox.gridx = 1;
-        panelConvolution.add(greenCheckbox, cCheckBox);
-        greenCheckbox.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == 1) {
-                    myFlame.changeConvolutedImage("green", true);
-                } else {
-                    myFlame.changeConvolutedImage("green", false);
-
-                }
-            }
-        });
-
-        blueCheckbox = new JCheckBox("Blue");
-        blueCheckbox.setBackground(null);
-        blueCheckbox.setForeground(Color.WHITE);
-        blueCheckbox.setSelected(true);
-        cCheckBox.gridx = 2;
-        panelConvolution.add(blueCheckbox, cCheckBox);
-        blueCheckbox.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == 1) {
-                    myFlame.changeConvolutedImage("blue", true);
-                } else {
-                    myFlame.changeConvolutedImage("blue", false);
-
-                }
-            }
-        });
     }
 
 }

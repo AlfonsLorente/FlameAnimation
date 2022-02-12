@@ -8,27 +8,16 @@ package flameanimation;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import java.io.*;
 import javax.imageio.ImageIO;
-import javax.sound.sampled.*;
 import javax.swing.ImageIcon;
 import javax.swing.JMenuBar;
 import javax.swing.JRootPane;
@@ -69,7 +58,6 @@ public class MyFlame extends JFrame {
     private float kernelDiv = 1;
     private JMenuBar menubar;
 
-   
     /**
      * enum that sets the fire state
      */
@@ -85,7 +73,6 @@ public class MyFlame extends JFrame {
 
     }
 
-    
     //CONSTRUCTOR
     /**
      * sets up ALL the application
@@ -97,7 +84,7 @@ public class MyFlame extends JFrame {
 
         //Set image and convoluted image
         setUpImages();
-        
+
         //Create flames
         setUpFlame();
         setUpFlameAnimation();
@@ -114,13 +101,13 @@ public class MyFlame extends JFrame {
         //Create control panel
         controlPanel = new ControlPanel();
         controlPanel.setMyFlame(this);
-        
+
         //Set the jframe (this class)
         setMyFlame();
 
         //set Audio
         setUpAudio(audio);
-        
+
         //Set the grid rules for viewer and control panel
         setGridRules();
 
@@ -136,6 +123,7 @@ public class MyFlame extends JFrame {
     //GETTERS AND SETTERS
     /**
      * returns the first color of the palette
+     *
      * @return Color
      */
     public Color getC1() {
@@ -144,6 +132,7 @@ public class MyFlame extends JFrame {
 
     /**
      * sets the first color of the palette
+     *
      * @param c1 - Color
      */
     public void setC1(Color c1) {
@@ -153,6 +142,7 @@ public class MyFlame extends JFrame {
 
     /**
      * returns the second color of the palette
+     *
      * @return Color
      */
     public Color getC2() {
@@ -161,6 +151,7 @@ public class MyFlame extends JFrame {
 
     /**
      * sets the second color of the palette
+     *
      * @param c2 - Color
      */
     public void setC2(Color c2) {
@@ -170,6 +161,7 @@ public class MyFlame extends JFrame {
 
     /**
      * returns the third color of the palette
+     *
      * @return Color
      */
     public Color getC3() {
@@ -178,6 +170,7 @@ public class MyFlame extends JFrame {
 
     /**
      * sets the third color of the palette
+     *
      * @param c3 - Color
      */
     public void setC3(Color c3) {
@@ -185,9 +178,9 @@ public class MyFlame extends JFrame {
         this.setFlamePalette(c1, c2, c3, c4, c5);
     }
 
-    
     /**
      * returns the fourth color of the palette
+     *
      * @return Color
      */
     public Color getC4() {
@@ -196,6 +189,7 @@ public class MyFlame extends JFrame {
 
     /**
      * sets the fourth color of the palette
+     *
      * @param c4 - Color
      */
     public void setC4(Color c4) {
@@ -205,6 +199,7 @@ public class MyFlame extends JFrame {
 
     /**
      * returns the fifth color of the palette
+     *
      * @return Color
      */
     public Color getC5() {
@@ -213,6 +208,7 @@ public class MyFlame extends JFrame {
 
     /**
      * sets the fifth color of the palette
+     *
      * @param c5 - Color
      */
     public void setC5(Color c5) {
@@ -220,31 +216,127 @@ public class MyFlame extends JFrame {
         this.setFlamePalette(c1, c2, c3, c4, c5);
     }
 
-    /**
-     * sets up the flame
-     */
-    private void setUpFlame() {
-        flame = new Flame(300, 600, BufferedImage.TYPE_INT_ARGB);
-        flame.setRate(flameRate);
-        flame.setPalette(flamePalette);
-        flame.setCoolAmount(flameCoolAmount);
-
-    }
-
-    /**
-     * sets up the viewer
-     */
-    private void setUpViewer() {
-        viewer = new Viewer(flame, image, convolutedImage, flameAnimation);
-        this.setViewerRate(viewerRate);
-    }
-
     //PUBLIC METHODS
+    /**
+     * change the convoluted image depending on its type
+     *
+     * @param newType
+     */
+    public void changeConvolutedImage(Convolution.Type newType) {
+        if (!convType.equals(newType)) {
+            convType = newType;
+            if (convType.equals(Convolution.Type.PERSONALITZED)) {
+                convolution = new Convolution(image, redState, greenState, blueState, kernel, kernelDiv);
+            } else {
+                convolution = new Convolution(image, convType, redState, greenState, blueState);
 
-    
+            }
+            convolutedImage = convolution.getConvolutedImage();
+            viewer.setConvolutedImage(convolutedImage);
+            flameAnimation.setConvolutedImage(convolutedImage);
+
+        }
+    }
+
+    /**
+     * change the convoluted image depending on the colors to convolute
+     *
+     * @param colorName - String
+     * @param colorState - boolean
+     */
+    public void changeConvolutedImage(String colorName, boolean colorState) {
+        if (colorName.equals("red")) {
+            redState = colorState;
+        } else if (colorName.equals("green")) {
+            greenState = colorState;
+        } else if (colorName.equals("blue")) {
+            blueState = colorState;
+        }
+
+        if (convType.equals(Convolution.Type.PERSONALITZED)) {
+            convolution = new Convolution(image, redState, greenState, blueState, kernel, kernelDiv);
+        } else {
+            convolution = new Convolution(image, convType, redState, greenState, blueState);
+
+        }
+
+        convolutedImage = convolution.getConvolutedImage();
+
+        viewer.setConvolutedImage(convolutedImage);
+        flameAnimation.setConvolutedImage(convolutedImage);
+    }
+
+    /**
+     * change the kernel
+     *
+     * @param kernel - float[][]
+     * @param div float
+     */
+    void changeConvolutionKernel(float[][] kernel, float div) {
+        this.convType = Convolution.Type.PERSONALITZED;
+        this.kernel = kernel;
+        this.kernelDiv = div;
+        convolution = new Convolution(image, redState, greenState, blueState, kernel, div);
+        convolutedImage = convolution.getConvolutedImage();
+        flameAnimation.setConvolutedImage(convolutedImage);
+        viewer.setConvolutedImage(convolutedImage);
+    }
+
+    /**
+     * change the image and so the convoluted image
+     *
+     * @param imageSrc - String
+     */
+    public void changeImage(String imageSrc) {
+        try {
+            image = ImageIO.read(new File(imageSrc));
+        } catch (IOException ex) {
+            Logger.getLogger(Viewer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (convType.equals(Convolution.Type.PERSONALITZED)) {
+            convolution = new Convolution(image, redState, greenState, blueState, kernel, kernelDiv);
+
+        } else {
+            convolution = new Convolution(image, convType, redState, greenState, blueState);
+        }
+        convolutedImage = convolution.getConvolutedImage();
+
+        viewer.setImage(image);
+        viewer.setConvolutedImage(convolutedImage);
+        //Gotta restart the flame animation with the new convolutedImage
+        flameAnimation.setAlive(false);
+        setUpFlameAnimation();
+        fireAnimationThread = new Thread(flameAnimation);
+        fireAnimationThread.start();
+
+        viewer.setFlameAnimation(flameAnimation);
+
+    }
+
+    /**
+     * change the luminance minimum
+     *
+     * @param value
+     */
+    void setLuminanceMin(int value) {
+        flameAnimation.setLuminanceMin((float) value / 100);
+
+    }
+
+    /**
+     * Exists the application
+     */
+    public void setExit() {
+        if (isExit == false) {
+            isExit = true;
+            this.setFireThread(Viewer.FireState.EXIT);
+        }
+    }
+
     /**
      * sets up the flames cool
-     * @param flameCoolAmount 
+     *
+     * @param flameCoolAmount
      */
     public void setFlameCoolAmount(int flameCoolAmount) {
         this.flameCoolAmount = flameCoolAmount;
@@ -254,6 +346,7 @@ public class MyFlame extends JFrame {
 
     /**
      * Prepare the default flame palette
+     *
      * @param palette - FlamePalette
      * @return - FlamePalette
      */
@@ -262,9 +355,9 @@ public class MyFlame extends JFrame {
         palette = new FlamePalette();
         c1 = new Color(255, 255, 255, 255);
         c2 = new Color(255, 233, 40, 225);
-        c3 = new Color(255,165,0, 200);
-        c4 = new Color(255,0,0, 175);
-        c5 = new Color(75,1,15, 140);
+        c3 = new Color(255, 165, 0, 200);
+        c4 = new Color(255, 0, 0, 175);
+        c5 = new Color(75, 1, 15, 140);
         //set targets to the palette
         palette.addTargetColor(new TargetColor(255, c1));
         palette.addTargetColor(new TargetColor(80, c2));
@@ -277,6 +370,7 @@ public class MyFlame extends JFrame {
 
     /**
      * change the flame palette
+     *
      * @param c1 - Color 1
      * @param c2 - Color 2
      * @param c3 - Color 3
@@ -304,33 +398,9 @@ public class MyFlame extends JFrame {
     }
 
     /**
-     *  Exists the application
-     */
-    public void setExit() {
-        if (isExit == false) {
-            isExit = true;
-            this.setFireThread(Viewer.FireState.EXIT);
-        }
-    }
-
-    /**
-     * pauses and despauses the application
-     */
-    public void setPause() {
-        if (isPaused == false) {
-            isPaused = true;
-            this.setFireThread(Viewer.FireState.PAUSE);
-        } else {
-            isPaused = false;
-            this.setFireThread(Viewer.FireState.RESUME);
-
-        }
-
-    }
-
-    /**
      * sets the state of the fire or exits app
-     * @param state - Viewer.FireState 
+     *
+     * @param state - Viewer.FireState
      */
     public void setFireThread(Viewer.FireState state) {
         switch (state) {
@@ -349,19 +419,33 @@ public class MyFlame extends JFrame {
     }
 
     /**
-     * sets up the flame animation
+     * sets the flame rate
+     *
+     * @param rate - int
      */
-    private void setUpFlameAnimation() {
-        flameAnimation = new FlameAnimation(convolutedImage.getWidth(),
-                convolutedImage.getHeight(),
-                BufferedImage.TYPE_INT_ARGB, convolutedImage);
-        flameAnimation.setRate(30);
-        flameAnimation.setPalette(flamePalette);
-        flameAnimation.setCoolAmount(flameCoolAmount);
+    public void setFlameRate(int rate) {
+        flame.setRate(rate);
+        flameAnimation.setRate(rate);
+    }
+
+    /**
+     * pauses and despauses the application
+     */
+    public void setPause() {
+        if (isPaused == false) {
+            isPaused = true;
+            this.setFireThread(Viewer.FireState.PAUSE);
+        } else {
+            isPaused = false;
+            this.setFireThread(Viewer.FireState.RESUME);
+
+        }
+
     }
 
     /**
      * Sets the framerate of the viewer
+     *
      * @param rate - int
      */
     public void setViewerRate(int rate) {
@@ -370,40 +454,19 @@ public class MyFlame extends JFrame {
     }
 
     /**
-     * sets the flame rate
-     * @param rate  - int
+     * start or stop the song
      */
-    public void setFlameRate(int rate) {
-        flame.setRate(rate);
-        flameAnimation.setRate(rate);
+    public void songController() {
+        if (audioPlaying) {
+            audioPlaying = false;
+            clip.stop();
+        } else {
+            audioPlaying = true;
+            clip.start();
+        }
     }
 
     //PRIVATE METHODS
-    /**
-     * Sets the jframe (this class)
-     */
-    private void setMyFlame() {
-        this.setTitle("Flame");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.getContentPane().setBackground(Color.BLACK);
-        this.setLayout(new GridBagLayout());
-        this.setBounds(0, 0, 1360, 790);
-        
-        //window mode
-        this.setUndecorated(true);
-        this.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
-        
-        //icon image
-        this.setIconImage(new ImageIcon("ICON/flameIco.png").getImage());
-        
-        //change menu bar
-        menubar = new JMenuBar();
-        menubar.setOpaque(true);
-        menubar.setBackground(Color.RED);
-        this.setJMenuBar(menubar);
-        this.setResizable(false);
-    }
-
     /**
      * set up the gridbag layout rules for viewer and control panel
      */
@@ -428,7 +491,33 @@ public class MyFlame extends JFrame {
     }
 
     /**
+     * Sets the jframe (this class)
+     */
+    private void setMyFlame() {
+        this.setTitle("Flame");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.getContentPane().setBackground(Color.BLACK);
+        this.setLayout(new GridBagLayout());
+        this.setBounds(0, 0, 1360, 790);
+
+        //window mode
+        this.setUndecorated(true);
+        this.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+
+        //icon image
+        this.setIconImage(new ImageIcon("ICON/flameIco.png").getImage());
+
+        //change menu bar
+        menubar = new JMenuBar();
+        menubar.setOpaque(true);
+        menubar.setBackground(Color.RED);
+        this.setJMenuBar(menubar);
+        this.setResizable(false);
+    }
+
+    /**
      * Sets up the audio system
+     *
      * @param audio - String (file path)
      */
     public void setUpAudio(String audio) {
@@ -443,18 +532,27 @@ public class MyFlame extends JFrame {
     }
 
     /**
-     * start or stop the song
+     * sets up the flame
      */
-    public void songController() {
-        if (audioPlaying) {
-            audioPlaying = false;
-            clip.stop();
-        } else {
-            audioPlaying = true;
-            clip.start();
-        }
+    private void setUpFlame() {
+        flame = new Flame(300, 600, BufferedImage.TYPE_INT_ARGB);
+        flame.setRate(flameRate);
+        flame.setPalette(flamePalette);
+        flame.setCoolAmount(flameCoolAmount);
+
     }
 
+    /**
+     * sets up the flame animation
+     */
+    private void setUpFlameAnimation() {
+        flameAnimation = new FlameAnimation(convolutedImage.getWidth(),
+                convolutedImage.getHeight(),
+                BufferedImage.TYPE_INT_ARGB, convolutedImage);
+        flameAnimation.setRate(30);
+        flameAnimation.setPalette(flamePalette);
+        flameAnimation.setCoolAmount(flameCoolAmount);
+    }
 
     /**
      * set up the image and the convoluted image
@@ -475,109 +573,12 @@ public class MyFlame extends JFrame {
 
     }
 
-    
     /**
-     * change the convoluted image depending on its type
-     * @param newType 
+     * sets up the viewer
      */
-    public void changeConvolutedImage(Convolution.Type newType) {
-        if (!convType.equals(newType)) {
-            convType = newType;
-            if (convType.equals(Convolution.Type.PERSONALITZED)) {
-                convolution = new Convolution(image, redState, greenState, blueState, kernel, kernelDiv);
-            } else {
-                convolution = new Convolution(image, convType, redState, greenState, blueState);
-
-            }
-            convolutedImage = convolution.getConvolutedImage();
-            viewer.setConvolutedImage(convolutedImage);
-            flameAnimation.setConvolutedImage(convolutedImage);
-
-        }
+    private void setUpViewer() {
+        viewer = new Viewer(flame, image, convolutedImage, flameAnimation);
+        this.setViewerRate(viewerRate);
     }
-
-    
-    /**
-     * change the convoluted image depending on the colors to convolute
-     * @param colorName - String
-     * @param colorState - boolean
-     */
-    public void changeConvolutedImage(String colorName, boolean colorState) {
-        if (colorName.equals("red")) {
-            redState = colorState;
-        } else if (colorName.equals("green")) {
-            greenState = colorState;
-        } else if (colorName.equals("blue")) {
-            blueState = colorState;
-        }
-
-        if (convType.equals(Convolution.Type.PERSONALITZED)) {
-            convolution = new Convolution(image, redState, greenState, blueState, kernel, kernelDiv);
-        } else {
-            convolution = new Convolution(image, convType, redState, greenState, blueState);
-
-        }
-
-        convolutedImage = convolution.getConvolutedImage();
-
-        viewer.setConvolutedImage(convolutedImage);
-        flameAnimation.setConvolutedImage(convolutedImage);
-    }
-
-    
-    /**
-     * change the image and so the convoluted image
-     * @param imageSrc - String
-     */
-    public void changeImage(String imageSrc) {
-        try {
-            image = ImageIO.read(new File(imageSrc));
-        } catch (IOException ex) {
-            Logger.getLogger(Viewer.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if (convType.equals(Convolution.Type.PERSONALITZED)) {
-            convolution = new Convolution(image, redState, greenState, blueState, kernel, kernelDiv);
-
-        } else {
-            convolution = new Convolution(image, convType, redState, greenState, blueState);
-        }
-        convolutedImage = convolution.getConvolutedImage();
-        
-        viewer.setImage(image);
-        viewer.setConvolutedImage(convolutedImage);
-        //Gotta restart the flame animation with the new convolutedImage
-        flameAnimation.setAlive(false);
-        setUpFlameAnimation();
-        fireAnimationThread = new Thread(flameAnimation);
-        fireAnimationThread.start();
-
-        viewer.setFlameAnimation(flameAnimation);
-
-    }
-
-    /**
-     * change the kernel
-     * @param kernel - float[][]
-     * @param div float
-     */
-    void changeConvolutionKernel(float[][] kernel, float div) {
-        this.convType = Convolution.Type.PERSONALITZED;
-        this.kernel = kernel;
-        this.kernelDiv = div;
-        convolution = new Convolution(image, redState, greenState, blueState, kernel, div);
-        convolutedImage = convolution.getConvolutedImage();
-        flameAnimation.setConvolutedImage(convolutedImage);
-        viewer.setConvolutedImage(convolutedImage);
-    }
-    
-    /**
-     * change the luminance minimum
-     * @param value 
-     */
-     void setLuminanceMin(int value) {
-         flameAnimation.setLuminanceMin((float)value / 100);
-         
-    }
-
 
 }

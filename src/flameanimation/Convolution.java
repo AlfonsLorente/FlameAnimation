@@ -7,7 +7,6 @@ package flameanimation;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 /**
  *
@@ -180,6 +179,45 @@ public class Convolution {
     }
 
     /**
+     * center points effect kernel
+     */
+    public void centerPoints() {
+        kernel = new float[][]{
+            {-1, 0, -1},
+            {0, 4, 0},
+            {-1, 0, -1}
+        };
+        kernelDiv = 1;
+        applyConvolution();
+    }
+
+    /**
+     * emboss effect kernel
+     */
+    public void emboss() {
+        kernel = new float[][]{
+            {-2, -1, 0},
+            {-1, 1, 1},
+            {0, 1, 2}
+        };
+        kernelDiv = 1;
+        applyConvolution();
+    }
+
+    /**
+     * outline effect kernel
+     */
+    public void outline() {
+        kernel = new float[][]{
+            {-1, -1, -1},
+            {-1, 8, -1},
+            {-1, -1, -1}
+        };
+        kernelDiv = 1;
+        applyConvolution();
+    }
+
+    /**
      * sharpen effect kernel
      */
     public void sharpening() {
@@ -218,102 +256,7 @@ public class Convolution {
         applyConvolution();
     }
 
-    /**
-     * outline effect kernel
-     */
-    public void outline() {
-        kernel = new float[][]{
-            {-1, -1, -1},
-            {-1, 8, -1},
-            {-1, -1, -1}
-        };
-        kernelDiv = 1;
-        applyConvolution();
-    }
-
-    /**
-     * emboss effect kernel
-     */
-    public void emboss() {
-        kernel = new float[][]{
-            {-2, -1, 0},
-            {-1, 1, 1},
-            {0, 1, 2}
-        };
-        kernelDiv = 1;
-        applyConvolution();
-    }
-
-    /**
-     * center points effect kernel
-     */
-    public void centerPoints() {
-        kernel = new float[][]{
-            {-1, 0, -1},
-            {0, 4, 0},
-            {-1, 0, -1}
-        };
-        kernelDiv = 1;
-        applyConvolution();
-    }
-
-    /**
-     * starts the convolution depending on its type
-     */
-    private void startConvolution() {
-        switch (type) {
-            case SHARPEN:
-                sharpening();
-                break;
-
-            case SMOOTH:
-                smoothing();
-                break;
-
-            case RAISE:
-                raised();
-                break;
-
-            case OUTLINE:
-                outline();
-                break;
-
-            case EMBOSS:
-                emboss();
-                break;
-
-            case BLUR:
-                blur();
-                break;
-
-            case CENTERPOINTS:
-                centerPoints();
-                break;
-
-            case PERSONALITZED:
-                applyConvolution();
-            default:
-                return;
-        }
-    }
-
-    
-    /**
-     * fills all the color lists getting each channel color
-     */
-    private void fillColorLists() {
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                redList[i][j] = new Color(image.getRGB(i, j), true).getRed();
-                greenList[i][j] = new Color(image.getRGB(i, j), true).getGreen();
-                blueList[i][j] = new Color(image.getRGB(i, j), true).getBlue();
-                alphaList[i][j] = new Color(image.getRGB(i, j), true).getAlpha();
-
-            }
-        }
-    }
-    
-    
+    //PRIVATE METHODS
     /**
      * Apply convolutions depending on the color selection
      */
@@ -340,9 +283,10 @@ public class Convolution {
 
     /**
      * evolve the convolution doing all the maths.
+     *
      * @param i - int
      * @param j - int
-     * @param colorMod - int (constant) 
+     * @param colorMod - int (constant)
      */
     private void evolveColor(int i, int j, int colorMod) {
         //seting one color list or another depending on the colorMod
@@ -355,7 +299,7 @@ public class Convolution {
         } else {
             colorList = blueList;
         }
-        
+
         //Convolute pixels including the side ones.
         if (i == 0 && j == 0) {
             color = Math.round(((colorList[i + 0][j - 0] * kernel[1][1])
@@ -438,7 +382,7 @@ public class Convolution {
         if (color < 0) {
             color = 0;
         }
-        
+
         //Seting the color convolute list depending on the colorMod.
         if (colorMod == RED) {
             convolutedRedList[i][j] = color;
@@ -450,9 +394,23 @@ public class Convolution {
 
     }
 
-    
     /**
-     * Set up and construct the convolute image 
+     * fills all the color lists getting each channel color
+     */
+    private void fillColorLists() {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                redList[i][j] = new Color(image.getRGB(i, j), true).getRed();
+                greenList[i][j] = new Color(image.getRGB(i, j), true).getGreen();
+                blueList[i][j] = new Color(image.getRGB(i, j), true).getBlue();
+                alphaList[i][j] = new Color(image.getRGB(i, j), true).getAlpha();
+
+            }
+        }
+    }
+
+    /**
+     * Set up and construct the convolute image
      */
     private void setUpConvolutedImage() {
         int pixel;
@@ -487,6 +445,46 @@ public class Convolution {
             }
         }
 
+    }
+
+    /**
+     * starts the convolution depending on its type
+     */
+    private void startConvolution() {
+        switch (type) {
+            case SHARPEN:
+                sharpening();
+                break;
+
+            case SMOOTH:
+                smoothing();
+                break;
+
+            case RAISE:
+                raised();
+                break;
+
+            case OUTLINE:
+                outline();
+                break;
+
+            case EMBOSS:
+                emboss();
+                break;
+
+            case BLUR:
+                blur();
+                break;
+
+            case CENTERPOINTS:
+                centerPoints();
+                break;
+
+            case PERSONALITZED:
+                applyConvolution();
+            default:
+                return;
+        }
     }
 
 }
