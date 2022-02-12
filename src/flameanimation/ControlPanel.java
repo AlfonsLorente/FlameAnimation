@@ -52,7 +52,8 @@ import javax.swing.plaf.ColorUIResource;
  *
  * @author alfon
  */
-public class ControlPanel extends JPanel implements ActionListener{
+public class ControlPanel extends JPanel implements ActionListener {
+
     //DECLARE VARIABLES
     private JButton stop, pause, paletteChooserButton, fileChooserButton;
     private JSlider flameSliderRate, viewerSliderRate, coolSlider;
@@ -71,12 +72,14 @@ public class ControlPanel extends JPanel implements ActionListener{
     private JFileChooser fileChooser;
     private JLabel luminanceLabel;
     private JSlider luminanceSlider;
-    
-    
 
-    //CONSTRUCTOR
+    
+    
+    /**
+     * Sets up all the control panel
+     */
     public ControlPanel() {
-        
+
         //SET UP THE CONTROLPANEL
         controlPanelSetUp();
         controlPanelFlameSetUp();
@@ -89,34 +92,42 @@ public class ControlPanel extends JPanel implements ActionListener{
         createCoolSetUp();
         paletteChooserSetUp();
         flameAnimationLuminance();
-        
+
         audioButtonSetUp();
         fileChooserSetUp();
         userTextInputSetUp();
-        convoluterSetUp();
-        
+        setConvolutionList();
+        setConvolutionColor();
+
         tabsSetUp();
 
-        
     }
-    
+
     //PUBLIC METHODS
     //Getters and setters
+    /**
+     * sets myFlame parameter
+     * @param myFlame 
+     */
     public void setMyFlame(MyFlame myFlame) {
         this.myFlame = myFlame;
     }
-    
 
-    
     //PRIVATE METHODS
-    //contolPanelSetUp: sets the base of this class
+    /**
+     * controlPanelSetUp()
+     * sets the base of this class
+     */
     private void controlPanelSetUp() {
         this.setLayout(new GridBagLayout());
         this.setBackground(Color.BLACK);
         this.setVisible(true);
-        
+
     }
-    
+
+    /**
+     * sets the panel of the flame tht will go into the tab
+     */
     private void controlPanelFlameSetUp() {
         panelFlame = new JPanel();
         panelFlame.setLayout(new GridBagLayout());
@@ -124,6 +135,9 @@ public class ControlPanel extends JPanel implements ActionListener{
         panelFlame.setVisible(true);
     }
 
+    /**
+     * sets the panel of the convolution tht will go into the tab
+     */
     private void controlPanelConvolutionSetUp() {
         panelConvolution = new JPanel();
         panelConvolution.setLayout(new GridBagLayout());
@@ -131,18 +145,19 @@ public class ControlPanel extends JPanel implements ActionListener{
         panelConvolution.setVisible(true);
     }
 
-    
-    
+    /**
+     * Sets up the tabs of the control panel
+     */
     private void tabsSetUp() {
-        GridBagConstraints constraints = new GridBagConstraints();  
-        
+        GridBagConstraints constraints = new GridBagConstraints();
+
         tabs = new JTabbedPane(JTabbedPane.TOP);
         tabs.addTab("Fire", panelFlame);
         tabs.addTab("Convolution", panelConvolution);
         tabs.setForeground(Color.WHITE);
         tabs.setBackground(Color.RED.darker().darker().darker().darker());
-        constraints.gridx = 0; 
-        constraints.gridy = 1; 
+        constraints.gridx = 0;
+        constraints.gridy = 1;
         constraints.weightx = 1;
         constraints.weighty = 1;
         constraints.gridwidth = 1;
@@ -151,15 +166,14 @@ public class ControlPanel extends JPanel implements ActionListener{
         //set the title
         this.add(tabs, constraints);
 
-        
-
     }
 
-    
-    //titleSetUp: set up the title
+    /**
+     * set up the title
+     */
     private void titleSetUp() {
         //Declare the grid bag constraints
-        GridBagConstraints constraints = new GridBagConstraints();  
+        GridBagConstraints constraints = new GridBagConstraints();
         //Set up title
         title = new JLabel("WITCHES N'STITCHES");
         title.setForeground(Color.WHITE);
@@ -167,8 +181,8 @@ public class ControlPanel extends JPanel implements ActionListener{
         title.setBackground(Color.BLACK);
         title.setOpaque(true);
         //set up constraints
-        constraints.gridx = 0; 
-        constraints.gridy = 0; 
+        constraints.gridx = 0;
+        constraints.gridy = 0;
         constraints.weightx = 1;
         constraints.weighty = 0.1;
         constraints.gridwidth = 1;
@@ -176,11 +190,12 @@ public class ControlPanel extends JPanel implements ActionListener{
         this.add(title, constraints);
     }
 
-    
-    //stopSetUp
+    /**
+     * set the exit button
+     */
     private void stopSetUp() {
         //Declare the grid bag constraints
-        GridBagConstraints constraints = new GridBagConstraints();  
+        GridBagConstraints constraints = new GridBagConstraints();
         //set up stop
         stop = new JButton("Exit");
         stop.setBorderPainted(true);
@@ -189,31 +204,30 @@ public class ControlPanel extends JPanel implements ActionListener{
         stop.setBackground(Color.WHITE);
         stop.setForeground(Color.BLACK);
         stop.setBorder(compound);
-        
+
         //set up constraints
-        constraints.gridx = 0; 
-        constraints.gridy = 0; 
+        constraints.gridx = 0;
+        constraints.gridy = 0;
         constraints.ipady = 10;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.weightx = 0.1;
         constraints.weighty = 0.1;
-        panelFlame.add(stop , constraints);
+        panelFlame.add(stop, constraints);
         //add the button listener
-        stop.addActionListener(new ActionListener(){  
-            public void actionPerformed(ActionEvent e){  
+        stop.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 myFlame.setExit();
-            }  
-        });  
-        
-        
-        
+            }
+        });
+
     }
 
-    
-    //pauseSetUp: set up pause
+    /**
+     * set up pause button
+     */
     private void pauseSetUp() {
         //Declare the grid bag constraints
-        GridBagConstraints constraints = new GridBagConstraints();  
+        GridBagConstraints constraints = new GridBagConstraints();
         //set up pause
         pause = new JButton("Pause");
         pause.setBorderPainted(true);
@@ -222,56 +236,54 @@ public class ControlPanel extends JPanel implements ActionListener{
         pause.setBackground(Color.WHITE);
         pause.setForeground(Color.BLACK);
         pause.setBorder(compound);
-        
+
         //set up contraints
         constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.gridx = 1; 
-        constraints.gridy = 0; 
+        constraints.gridx = 1;
+        constraints.gridy = 0;
         constraints.weightx = 0.9;
         constraints.weighty = 0.1;
         constraints.gridwidth = 6;
         constraints.ipady = 10;
         //add the pause button
-        panelFlame.add(pause , constraints);
+        panelFlame.add(pause, constraints);
         //add the button listener
-        pause.addActionListener(new ActionListener(){  
-            public void actionPerformed(ActionEvent e){  
+        pause.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 myFlame.setPause();
-            }  
-        });  
+            }
+        });
 
-        
     }
 
-    
-    
-    
-    //viewerRateSetUp: Set up the viewer rate slider
+    /**
+     * Set up the viewer rate slider
+     */
     private void viewerRateSetUp() {
         //Declare the grid bag constraints
-        GridBagConstraints constraints = new GridBagConstraints();  
+        GridBagConstraints constraints = new GridBagConstraints();
         //set up the label
         viewerLabelRate = new JLabel("Viewer Rate: ");
         viewerLabelRate.setForeground(Color.white);
         //set up the constrains
         constraints.gridx = 0;
-        constraints.gridy = 1; 
+        constraints.gridy = 1;
         constraints.weightx = 0.1;
         constraints.weighty = 0.1;
         //add the label
         panelFlame.add(viewerLabelRate, constraints);
-        
+
         //set up the slider
         viewerSliderRate = new JSlider(JSlider.HORIZONTAL, 0, 200, 50);
-        viewerSliderRate.setMinorTickSpacing(25);  
-        viewerSliderRate.setMajorTickSpacing(50);  
-        viewerSliderRate.setPaintTicks(true);  
-        viewerSliderRate.setPaintLabels(true); 
+        viewerSliderRate.setMinorTickSpacing(25);
+        viewerSliderRate.setMajorTickSpacing(50);
+        viewerSliderRate.setPaintTicks(true);
+        viewerSliderRate.setPaintLabels(true);
         viewerSliderRate.setOpaque(false);
         viewerSliderRate.setForeground(Color.WHITE);
         viewerSliderRate.setBackground(Color.red);
         viewerSliderRate.setValue(55);
-        
+
         //set up constraints
         constraints.gridwidth = 6;
         constraints.gridx = 1;
@@ -284,16 +296,18 @@ public class ControlPanel extends JPanel implements ActionListener{
         viewerSliderRate.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent event) {
                 myFlame.setViewerRate(viewerSliderRate.getValue());
-        
-           }
+
+            }
         });
-        
+
     }
 
-    //flameRateSetUp: set the flame rate slider up
+    /**
+     * set the flame rate slider up
+     */
     private void flameRateSetUp() {
         //Declare the grid bag constraints
-        GridBagConstraints constraints = new GridBagConstraints();  
+        GridBagConstraints constraints = new GridBagConstraints();
         //set up the label
         flameLabelRate = new JLabel("Flame Rate: ");
         flameLabelRate.setForeground(Color.white);
@@ -304,20 +318,20 @@ public class ControlPanel extends JPanel implements ActionListener{
         constraints.weighty = 0.1;
         //add the label
         panelFlame.add(flameLabelRate, constraints);
-        
+
         //set up the slider
         flameSliderRate = new JSlider(JSlider.HORIZONTAL, 0, 200, 50);
         flameSliderRate.setMinorTickSpacing(25);
-        flameSliderRate.setMajorTickSpacing(50); 
-        flameSliderRate.setPaintTicks(true);  
-        flameSliderRate.setPaintLabels(true); 
+        flameSliderRate.setMajorTickSpacing(50);
+        flameSliderRate.setPaintTicks(true);
+        flameSliderRate.setPaintLabels(true);
         flameSliderRate.setOpaque(false);
         flameSliderRate.setForeground(Color.WHITE);
         flameSliderRate.setBackground(Color.red);
         flameSliderRate.setValue(55);
         //set up the constraints
         constraints.gridwidth = 6;
-        constraints.gridx = 1; 
+        constraints.gridx = 1;
         constraints.gridy = 2;
         constraints.weightx = 0.9;
         constraints.weighty = 0.1;
@@ -327,40 +341,42 @@ public class ControlPanel extends JPanel implements ActionListener{
         flameSliderRate.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent event) {
                 myFlame.setFlameRate(flameSliderRate.getValue());
-        
-            }   
+
+            }
         });
     }
-    
-    //createCool: set up the cool slider
+
+    /**
+     * set up the cool slider
+     */
     private void createCoolSetUp() {
         //Declare the grid bag constraints
-        GridBagConstraints constraints = new GridBagConstraints();  
+        GridBagConstraints constraints = new GridBagConstraints();
         //set up the label
         coolLabel = new JLabel("Flame Intensity: ");
         coolLabel.setForeground(Color.WHITE);
         //set up constraints
-        constraints.gridx = 0; 
+        constraints.gridx = 0;
         constraints.gridy = 3;
         constraints.weightx = 0.1;
         constraints.weighty = 0.1;
         panelFlame.add(coolLabel, constraints);
-        
+
         //set up the slider
         coolSlider = new JSlider(JSlider.HORIZONTAL, 20, 100, 20);
         coolSlider.setMinorTickSpacing(10);
-        coolSlider.setMajorTickSpacing(20);  
-        coolSlider.setPaintTicks(true);  
-        coolSlider.setPaintLabels(true); 
-        coolSlider.setPaintTicks(true);  
-        coolSlider.setPaintLabels(true); 
+        coolSlider.setMajorTickSpacing(20);
+        coolSlider.setPaintTicks(true);
+        coolSlider.setPaintLabels(true);
+        coolSlider.setPaintTicks(true);
+        coolSlider.setPaintLabels(true);
         coolSlider.setOpaque(false);
         coolSlider.setForeground(Color.WHITE);
         coolSlider.setBackground(Color.red);
         coolSlider.setValue(45);
         //set up slider constraints
         constraints.gridwidth = 6;
-        constraints.gridx = 1; 
+        constraints.gridx = 1;
         constraints.gridy = 3;
         constraints.weightx = 0.9;
         constraints.weighty = 0.1;
@@ -369,28 +385,29 @@ public class ControlPanel extends JPanel implements ActionListener{
         coolSlider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent event) {
                 myFlame.setFlameCoolAmount(coolSlider.getValue());
-        
-            }   
+
+            }
         });
     }
-    
 
-    //paletteChooserSetUp: set up the palette chooser
+    /**
+     * set up the palette chooser
+     */
     private void paletteChooserSetUp() {
         //Declare the grid bag constraints
-        GridBagConstraints constraints = new GridBagConstraints();  
+        GridBagConstraints constraints = new GridBagConstraints();
         //set up label
         paletteChooserLabel = new JLabel("Palette Chooser: ");
         paletteChooserLabel.setForeground(Color.white);
         //set up label constraints
         constraints.gridx = 0;
-        constraints.gridy = 4; 
+        constraints.gridy = 4;
         constraints.weightx = 1;
         constraints.weighty = 0.1;
         constraints.gridwidth = 1;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         panelFlame.add(paletteChooserLabel, constraints);
-        
+
         //Set the palette button changers
         setPaletteButton(1);
         setPaletteButton(2);
@@ -399,12 +416,16 @@ public class ControlPanel extends JPanel implements ActionListener{
         setPaletteButton(5);
 
     }
-    //setPaletteButton: sets the palette chooser butons up
+
+    /**
+     * sets the palette chooser butons up
+     * @param i - constraint gridx
+     */
     private void setPaletteButton(int i) {
         //Declare the grid bag constraints
-        GridBagConstraints constraints = new GridBagConstraints();  
+        GridBagConstraints constraints = new GridBagConstraints();
         //create the buttons
-        paletteChooserButton = new JButton(""+i);
+        paletteChooserButton = new JButton("" + i);
         paletteChooserButton.setBorderPainted(true);
         paletteChooserButton.setFocusPainted(false);
         paletteChooserButton.setContentAreaFilled(true);
@@ -413,80 +434,83 @@ public class ControlPanel extends JPanel implements ActionListener{
         paletteChooserButton.setBorder(compound);
         //its constraints
         constraints.gridx = i;
-        constraints.gridy = 4; 
+        constraints.gridy = 4;
         constraints.weightx = 0;
         constraints.weighty = 0.1;
         panelFlame.add(paletteChooserButton, constraints);
-        
+
         //Add the button listener for every palette button
-        paletteChooserButton.addActionListener(new ActionListener(){  
-            public void actionPerformed(ActionEvent e){  
+        paletteChooserButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 Color color;
-                switch(i){
+                switch (i) {
                     case 1:
                         color = JColorChooser.showDialog(ControlPanel.this, "Choose a color", myFlame.getC1());
-                        if (color != null){
+                        if (color != null) {
                             myFlame.setC1(color);
-                        }  
+                        }
                         break;
                     case 2:
-                        color = JColorChooser.showDialog(ControlPanel.this, "Choose a color", myFlame.getC2());                       
-                        if (color != null){
+                        color = JColorChooser.showDialog(ControlPanel.this, "Choose a color", myFlame.getC2());
+                        if (color != null) {
                             myFlame.setC2(color);
-                        }                          
+                        }
                         break;
                     case 3:
                         color = JColorChooser.showDialog(ControlPanel.this, "Choose a color", myFlame.getC3());
-                          if (color != null){
+                        if (color != null) {
                             myFlame.setC3(color);
-                        }                          
+                        }
                         break;
                     case 4:
                         color = JColorChooser.showDialog(ControlPanel.this, "Choose a color", myFlame.getC4());
-                        if (color != null){
+                        if (color != null) {
                             myFlame.setC4(color);
-                        }                          
+                        }
                         break;
                     case 5:
                         color = JColorChooser.showDialog(ControlPanel.this, "Choose a color", myFlame.getC5());
-                        if (color != null){
+                        if (color != null) {
                             myFlame.setC5(color);
-                        }                          
+                        }
                         break;
                 }
-            }  
-              
-        });  
+            }
+
+        });
     }
-    
-     private void flameAnimationLuminance() {
-         //Declare the grid bag constraints
-        GridBagConstraints constraints = new GridBagConstraints();  
+
+    /**
+     * set up the label and slider of the lumination quantiti of the FlameAnimation
+     */
+    private void flameAnimationLuminance() {
+        //Declare the grid bag constraints
+        GridBagConstraints constraints = new GridBagConstraints();
         //set up the label
         luminanceLabel = new JLabel("Luminance min: ");
         luminanceLabel.setForeground(Color.WHITE);
         //set up constraints
-        constraints.gridx = 0; 
+        constraints.gridx = 0;
         constraints.gridy = 5;
         constraints.weightx = 0.1;
         constraints.weighty = 0.1;
         panelFlame.add(luminanceLabel, constraints);
-        
+
         //set up the slider
         luminanceSlider = new JSlider(JSlider.HORIZONTAL, 1, 100, 20);
         luminanceSlider.setMinorTickSpacing(10);
-        luminanceSlider.setMajorTickSpacing(20);  
-        luminanceSlider.setPaintTicks(true);  
-        luminanceSlider.setPaintLabels(true); 
-        luminanceSlider.setPaintTicks(true);  
-        luminanceSlider.setPaintLabels(true); 
+        luminanceSlider.setMajorTickSpacing(20);
+        luminanceSlider.setPaintTicks(true);
+        luminanceSlider.setPaintLabels(true);
+        luminanceSlider.setPaintTicks(true);
+        luminanceSlider.setPaintLabels(true);
         luminanceSlider.setOpaque(false);
         luminanceSlider.setForeground(Color.WHITE);
         luminanceSlider.setBackground(Color.red);
         luminanceSlider.setValue(80);
         //set up slider constraints
         constraints.gridwidth = 6;
-        constraints.gridx = 1; 
+        constraints.gridx = 1;
         constraints.gridy = 5;
         constraints.weightx = 0.9;
         constraints.weighty = 0.1;
@@ -495,43 +519,47 @@ public class ControlPanel extends JPanel implements ActionListener{
         luminanceSlider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent event) {
                 myFlame.setLuminanceMin(luminanceSlider.getValue());
-        
-            }   
+
+            }
         });
     }
-    
 
+    /**
+     *  Set up the audio button that will start and stop the music.
+     */
     private void audioButtonSetUp() {
-       //Declare the grid bag constraints
-        GridBagConstraints constraints = new GridBagConstraints();  
+        //Declare the grid bag constraints
+        GridBagConstraints constraints = new GridBagConstraints();
         //set up audio
         JButton audio = new JButton();
         audio.setBorderPainted(false);
         audio.setFocusPainted(false);
         audio.setContentAreaFilled(false);
-        audio.setIcon( new ImageIcon("ICON/nota.png") );
+        audio.setIcon(new ImageIcon("ICON/nota.png"));
         //set up constraints
-        constraints.gridx = 1; 
-        constraints.gridy = 6; 
+        constraints.gridx = 1;
+        constraints.gridy = 6;
         constraints.ipady = 10;
         constraints.fill = GridBagConstraints.NONE;
         constraints.gridwidth = 3;
         constraints.weightx = 0;
         constraints.weighty = 0.1;
-        panelFlame.add(audio , constraints);
+        panelFlame.add(audio, constraints);
         //add the button listener
-        audio.addActionListener(new ActionListener(){  
-            public void actionPerformed(ActionEvent e){  
+        audio.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 myFlame.songController();
-            }  
-        });  
+            }
+        });
     }
 
-
-
     
+    /**
+     * sets up the file chooser button and lets you pick a file.
+     */
     private void fileChooserSetUp() {
         GridBagConstraints constraints = new GridBagConstraints();
+        //Set up button
         fileChooserButton = new JButton("Choose an image");
         fileChooserButton.setBorderPainted(true);
         fileChooserButton.setFocusPainted(false);
@@ -539,73 +567,75 @@ public class ControlPanel extends JPanel implements ActionListener{
         fileChooserButton.setBackground(Color.WHITE);
         fileChooserButton.setForeground(Color.BLACK);
         fileChooserButton.setBorder(compound);
-         //set up constraints
+        //set up constraints
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.weightx = 1;
         constraints.weighty = 1;
         constraints.gridwidth = 3;
-        
+
         panelConvolution.add(fileChooserButton, constraints);
+        //Will send the path of the file
         fileChooserButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 fileChooser = new JFileChooser("IMG/", FileSystemView.getFileSystemView());
                 int r = fileChooser.showSaveDialog(null);
- 
-            // if the user selects a file
-            if (r == JFileChooser.APPROVE_OPTION){
-                // set the label to the path of the selected file
-                myFlame.changeImage(fileChooser.getSelectedFile().getAbsolutePath()); 
-            }
-                
+
+                // if the user selects a file
+                if (r == JFileChooser.APPROVE_OPTION) {
+                    // set the label to the path of the selected file
+                    myFlame.changeImage(fileChooser.getSelectedFile().getAbsolutePath());
+                }
+
             }
         });
-        
+
     }
-    
-   
+
+    /**
+     * Set up the convolution user input and send button. This lets the user sets its own convolution.
+     */
     private void userTextInputSetUp() {
         GridBagConstraints constraintsLabel = new GridBagConstraints();
         JLabel textInputTitle = new JLabel("Set your own filter: ");
-        
+
         fileChooserButton.setContentAreaFilled(true);
         textInputTitle.setForeground(Color.WHITE);
-         //set up constraints
+        //set up constraints
         constraintsLabel.gridx = 0;
         constraintsLabel.gridy = 1;
         constraintsLabel.weightx = 1;
         constraintsLabel.weighty = 0.5;
         constraintsLabel.gridwidth = 3;
         panelConvolution.add(textInputTitle, constraintsLabel);
-        
-        
-        JTextField textInput1 = setTextInput(0,2);
-        JTextField textInput2 = setTextInput(1,2);
-        JTextField textInput3 = setTextInput(2,2);
-        JTextField textInput4 = setTextInput(0,3);
-        JTextField textInput5 = setTextInput(1,3);
-        JTextField textInput6 = setTextInput(2,3);
-        JTextField textInput7 = setTextInput(0,4);
-        JTextField textInput8 = setTextInput(1,4);
-        JTextField textInput9 = setTextInput(2,4);
-        
-        
+
+        //set up the text input fields
+        JTextField textInput1 = setTextInput(0, 2);
+        JTextField textInput2 = setTextInput(1, 2);
+        JTextField textInput3 = setTextInput(2, 2);
+        JTextField textInput4 = setTextInput(0, 3);
+        JTextField textInput5 = setTextInput(1, 3);
+        JTextField textInput6 = setTextInput(2, 3);
+        JTextField textInput7 = setTextInput(0, 4);
+        JTextField textInput8 = setTextInput(1, 4);
+        JTextField textInput9 = setTextInput(2, 4);
+
         GridBagConstraints constraintsDivText = new GridBagConstraints();
         JLabel divText = new JLabel("Division: ");
         divText.setForeground(Color.WHITE);
-         //set up constraints
+        //set up constraints
         constraintsDivText.gridx = 0;
         constraintsDivText.gridy = 5;
         constraintsDivText.weightx = 1;
         constraintsDivText.weighty = 0.5;
         constraintsDivText.gridwidth = 1;
         panelConvolution.add(divText, constraintsDivText);
-        
-        JTextField divInput = setTextInput(1,5);
-        
-        
+
+        JTextField divInput = setTextInput(1, 5);
+
         GridBagConstraints constraintsButton = new GridBagConstraints();
+        //set up the send button.
         JButton sendTextInput = new JButton("Send");
         sendTextInput.setBorderPainted(true);
         sendTextInput.setFocusPainted(false);
@@ -613,13 +643,13 @@ public class ControlPanel extends JPanel implements ActionListener{
         sendTextInput.setBackground(Color.WHITE);
         sendTextInput.setForeground(Color.BLACK);
         sendTextInput.setBorder(compound);
-         //set up constraints
+        //set up constraints
         constraintsButton.gridx = 2;
         constraintsButton.gridy = 5;
         constraintsButton.weightx = 1;
         constraintsButton.weighty = 0.5;
         constraintsButton.gridwidth = 1;
-        
+
         panelConvolution.add(sendTextInput, constraintsButton);
         sendTextInput.addActionListener(new ActionListener() {
             @Override
@@ -636,15 +666,19 @@ public class ControlPanel extends JPanel implements ActionListener{
                 kernel[2][2] = Float.parseFloat(textInput9.getText().toString());
                 float div = Float.parseFloat(divInput.getText().toString());
                 myFlame.changeConvolutionKernel(kernel, div);
-                
-                
+
             }
         });
-        
+
     }
-    
-    
-    private JTextField setTextInput(int x, int y ){
+
+    /**
+     * Make a new text field 
+     * @param x - constraints gridx
+     * @param y - constraints gridy
+     * @return JTextField
+     */
+    private JTextField setTextInput(int x, int y) {
         GridBagConstraints constraints = new GridBagConstraints();
         JTextField tf = new JTextField("1");
         tf.setHorizontalAlignment(JTextField.CENTER);
@@ -659,23 +693,17 @@ public class ControlPanel extends JPanel implements ActionListener{
 
         panelConvolution.add(tf, constraints);
         return tf;
-        
-        
-    }
-
-    
-    
-    
-    //stopSetUp
-    private void convoluterSetUp() {
-        setConvolutionList();
-        setConvolutionColor();
 
     }
 
-    //setConvolutionList: Adds the menu of convolution types
+    
+
+    /**
+    * Adds the menu of convolution types
+    */
     private void setConvolutionList() {
         GridBagConstraints constraints = new GridBagConstraints();
+        //set up menu
         convolutionMenu = new JMenu("Convolution type");
         i1 = new JMenuItem("Sharpen");
         i2 = new JMenuItem("Smooth");
@@ -695,7 +723,6 @@ public class ControlPanel extends JPanel implements ActionListener{
 
         convolutionMenu.setForeground(Color.BLACK);
 
-
         convolutionMenuBar.add(convolutionMenu);
         convolutionMenuBar.setBorderPainted(true);
         convolutionMenuBar.setBackground(Color.WHITE);
@@ -710,6 +737,7 @@ public class ControlPanel extends JPanel implements ActionListener{
         constraints.gridwidth = 3;
         panelConvolution.add(convolutionMenuBar, constraints);
 
+        //set action listeners
         i1.addActionListener(this);
         i2.addActionListener(this);
         i3.addActionListener(this);
@@ -718,10 +746,13 @@ public class ControlPanel extends JPanel implements ActionListener{
         i6.addActionListener(this);
         i7.addActionListener(this);
 
-
     }
 
-    //actionPerformed: Get the menu item clicked on the convolution menu
+    /**
+     * Get the menu item clicked on the convolution menu
+     * Sends to myFlame a convolution.Type
+     * @param e - ActionEvent from menu list
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Sharpen")) {
@@ -742,13 +773,15 @@ public class ControlPanel extends JPanel implements ActionListener{
         } else if (e.getActionCommand().equals("Blur")) {
             myFlame.changeConvolutedImage(Convolution.Type.BLUR);
 
-        }else if (e.getActionCommand().equals("Center Points")) {
+        } else if (e.getActionCommand().equals("Center Points")) {
             myFlame.changeConvolutedImage(Convolution.Type.CENTERPOINTS);
 
         }
     }
 
-    //setConvolutionColor: changes the color that will be convoluted with checkbox
+    /**
+     * changes the color that will be convoluted with checkbox
+     */
     private void setConvolutionColor() {
         GridBagConstraints cLabel = new GridBagConstraints();
         colorChooserLabel = new JLabel("Colors to convolute");
@@ -760,13 +793,13 @@ public class ControlPanel extends JPanel implements ActionListener{
         cLabel.weighty = 0;
         cLabel.gridwidth = 3;
         panelConvolution.add(colorChooserLabel, cLabel);
-        
+
         GridBagConstraints cCheckBox = new GridBagConstraints();
         redCheckbox = new JCheckBox("Red");
         redCheckbox.setBackground(null);
         redCheckbox.setForeground(Color.WHITE);
         redCheckbox.setSelected(true);
-        
+
         //set up constraints
         cCheckBox.gridx = 0;
         cCheckBox.gridy = 8;
@@ -776,15 +809,15 @@ public class ControlPanel extends JPanel implements ActionListener{
         redCheckbox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange() == 1){
+                if (e.getStateChange() == 1) {
                     myFlame.changeConvolutedImage("red", true);
-                }else{
+                } else {
                     myFlame.changeConvolutedImage("red", false);
 
                 }
             }
         });
-        
+
         greenCheckbox = new JCheckBox("Green");
         greenCheckbox.setBackground(null);
         greenCheckbox.setForeground(Color.WHITE);
@@ -794,9 +827,9 @@ public class ControlPanel extends JPanel implements ActionListener{
         greenCheckbox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange() == 1){
+                if (e.getStateChange() == 1) {
                     myFlame.changeConvolutedImage("green", true);
-                }else{
+                } else {
                     myFlame.changeConvolutedImage("green", false);
 
                 }
@@ -812,9 +845,9 @@ public class ControlPanel extends JPanel implements ActionListener{
         blueCheckbox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange() == 1){
+                if (e.getStateChange() == 1) {
                     myFlame.changeConvolutedImage("blue", true);
-                }else{
+                } else {
                     myFlame.changeConvolutedImage("blue", false);
 
                 }
@@ -822,19 +855,4 @@ public class ControlPanel extends JPanel implements ActionListener{
         });
     }
 
-   
-
-  
-    
-    
-    
-    
-
 }
-
-
-
-
-    
-    
-

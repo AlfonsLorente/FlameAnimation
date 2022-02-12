@@ -70,7 +70,9 @@ public class MyFlame extends JFrame {
     private JMenuBar menubar;
 
    
-    //fireState: enum that sets the fire state
+    /**
+     * enum that sets the fire state
+     */
     enum FireState {
         EXIT,
         PAUSE,
@@ -83,18 +85,21 @@ public class MyFlame extends JFrame {
 
     }
 
+    
     //CONSTRUCTOR
+    /**
+     * sets up ALL the application
+     */
     public MyFlame() {
 
         //Set flame palette
         flamePalette = setFlamePalette(flamePalette);
 
-        //Create viewer
+        //Set image and convoluted image
         setUpImages();
+        
         //Create flames
-
         setUpFlame();
-
         setUpFlameAnimation();
 
         fireThread = new Thread(flame);
@@ -103,23 +108,24 @@ public class MyFlame extends JFrame {
         fireAnimationThread = new Thread(flameAnimation);
         fireAnimationThread.start();
 
+        //set viewer up
         setUpViewer();
 
         //Create control panel
         controlPanel = new ControlPanel();
-
         controlPanel.setMyFlame(this);
-        //Set the jframe
-
+        
+        //Set the jframe (this class)
         setMyFlame();
 
         //set Audio
         setUpAudio(audio);
+        
+        //Set the grid rules for viewer and control panel
         setGridRules();
 
         //Start the viewer thread
         thread = new Thread(viewer);
-
         thread.start();
 
         //Set the jframe visible
@@ -128,51 +134,95 @@ public class MyFlame extends JFrame {
     }
 
     //GETTERS AND SETTERS
+    /**
+     * returns the first color of the palette
+     * @return Color
+     */
     public Color getC1() {
         return c1;
     }
 
+    /**
+     * sets the first color of the palette
+     * @param c1 - Color
+     */
     public void setC1(Color c1) {
         this.c1 = c1;
         this.setFlamePalette(c1, c2, c3, c4, c5);
     }
 
+    /**
+     * returns the second color of the palette
+     * @return Color
+     */
     public Color getC2() {
         return c2;
     }
 
+    /**
+     * sets the second color of the palette
+     * @param c2 - Color
+     */
     public void setC2(Color c2) {
         this.c2 = c2;
         this.setFlamePalette(c1, c2, c3, c4, c5);
     }
 
+    /**
+     * returns the third color of the palette
+     * @return Color
+     */
     public Color getC3() {
         return c3;
     }
 
+    /**
+     * sets the third color of the palette
+     * @param c3 - Color
+     */
     public void setC3(Color c3) {
         this.c3 = c3;
         this.setFlamePalette(c1, c2, c3, c4, c5);
     }
 
+    
+    /**
+     * returns the fourth color of the palette
+     * @return Color
+     */
     public Color getC4() {
         return c4;
     }
 
+    /**
+     * sets the fourth color of the palette
+     * @param c4 - Color
+     */
     public void setC4(Color c4) {
         this.c4 = c4;
         this.setFlamePalette(c1, c2, c3, c4, c5);
     }
 
+    /**
+     * returns the fifth color of the palette
+     * @return Color
+     */
     public Color getC5() {
         return c5;
     }
 
+    /**
+     * sets the fifth color of the palette
+     * @param c5 - Color
+     */
     public void setC5(Color c5) {
         this.c5 = c5;
         this.setFlamePalette(c1, c2, c3, c4, c5);
     }
 
+    /**
+     * sets up the flame
+     */
     private void setUpFlame() {
         flame = new Flame(300, 600, BufferedImage.TYPE_INT_ARGB);
         flame.setRate(flameRate);
@@ -181,19 +231,32 @@ public class MyFlame extends JFrame {
 
     }
 
+    /**
+     * sets up the viewer
+     */
     private void setUpViewer() {
         viewer = new Viewer(flame, image, convolutedImage, flameAnimation);
         this.setViewerRate(viewerRate);
     }
 
+    //PUBLIC METHODS
+
+    
+    /**
+     * sets up the flames cool
+     * @param flameCoolAmount 
+     */
     public void setFlameCoolAmount(int flameCoolAmount) {
         this.flameCoolAmount = flameCoolAmount;
         flame.setCoolAmount(flameCoolAmount);
         flameAnimation.setCoolAmount(flameCoolAmount);
     }
 
-    //PUBLIC METHODS
-    //setFlamePalette: Prepare the palette
+    /**
+     * Prepare the default flame palette
+     * @param palette - FlamePalette
+     * @return - FlamePalette
+     */
     public FlamePalette setFlamePalette(FlamePalette palette) {
         //Create the palette
         palette = new FlamePalette();
@@ -202,7 +265,7 @@ public class MyFlame extends JFrame {
         c3 = new Color(255,165,0, 200);
         c4 = new Color(255,0,0, 175);
         c5 = new Color(75,1,15, 140);
-        //set the palette colors
+        //set targets to the palette
         palette.addTargetColor(new TargetColor(255, c1));
         palette.addTargetColor(new TargetColor(80, c2));
         palette.addTargetColor(new TargetColor(40, c3));
@@ -212,15 +275,22 @@ public class MyFlame extends JFrame {
 
     }
 
-    //setFlamePalette: Prepare the palette
+    /**
+     * change the flame palette
+     * @param c1 - Color 1
+     * @param c2 - Color 2
+     * @param c3 - Color 3
+     * @param c4 - Color 4
+     * @param c5 - Color 5
+     */
     public void setFlamePalette(Color c1, Color c2, Color c3, Color c4, Color c5) {
         //Set new palette colors
         c1 = new Color(c1.getRed(), c1.getGreen(), c1.getBlue(), 255);
-        c2 = new Color(c2.getRed(), c2.getGreen(), c2.getBlue(), 240);
+        c2 = new Color(c2.getRed(), c2.getGreen(), c2.getBlue(), 200);
         c3 = new Color(c3.getRed(), c3.getGreen(), c3.getBlue(), 230);
-        c4 = new Color(c4.getRed(), c4.getGreen(), c4.getBlue(), 220);
-        c5 = new Color(c5.getRed(), c5.getGreen(), c5.getBlue(), 210);
-        
+        c4 = new Color(c4.getRed(), c4.getGreen(), c4.getBlue(), 175);
+        c5 = new Color(c5.getRed(), c5.getGreen(), c5.getBlue(), 140);
+        //set targets to the palette
         FlamePalette palette = new FlamePalette();
         palette.addTargetColor(new TargetColor(255, c1));
         palette.addTargetColor(new TargetColor(80, c2));
@@ -233,7 +303,9 @@ public class MyFlame extends JFrame {
 
     }
 
-    //setExit: Exists the application
+    /**
+     *  Exists the application
+     */
     public void setExit() {
         if (isExit == false) {
             isExit = true;
@@ -241,7 +313,9 @@ public class MyFlame extends JFrame {
         }
     }
 
-    //setPause: pauses and despauses the application
+    /**
+     * pauses and despauses the application
+     */
     public void setPause() {
         if (isPaused == false) {
             isPaused = true;
@@ -254,7 +328,10 @@ public class MyFlame extends JFrame {
 
     }
 
-    //setFireThread: sets the state of the fire
+    /**
+     * sets the state of the fire or exits app
+     * @param state - Viewer.FireState 
+     */
     public void setFireThread(Viewer.FireState state) {
         switch (state) {
             case EXIT:
@@ -271,6 +348,9 @@ public class MyFlame extends JFrame {
         }
     }
 
+    /**
+     * sets up the flame animation
+     */
     private void setUpFlameAnimation() {
         flameAnimation = new FlameAnimation(convolutedImage.getWidth(),
                 convolutedImage.getHeight(),
@@ -280,39 +360,53 @@ public class MyFlame extends JFrame {
         flameAnimation.setCoolAmount(flameCoolAmount);
     }
 
-    //setViewerRate: Sets the framerate of the viewer
+    /**
+     * Sets the framerate of the viewer
+     * @param rate - int
+     */
     public void setViewerRate(int rate) {
         viewer.setRate(rate);
 
     }
 
+    /**
+     * sets the flame rate
+     * @param rate  - int
+     */
     public void setFlameRate(int rate) {
         flame.setRate(rate);
         flameAnimation.setRate(rate);
     }
 
     //PRIVATE METHODS
-    //setMyFlame: Sets the jframe
+    /**
+     * Sets the jframe (this class)
+     */
     private void setMyFlame() {
         this.setTitle("Flame");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().setBackground(Color.BLACK);
         this.setLayout(new GridBagLayout());
         this.setBounds(0, 0, 1360, 790);
+        
+        //window mode
         this.setUndecorated(true);
         this.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+        
+        //icon image
         this.setIconImage(new ImageIcon("ICON/flameIco.png").getImage());
         
-        
-        
-        this.menubar = new JMenuBar();
+        //change menu bar
+        menubar = new JMenuBar();
         menubar.setOpaque(true);
         menubar.setBackground(Color.RED);
         this.setJMenuBar(menubar);
         this.setResizable(false);
     }
 
-    //setGridRules: set up the gridbag layout rules
+    /**
+     * set up the gridbag layout rules for viewer and control panel
+     */
     private void setGridRules() {
         //Set the constraints up for the viewer
         constraints.gridx = 1; // El área de texto empieza en la columna cero.
@@ -333,7 +427,10 @@ public class MyFlame extends JFrame {
 
     }
 
-    //setUpAudio: Sets up the audio system
+    /**
+     * Sets up the audio system
+     * @param audio - String (file path)
+     */
     public void setUpAudio(String audio) {
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(audio).getAbsoluteFile());
@@ -345,7 +442,9 @@ public class MyFlame extends JFrame {
         }
     }
 
-    //songController: start or stop the song
+    /**
+     * start or stop the song
+     */
     public void songController() {
         if (audioPlaying) {
             audioPlaying = false;
@@ -357,6 +456,9 @@ public class MyFlame extends JFrame {
     }
 
 
+    /**
+     * set up the image and the convoluted image
+     */
     private void setUpImages() {
         try {
             image = ImageIO.read(new File(imageSrc));
@@ -373,6 +475,11 @@ public class MyFlame extends JFrame {
 
     }
 
+    
+    /**
+     * change the convoluted image depending on its type
+     * @param newType 
+     */
     public void changeConvolutedImage(Convolution.Type newType) {
         if (!convType.equals(newType)) {
             convType = newType;
@@ -389,6 +496,12 @@ public class MyFlame extends JFrame {
         }
     }
 
+    
+    /**
+     * change the convoluted image depending on the colors to convolute
+     * @param colorName - String
+     * @param colorState - boolean
+     */
     public void changeConvolutedImage(String colorName, boolean colorState) {
         if (colorName.equals("red")) {
             redState = colorState;
@@ -411,6 +524,11 @@ public class MyFlame extends JFrame {
         flameAnimation.setConvolutedImage(convolutedImage);
     }
 
+    
+    /**
+     * change the image and so the convoluted image
+     * @param imageSrc - String
+     */
     public void changeImage(String imageSrc) {
         try {
             image = ImageIO.read(new File(imageSrc));
@@ -427,17 +545,21 @@ public class MyFlame extends JFrame {
         
         viewer.setImage(image);
         viewer.setConvolutedImage(convolutedImage);
+        //Gotta restart the flame animation with the new convolutedImage
         flameAnimation.setAlive(false);
         setUpFlameAnimation();
         fireAnimationThread = new Thread(flameAnimation);
         fireAnimationThread.start();
-        
-        flameAnimation.setConvolutedImage(convolutedImage);
 
         viewer.setFlameAnimation(flameAnimation);
 
     }
 
+    /**
+     * change the kernel
+     * @param kernel - float[][]
+     * @param div float
+     */
     void changeConvolutionKernel(float[][] kernel, float div) {
         this.convType = Convolution.Type.PERSONALITZED;
         this.kernel = kernel;
@@ -448,6 +570,10 @@ public class MyFlame extends JFrame {
         viewer.setConvolutedImage(convolutedImage);
     }
     
+    /**
+     * change the luminance minimum
+     * @param value 
+     */
      void setLuminanceMin(int value) {
          flameAnimation.setLuminanceMin((float)value / 100);
          

@@ -25,12 +25,19 @@ public class FlamePalette {
     }
     
     //PUBLIC METHODS
-    //addTargetColor: Adds a target color to a list
+    /**
+     * Adds a target color to a list
+     * @param targetColor - TargetColor
+     */
     public void addTargetColor(TargetColor targetColor) {
         this.targetColorList.add(targetColor);
     }
 
-    //getColor: returns the value of the actual color
+    /**
+     * returns the value of the actual color
+     * @param num - int
+     * @return color (int)
+     */
     public int getColor(int num) {
         if (this.colorList == null){
             createColors();
@@ -39,7 +46,9 @@ public class FlamePalette {
     }
 
     //PRIVATE METHODS
-    //createColors: Create the colorList variable and setting up all the colors
+    /**
+     * Create the colorList variable and setting up all the colors
+     */
     private void createColors() {
         this.colorList = new int[256];
         for (int i = 0; i < (targetColorList.size() - 1); i++) {
@@ -48,7 +57,11 @@ public class FlamePalette {
         } 
     }
     
-    //interpolateColors: Create each temperature for each step of the target color, and so, setting up the colorList.
+    /**
+     * Create each temperature for each step of the target color, and so, setting up the colorList.
+     * @param targetFrom - TargetColor
+     * @param targetEnd - TargetColor
+     */
     private void interpolateColors(TargetColor targetFrom, TargetColor targetEnd) {
         //Gets all the primari colors of each target color's color
         int[] fromColor = new int[]{
