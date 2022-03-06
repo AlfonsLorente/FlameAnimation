@@ -47,7 +47,7 @@ public class MyFlame extends JFrame {
     private String audio = "MUSIC/zombies.wav";
     private Clip clip;
     private boolean audioPlaying = false;
-    private String imageSrc = "IMG/paisajenevado.jpg";
+    private String imageSrc = "IMG/darkHouse.jpg";
 
     private BufferedImage image;
     private BufferedImage convolutedImage;
